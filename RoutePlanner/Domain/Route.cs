@@ -13,7 +13,7 @@ namespace RoutePlanner
         private const int RouteFinishSameAsPreferredReward = 200;
         private const int PreferredManagerReward = 200;
 
-        private Manager Manager;
+        public Manager Manager { get; }
 
         public List<Customer> Customers;
 

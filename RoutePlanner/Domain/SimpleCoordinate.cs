@@ -21,5 +21,10 @@ namespace RoutePlanner
             var otherSimpleCoordinate = (SimpleCoordinate) otherCoordinate;
             return TimeSpan.FromMinutes(Math.Abs(X - otherSimpleCoordinate.X) + Math.Abs(Y - otherSimpleCoordinate.Y));
         }
+
+        public override string ToString()
+        {
+           return $"{X},{Y}";
+        }
     }
 }

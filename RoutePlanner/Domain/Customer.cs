@@ -4,11 +4,11 @@ namespace RoutePlanner
 {
     public class Customer
     {
+        public readonly int Id;
         public readonly ICoordinate Coordinate;
-        public readonly Guid Id;
         public readonly int MeetingDuration;
         public bool IsVisited = false;
-        public Customer(ICoordinate coordinate, Guid id, int meetingDuration)
+        public Customer(int id, ICoordinate coordinate, int meetingDuration)
         {
             Coordinate = coordinate;
             Id = id;

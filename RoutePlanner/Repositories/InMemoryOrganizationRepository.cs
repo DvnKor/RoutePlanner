@@ -11,15 +11,20 @@ namespace RoutePlanner.Repositories
         private int managersCount = 10;
         private int customersCount = 50;
 
+        private int currentManagerId = 0;
+        private int currentOrganizationId = 0;
+        private int currentCustomerId = 0;
+
         public List<Organization> GetAllOrganizations()
         {
-            return new List<Organization>() {GetRandomOrganization()};
+            return new List<Organization> {GetRandomOrganization()};
         }
 
         private Organization GetRandomOrganization()
         {
             var managers = new List<Manager>();
             var customers = new List<Customer>();
+            currentOrganizationId++;
             for (var i = 0; i < managersCount; i++)
             {
                 managers.Add(GetRandomManager());
@@ -30,17 +35,19 @@ namespace RoutePlanner.Repositories
                 customers.Add(GetRandomCustomer());
             }
 
-            return new Organization(Guid.NewGuid(), managers, customers, null);
+            return new Organization(currentOrganizationId, managers, customers, null);
         }
 
         private Manager GetRandomManager()
         {
-            return new Manager(GetRandomSimpleCoordinate(), GetRandomSimpleCoordinate(), Guid.NewGuid(), 8 * 60);
+            currentManagerId++;
+            return new Manager(GetRandomSimpleCoordinate(), GetRandomSimpleCoordinate(), currentManagerId, 8 * 60);
         }
 
         private Customer GetRandomCustomer()
         {
-            return new Customer(GetRandomSimpleCoordinate(), Guid.NewGuid(), 60);
+            currentCustomerId++;
+            return new Customer(currentCustomerId, GetRandomSimpleCoordinate(), 60);
         }
 
         private SimpleCoordinate GetRandomSimpleCoordinate()
