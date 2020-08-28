@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using RoutePlanner.Repositories;
 
 namespace RoutePlanner
 {
     public class RoutePlanner
     {
-        private readonly InMemoryOrganizationRepository inMemoryOrganizationRepository =
-            new InMemoryOrganizationRepository();
+        private readonly ManagerRepository managerRepository = new ManagerRepository();
+        private readonly CustomerRepository customerRepository = new CustomerRepository();
 
         private readonly Random random = new Random();
         private const int PopulationSize = 20;
@@ -21,25 +20,14 @@ namespace RoutePlanner
         private const int DefaultWorkDayDurtaion = 60 * 8;
         private const int MaxRouteLength = DefaultWorkDayDurtaion / MaxGenerationsCount;
 
-        public Dictionary<Organization, List<Route>> GetAllCurrentRoutes()
-        {
-            var result = new Dictionary<Organization, List<Route>>();
-            var organizations = inMemoryOrganizationRepository.GetAllOrganizations();
-            foreach (var organization in organizations)
-            {
-                result[organization] = GetOrganizationRoutes(organization);
-            }
-
-            return result;
-        }
-
-
-        private List<Route> GetOrganizationRoutes(Organization organization)
+        public List<Route> GetAllCurrentRoutes()
         {
             var result = new List<Route>();
-            foreach (var manager in organization.Managers)
+            var customers = customerRepository.GetRandomCustomers(100);
+            var managers = managerRepository.GetRandomManagers(5);
+            foreach (var manager in managers)
             {
-                var population = CreateInitialPopulation(organization, manager);
+                var population = CreateInitialPopulation(customers, manager);
                 for (int i = 0; i < MaxGenerationsCount; i++)
                 {
                     population = GetNextGeneration(population);
@@ -50,6 +38,7 @@ namespace RoutePlanner
 
             return result;
         }
+
 
         private List<Route> GetNextGeneration(List<Route> currentGeneration)
         {
@@ -148,20 +137,19 @@ namespace RoutePlanner
             return result;
         }
 
-        private List<Route> CreateInitialPopulation(Organization organization, Manager manager)
+        private List<Route> CreateInitialPopulation(List<Customer> customers, Manager manager)
         {
             var result = new List<Route>();
             for (var i = 0; i < PopulationSize; i++)
             {
-                result.Add(GetRandomRoute(organization, manager));
+                result.Add(GetRandomRoute(customers, manager));
             }
 
             return result;
         }
 
-        private Route GetRandomRoute(Organization organization, Manager manager)
+        private Route GetRandomRoute(List<Customer> customers, Manager manager)
         {
-            var customers = organization.Customers.ToList();
             return new Route(customers.OrderBy(arg => Guid.NewGuid()).ToList(), manager);
         }
     }

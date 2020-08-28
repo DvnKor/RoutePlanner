@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace RoutePlanner
+﻿namespace RoutePlanner
 {
     public class Customer
     {

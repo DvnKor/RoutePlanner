@@ -6,12 +6,20 @@ namespace RoutePlanner
     {
         public readonly int X;
         public readonly int Y;
+        private const int maxX = 100;
+        private const int maxY = 100;
         public SimpleCoordinate(int x, int y)
         {
             X = x;
             Y = y;
         }
 
+        public SimpleCoordinate()
+        {
+            var random = new Random();
+            X = random.Next(0, maxX);
+            Y = random.Next(0, maxY);
+        }
         public TimeSpan GetTravelTime(ICoordinate otherCoordinate)
         {
             if (!(otherCoordinate is SimpleCoordinate))
