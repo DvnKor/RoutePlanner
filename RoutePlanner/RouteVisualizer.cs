@@ -46,7 +46,7 @@ namespace RoutePlanner
         }
         private string GetGraphString(List<Route> routes, List<Customer> allCustomers)
         {
-            var graphString = new StringBuilder("graph {\nnode [style=filled]\n");
+            var graphString = new StringBuilder("digraph {\nnode [style=filled]\n");
             foreach (var customer in allCustomers)
             {
                 graphString.Append($"{customer.Id} [pos = \"{customer.Coordinate}!\"];\n");
