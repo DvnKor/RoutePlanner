@@ -1,4 +1,5 @@
 ﻿using System;
+using RoutePlanner.Repositories;
 
 namespace RoutePlanner
 {
@@ -6,16 +7,11 @@ namespace RoutePlanner
     {
         static void Main(string[] args)
         {
+            var customersRepository = new CustomerRepository();
             var routePlanner = new RoutePlanner();
             var routeVisualizer = new RouteVisualizer();
-            var organizationRoutes = routePlanner.GetAllCurrentRoutes();
-            foreach (var organizationRoute in organizationRoutes)
-            {
-                var organization = organizationRoute.Key;
-                var routes = organizationRoute.Value;
-                routeVisualizer.VisualizeRoutes(routes, organization.Customers);
-
-            }
+            var routes = routePlanner.GetAllCurrentRoutes();
+            routeVisualizer.VisualizeRoutes(routes, customersRepository.GetAllCustomers());
             Console.WriteLine("Hello World!");
         }
     }

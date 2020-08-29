@@ -117,7 +117,7 @@ namespace RoutePlanner
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 UseShellExecute = false,
-                Arguments = ("-Kfdp -n -v -T" + returnType),
+                Arguments = ("-Kneato -n -v -T" + returnType),
                 CreateNoWindow = true
             });
         }

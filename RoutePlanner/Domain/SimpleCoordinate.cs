@@ -8,6 +8,7 @@ namespace RoutePlanner
         public readonly int Y;
         private const int maxX = 100;
         private const int maxY = 100;
+        private static readonly Random random = new Random(5);
         public SimpleCoordinate(int x, int y)
         {
             X = x;
@@ -16,7 +17,6 @@ namespace RoutePlanner
 
         public SimpleCoordinate()
         {
-            var random = new Random();
             X = random.Next(0, maxX);
             Y = random.Next(0, maxY);
         }

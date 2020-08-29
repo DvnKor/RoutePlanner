@@ -23,7 +23,7 @@ namespace RoutePlanner
         public List<Route> GetAllCurrentRoutes()
         {
             var result = new List<Route>();
-            var customers = customerRepository.GetRandomCustomers(100);
+            var customers = customerRepository.GetAllCustomers();
             var managers = managerRepository.GetRandomManagers(5);
             foreach (var manager in managers)
             {
