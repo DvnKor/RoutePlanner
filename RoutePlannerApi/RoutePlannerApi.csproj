@@ -12,5 +12,10 @@
     <None Include="app.config" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="GraphViz.NET" Version="1.0.0" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.7.0" />
+  </ItemGroup>
+
 
 </Project>
