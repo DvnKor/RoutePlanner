@@ -5,11 +5,17 @@ namespace RoutePlanner.Repositories
     public class ManagerRepository
     {
         private int currentManagerId = 0;
+        private List<Manager> managers;
 
         private Manager GetRandomManager()
         {
             currentManagerId++;
             return new Manager(new SimpleCoordinate(), new SimpleCoordinate(), currentManagerId, 8 * 60);
+        }
+
+        public List<Manager> GetAllManagers()
+        {
+            return managers ??= GetRandomManagers(5);
         }
 
         public List<Manager> GetRandomManagers(int count)
@@ -19,6 +25,7 @@ namespace RoutePlanner.Repositories
             {
                 result.Add(GetRandomManager());
             }
+
             return result;
         }
     }
