@@ -24,7 +24,7 @@ namespace RoutePlanner
         {
             var result = new List<Route>();
             var customers = customerRepository.GetAllCustomers();
-            var managers = managerRepository.GetRandomManagers(5);
+            var managers = managerRepository.GetAllManagers(5);
             foreach (var manager in managers)
             {
                 var population = CreateInitialPopulation(customers, manager);

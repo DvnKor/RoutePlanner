@@ -15,9 +15,13 @@ namespace RoutePlannerApi
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private IWebHostEnvironment env { get; }
+        private IConfiguration configuration { get; }
+
+        public Startup(IWebHostEnvironment env, IConfiguration configuration)
         {
-            Configuration = configuration;
+            this.env = env;
+            this.configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
@@ -26,6 +30,10 @@ namespace RoutePlannerApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            var mvc = services.AddControllersWithViews();
+            services.AddRazorPages();
+            if (env.IsDevelopment())
+                mvc.AddRazorRuntimeCompilation();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,6 +53,8 @@ namespace RoutePlannerApi
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapControllerRoute("default", "{controller=Photo}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
             });
         }
     }
