@@ -8,7 +8,7 @@ using GraphVizWrapper;
 using GraphVizWrapper.Commands;
 using GraphVizWrapper.Queries;
 
-namespace RoutePlanner
+namespace RoutePlannerApi.Visualization
 {
     public class GraphGeneration : IGraphGeneration
     {
@@ -41,7 +41,7 @@ namespace RoutePlanner
             {
                 if (value != null && value.Trim().Length > 0)
                 {
-                    string str = value.Replace("\\", "/");
+                    var str = value.Replace("\\", "/");
                     this.graphvizPath = str.EndsWith("/") ? str.Substring(0, str.LastIndexOf('/')) : str;
                 }
                 else
@@ -81,7 +81,7 @@ namespace RoutePlanner
         {
             get
             {
-                string str = Uri.UnescapeDataString(new UriBuilder(Assembly.GetExecutingAssembly().CodeBase).Path);
+                var str = Uri.UnescapeDataString(new UriBuilder(Assembly.GetExecutingAssembly().CodeBase).Path);
                 return str.Substring(0, str.LastIndexOf('/'));
             }
         }
@@ -98,12 +98,12 @@ namespace RoutePlanner
         {
             if (!this.ConfigExists)
                 this.registerLayoutPlugincommand.Invoke(this.FilePath, this.RenderingEngine);
-            using (Process process = this.startProcessQuery.Invoke(this.GetProcessStartInfo(this.GetReturnType(returnType))))
+            using (var process = this.startProcessQuery.Invoke(this.GetProcessStartInfo(this.GetReturnType(returnType))))
             {
                 process.BeginErrorReadLine();
-                using (StreamWriter standardInput = process.StandardInput)
+                using (var standardInput = process.StandardInput)
                     standardInput.WriteLine(dotFile);
-                using (StreamReader standardOutput = process.StandardOutput)
+                using (var standardOutput = process.StandardOutput)
                     return this.ReadFully(standardOutput.BaseStream);
             }
         }
@@ -124,7 +124,7 @@ namespace RoutePlanner
 
         private byte[] ReadFully(Stream input)
         {
-            using (MemoryStream memoryStream = new MemoryStream())
+            using (var memoryStream = new MemoryStream())
             {
                 input.CopyTo((Stream)memoryStream);
                 return memoryStream.ToArray();

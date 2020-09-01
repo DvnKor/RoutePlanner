@@ -7,12 +7,13 @@ using System.Text;
 using GraphVizWrapper;
 using GraphVizWrapper.Commands;
 using GraphVizWrapper.Queries;
+using RoutePlannerApi.Domain;
 
-namespace RoutePlanner
+namespace RoutePlannerApi.Visualization
 {
     public class RouteVisualizer
     {
-        public void VisualizeRoutes(List<Route> routes, List<Customer> allCustomers)
+        public void VisualizeRoutes(List<List<Customer>> routes, List<Customer> allCustomers)
         {
             var getStartProcessQuery = new GetStartProcessQuery();
             var getProcessStartInfoQuery = new GetProcessStartInfoQuery();
@@ -27,7 +28,7 @@ namespace RoutePlanner
 
             File.WriteAllBytes("out.png", output);
         }
-        private string GetGraphString(List<Route> routes, List<Customer> allCustomers)
+        private string GetGraphString(List<List<Customer>> routes, List<Customer> allCustomers)
         {
             var graphString = new StringBuilder("digraph {\nnode [style=filled]\n");
             var colors = GetColorsStrings(routes.Count);
@@ -38,7 +39,7 @@ namespace RoutePlanner
             }
 
             var routeNumber = 0;
-            foreach (var shortRoute in routes.Select(route => route.GetRoute()))
+            foreach (var shortRoute in routes)
             {
                 for (var i = 0; i < shortRoute.Count - 1; i++)
                 {

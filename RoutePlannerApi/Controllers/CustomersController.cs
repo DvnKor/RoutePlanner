@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
-using RoutePlanner;
-using RoutePlanner.Repositories;
+using RoutePlannerApi.Domain;
 using RoutePlannerApi.Models;
+using RoutePlannerApi.Repositories;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -17,10 +18,12 @@ namespace RoutePlannerApi.Controllers
     public class CustomersController : ControllerBase
     {
         private readonly CustomerRepository _customersRepository;
+        private readonly IMapper _mapper;
 
-        public CustomersController(CustomerRepository customersRepository, )
+        public CustomersController(CustomerRepository customersRepository, IMapper mapper)
         {
             _customersRepository = customersRepository;
+            _mapper = mapper;
         }
 
         // GET: api/<CustomersController>

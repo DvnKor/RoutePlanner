@@ -1,4 +1,4 @@
-﻿namespace RoutePlanner
+﻿namespace RoutePlannerApi.Domain
 {
     public class Manager
     {

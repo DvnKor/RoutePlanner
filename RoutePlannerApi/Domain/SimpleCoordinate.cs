@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace RoutePlanner
+namespace RoutePlannerApi.Domain
 {
     public class SimpleCoordinate : ICoordinate
     {

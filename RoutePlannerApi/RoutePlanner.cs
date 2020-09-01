@@ -1,12 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using RoutePlanner.Repositories;
+using RoutePlannerApi.Domain;
+using RoutePlannerApi.Repositories;
+using RoutePlannerApi.Visualization;
 
-namespace RoutePlanner
+namespace RoutePlannerApi
 {
     public class RoutePlanner
     {
+        private readonly RouteVisualizer _routeVisualizer;
+        private readonly ManagerRepository _managerRepository;
+        private readonly CustomerRepository _customerRepository;
         private readonly ManagerRepository managerRepository = new ManagerRepository();
         private readonly CustomerRepository customerRepository = new CustomerRepository();
 
@@ -20,23 +25,36 @@ namespace RoutePlanner
         private const int DefaultWorkDayDurtaion = 60 * 8;
         private const int MaxRouteLength = DefaultWorkDayDurtaion / MaxGenerationsCount;
 
-        public List<Route> GetAllCurrentRoutes()
+        private Dictionary<int, List<Customer>> currentRoutes = null;
+
+        public RoutePlanner(RouteVisualizer routeVisualizer, ManagerRepository managerRepository,
+            CustomerRepository customerRepository)
         {
-            var result = new List<Route>();
+            _routeVisualizer = routeVisualizer;
+            _managerRepository = managerRepository;
+            _customerRepository = customerRepository;
+        }
+
+        public Dictionary<int, List<Customer>> GetAllCurrentRoutes()
+        {
+            if (currentRoutes != null)
+                return currentRoutes;
+            currentRoutes = new Dictionary<int, List<Customer>>();
             var customers = customerRepository.GetAllCustomers();
-            var managers = managerRepository.GetAllManagers(5);
+            var managers = managerRepository.GetAllManagers();
             foreach (var manager in managers)
             {
                 var population = CreateInitialPopulation(customers, manager);
-                for (int i = 0; i < MaxGenerationsCount; i++)
+                for (var i = 0; i < MaxGenerationsCount; i++)
                 {
                     population = GetNextGeneration(population);
                 }
 
-                result.Add(population[^1]);
+                currentRoutes[manager.Id] = population[^1].GetRoute();
             }
 
-            return result;
+            _routeVisualizer.VisualizeRoutes(currentRoutes.Values.ToList(), customers);
+            return currentRoutes;
         }
 
 

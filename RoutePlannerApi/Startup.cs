@@ -10,6 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using RoutePlannerApi.Repositories;
+using RoutePlannerApi.Visualization;
 
 namespace RoutePlannerApi
 {
@@ -34,6 +36,13 @@ namespace RoutePlannerApi
             services.AddRazorPages();
             if (env.IsDevelopment())
                 mvc.AddRazorRuntimeCompilation();
+            
+            services.AddScoped<CustomerRepository>();
+            services.AddScoped<ManagerRepository>();
+            services.AddScoped<RouteVisualizer>();
+            services.AddScoped<RoutePlanner>();
+            services.AddScoped<RoutesRepository>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -53,7 +62,7 @@ namespace RoutePlannerApi
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapControllerRoute("default", "{controller=Photo}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute("default", "{controller}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
         }

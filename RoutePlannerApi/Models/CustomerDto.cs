@@ -1,6 +1,4 @@
-﻿using RoutePlanner;
-
-namespace RoutePlannerApi.Models
+﻿namespace RoutePlannerApi.Models
 {
     public class CustomerDto
     {

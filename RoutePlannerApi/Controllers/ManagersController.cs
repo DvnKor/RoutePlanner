@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using RoutePlannerApi.Domain;
+using RoutePlannerApi.Repositories;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -9,31 +11,21 @@ namespace RoutePlannerApi.Controllers
     [ApiController]
     public class ManagersController : ControllerBase
     {
+        private readonly ManagerRepository _managerRepository;
+
+        public ManagersController(ManagerRepository managerRepository)
+        {
+            _managerRepository = managerRepository;
+        }
+
         // GET: api/<ManagersController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<Manager> Get()
         {
-            return new string[] { "value1", "value2" };
+            return _managerRepository.GetAllManagers();
         }
 
-        // GET api/<ManagersController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
 
-        // POST api/<ManagersController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/<ManagersController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
 
         // DELETE api/<ManagersController>/5
         [HttpDelete("{id}")]

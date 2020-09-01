@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using RoutePlannerApi.Domain;
+using RoutePlannerApi.Repositories;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -12,36 +11,25 @@ namespace RoutePlannerApi.Controllers
     [ApiController]
     public class RoutesController : ControllerBase
     {
+        private RoutesRepository _routesRepository;
+
+        public RoutesController(RoutesRepository routesRepository)
+        {
+            _routesRepository = routesRepository;
+        }
+
         // GET: api/<RoutesController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public Dictionary<int, List<Customer>> GetAllRoutes()
         {
-            return new string[] { "value1", "value2" };
+            return _routesRepository.GetAllRoutes();
         }
 
         // GET api/<RoutesController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("{managerId}")]
+        public List<Customer> GetManagerRoute(int managerId)
         {
-            return "value";
-        }
-
-        // POST api/<RoutesController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/<RoutesController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<RoutesController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            return _routesRepository.GetManagerRoute(managerId);
         }
     }
 }
