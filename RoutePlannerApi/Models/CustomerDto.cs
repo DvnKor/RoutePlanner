@@ -2,9 +2,8 @@
 {
     public class CustomerDto
     {
-        public double Longitude;
-        public double Latitude;
-        public string Address;
-        public readonly int MeetingDuration;
+        public int Id { get; set; }
+        public CoordinateDto Coordinate { get; set; }
+        public int MeetingDuration { get; set; }
     }
 }

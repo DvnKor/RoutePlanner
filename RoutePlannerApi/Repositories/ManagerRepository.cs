@@ -11,7 +11,7 @@ namespace RoutePlannerApi.Repositories
         private Manager GetRandomManager()
         {
             currentManagerId++;
-            return new Manager(new SimpleCoordinate(), new SimpleCoordinate(), currentManagerId, 8 * 60);
+            return new Manager(new Coordinate(), new Coordinate(), currentManagerId, 8 * 60);
         }
 
         public List<Manager> GetAllManagers()

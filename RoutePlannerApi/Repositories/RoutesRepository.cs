@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using RoutePlannerApi.Domain;
-using RoutePlannerApi.Visualization;
 
 namespace RoutePlannerApi.Repositories
 {

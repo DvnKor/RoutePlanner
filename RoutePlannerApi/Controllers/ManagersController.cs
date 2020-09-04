@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using RoutePlannerApi.Domain;
+using RoutePlannerApi.Models;
 using RoutePlannerApi.Repositories;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -12,17 +15,20 @@ namespace RoutePlannerApi.Controllers
     public class ManagersController : ControllerBase
     {
         private readonly ManagerRepository _managerRepository;
+        private readonly IMapper _mapper;
 
-        public ManagersController(ManagerRepository managerRepository)
+        public ManagersController(ManagerRepository managerRepository, IMapper mapper)
         {
             _managerRepository = managerRepository;
+            _mapper = mapper;
         }
 
         // GET: api/<ManagersController>
         [HttpGet]
-        public IEnumerable<Manager> Get()
+        public IEnumerable<ManagerDto> Get()
         {
-            return _managerRepository.GetAllManagers();
+            var managers = _managerRepository.GetAllManagers();
+            return managers.Select(manager => _mapper.Map<Manager, ManagerDto>(manager));
         }
 
 

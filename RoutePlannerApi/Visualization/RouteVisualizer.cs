@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Text;
 using GraphVizWrapper;
 using GraphVizWrapper.Commands;
@@ -34,7 +33,7 @@ namespace RoutePlannerApi.Visualization
             var colors = GetColorsStrings(routes.Count);
             foreach (var customer in allCustomers)
             {
-                var position = GetPosition((SimpleCoordinate) customer.Coordinate);
+                var position = GetPosition((Coordinate) customer.Coordinate);
                 graphString.Append($"{customer.Id} [pos = \"{position.X},{position.Y}!\"];\n");
             }
 
@@ -74,9 +73,9 @@ namespace RoutePlannerApi.Visualization
             return result;
         }
 
-        private Point GetPosition(SimpleCoordinate coordinate)
+        private Point GetPosition(Coordinate coordinate)
         {
-            return new Point(coordinate.X * 10, coordinate.Y * 10);
+            return new Point(coordinate.Latitude * 10, coordinate.Longitude * 10);
         }
 
         private Color ColorFromHsv(double hue, double saturation, double value)

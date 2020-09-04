@@ -11,7 +11,7 @@ namespace RoutePlannerApi.Repositories
         private Customer GetRandomCustomer()
         {
             currentCustomerId++;
-            return new Customer(currentCustomerId, new SimpleCoordinate(), 60);
+            return new Customer(currentCustomerId, new Coordinate(), 60);
         }
 
         public List<Customer> GetAllCustomers()

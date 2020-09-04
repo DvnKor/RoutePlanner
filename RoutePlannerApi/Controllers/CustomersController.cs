@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
 using RoutePlannerApi.Domain;
 using RoutePlannerApi.Models;
 using RoutePlannerApi.Repositories;
@@ -28,9 +25,10 @@ namespace RoutePlannerApi.Controllers
 
         // GET: api/<CustomersController>
         [HttpGet]
-        public IEnumerable<Customer> Get()
+        public IEnumerable<CustomerDto> GetAllCustomers()
         {
-            return _customersRepository.GetAllCustomers();
+            var customers = _customersRepository.GetAllCustomers();
+            return customers.Select(customer => _mapper.Map<Customer, CustomerDto>(customer));
         }
 
         // POST api/<CustomersController>
