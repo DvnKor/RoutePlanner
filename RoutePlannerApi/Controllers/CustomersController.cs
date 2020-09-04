@@ -23,7 +23,10 @@ namespace RoutePlannerApi.Controllers
             _mapper = mapper;
         }
 
-        // GET: api/<CustomersController>
+       /// <summary>
+       /// Получение всех покупателей
+       /// </summary>
+       /// <returns></returns>
         [HttpGet]
         public IEnumerable<CustomerDto> GetAllCustomers()
         {

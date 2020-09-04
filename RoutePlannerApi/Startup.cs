@@ -73,15 +73,21 @@ namespace RoutePlannerApi
             }
 
             app.UseHttpsRedirection();
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "RoutePlanner API V1");
+            });
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapControllerRoute("default", "{controller}/{action=Index}/{id?}");
+               // endpoints.MapControllerRoute("default", "{controller}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
         }

@@ -23,7 +23,10 @@ namespace RoutePlannerApi.Controllers
             _mapper = mapper;
         }
 
-        // GET: api/<RoutesController>
+        /// <summary>
+        /// Получение всех актуальных путей менеджеров
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IEnumerable<RouteDto> GetAllRoutes()
         {
@@ -38,7 +41,11 @@ namespace RoutePlannerApi.Controllers
             return allRoutesDto;
         }
 
-        // GET api/<RoutesController>/5
+        /// <summary>
+        /// Получение пути менеджера с id = managerId
+        /// </summary>
+        /// <param name="managerId"></param>
+        /// <returns></returns>
         [HttpGet("{managerId}")]
         public List<Customer> GetManagerRoute(int managerId)
         {

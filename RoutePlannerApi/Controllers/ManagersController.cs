@@ -23,7 +23,10 @@ namespace RoutePlannerApi.Controllers
             _mapper = mapper;
         }
 
-        // GET: api/<ManagersController>
+        /// <summary>
+        /// Получение всех менеджеров
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IEnumerable<ManagerDto> Get()
         {
@@ -32,11 +35,5 @@ namespace RoutePlannerApi.Controllers
         }
 
 
-
-        // DELETE api/<ManagersController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }
