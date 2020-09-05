@@ -8,13 +8,14 @@ namespace RoutePlannerApi.Domain
         private const int CustomerVisitedReward = 500;
         private const int RouteStartSameAsPreferredReward = 200;
         private const int RouteFinishSameAsPreferredReward = 200;
-        private const int PreferredManagerReward = 200;
 
         public Manager Manager { get; }
 
         public List<Customer> Customers;
 
         private List<Customer> route = null;
+
+        private int _fitness;
 
         private List<Tuple<int, int>> meetingTimes = new List<Tuple<int, int>>();
 
@@ -36,7 +37,9 @@ namespace RoutePlannerApi.Domain
 
         public int GetFitness()
         {
-            var fitness = 0;
+            if (route != null)
+                return _fitness;
+            _fitness = 0;
             var currentWorkTimeMinutes = 0;
 
             route = new List<Customer>();
@@ -56,7 +59,7 @@ namespace RoutePlannerApi.Domain
                     route.Add(customer);
 
                     if (Manager.PreferredStart.GetTravelTime(customer.Coordinate) < TimeSpan.FromMinutes(10))
-                        fitness += RouteStartSameAsPreferredReward;
+                        _fitness += RouteStartSameAsPreferredReward;
                 
                     isFirstVisited = true;
 
@@ -65,27 +68,27 @@ namespace RoutePlannerApi.Domain
                 }
 
 
-                var travelTime =  customer.Coordinate.GetTravelTime(prevCustomer.Coordinate).Minutes;
-
-                if (currentWorkTimeMinutes + travelTime + customer.MeetingDuration < Manager.WorkTimeMinutes)
+                var travelTime =  (int)customer.Coordinate.GetTravelTime(prevCustomer.Coordinate).TotalMinutes;
+                var nextTime = currentWorkTimeMinutes + travelTime + customer.MeetingDuration;
+                if (nextTime < Manager.WorkTimeMinutes)
                 {
                     meetingTimes.Add(new Tuple<int, int>(currentWorkTimeMinutes + travelTime,
                         currentWorkTimeMinutes + travelTime + customer.MeetingDuration));
-                    currentWorkTimeMinutes = currentWorkTimeMinutes + travelTime + customer.MeetingDuration;
+                    currentWorkTimeMinutes = nextTime;
                     route.Add(customer);
-                    fitness += CustomerVisitedReward;
+                    _fitness += CustomerVisitedReward;
                     prevCustomer = customer;
                 }
                 else
                 {
                     if (Manager.PreferredFinish.GetTravelTime(prevCustomer.Coordinate) < TimeSpan.FromMinutes(10))
-                        fitness += RouteFinishSameAsPreferredReward;
-                    return fitness;
+                        _fitness += RouteFinishSameAsPreferredReward;
+                    return _fitness;
                 }
 
             }
 
-            return fitness;
+            return _fitness;
         }
     }
 }

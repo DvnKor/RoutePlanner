@@ -12,18 +12,16 @@ namespace RoutePlannerApi
         private readonly RouteVisualizer _routeVisualizer;
         private readonly ManagerRepository _managerRepository;
         private readonly CustomerRepository _customerRepository;
-        private readonly ManagerRepository managerRepository = new ManagerRepository();
-        private readonly CustomerRepository customerRepository = new CustomerRepository();
 
         private readonly Random random = new Random();
         private const int PopulationSize = 20;
         private const int EliteSize = 4;
         private const double MutationRate = 0.01;
-        private const int MaxGenerationsCount = 2000;
+        private const int MaxGenerationsCount = 10000;
 
         private const int MaxMeetingDuration = 60;
-        private const int DefaultWorkDayDurtaion = 60 * 8;
-        private const int MaxRouteLength = DefaultWorkDayDurtaion / MaxGenerationsCount;
+        private const int DefaultWorkDayDuration = 60 * 8;
+        private const int MaxRouteLength = DefaultWorkDayDuration /  MaxMeetingDuration;
 
         private Dictionary<int, List<Customer>> currentRoutes = null;
 
@@ -40,8 +38,8 @@ namespace RoutePlannerApi
             if (currentRoutes != null)
                 return currentRoutes;
             currentRoutes = new Dictionary<int, List<Customer>>();
-            var customers = customerRepository.GetAllCustomers();
-            var managers = managerRepository.GetAllManagers();
+            var customers = _customerRepository.GetAllCustomers();
+            var managers = _managerRepository.GetAllManagers();
             foreach (var manager in managers)
             {
                 var population = CreateInitialPopulation(customers, manager);
@@ -50,7 +48,12 @@ namespace RoutePlannerApi
                     population = GetNextGeneration(population);
                 }
 
-                currentRoutes[manager.Id] = population[^1].GetRoute();
+                var bestRoute = population[0].GetRoute();
+                foreach (var customer in bestRoute)
+                {
+                    customer.IsVisited = true;
+                }
+                currentRoutes[manager.Id] = bestRoute;
             }
 
             _routeVisualizer.VisualizeRoutes(currentRoutes.Values.ToList(), customers);
@@ -61,7 +64,7 @@ namespace RoutePlannerApi
         private List<Route> GetNextGeneration(List<Route> currentGeneration)
         {
             currentGeneration.Sort((first, second) =>
-                first.GetFitness() - second.GetFitness()); //todo сортировка по возрастанию
+                second.GetFitness() - first.GetFitness());
             var selected = GetSelectionResults(currentGeneration);
             var nextGeneration = BreedPopulation(selected);
             foreach (var route in nextGeneration)
@@ -74,9 +77,9 @@ namespace RoutePlannerApi
 
         private void Mutate(Route route)
         {
-            if (!(random.NextDouble() < MutationRate)) return;
-            var firstIndex = random.Next(0, route.Customers.Count);
-            var secondIndex = random.Next(0, route.Customers.Count);
+            if (random.NextDouble() > MutationRate) return;
+            var firstIndex = random.Next(0, MaxRouteLength);
+            var secondIndex = random.Next(0, MaxRouteLength);
 
             var t = route.Customers[firstIndex];
             route.Customers[firstIndex] = route.Customers[secondIndex];
@@ -98,8 +101,8 @@ namespace RoutePlannerApi
         {
             var result = new List<Customer>();
 
-            var geneA = (int) Math.Round(random.NextDouble() * MaxRouteLength);
-            var geneB = (int) Math.Round(random.NextDouble() * MaxRouteLength);
+            var geneA = random.Next(0, MaxRouteLength);
+            var geneB = random.Next(0, MaxRouteLength);
 
             var startGene = Math.Min(geneA, geneB);
             var endGene = Math.Max(geneA, geneB);
@@ -109,7 +112,9 @@ namespace RoutePlannerApi
                 result.Add(route1.Customers[i]);
             }
 
-            foreach (var customer in route2.Customers.Where(customer => !result.Contains(customer)))
+            var otherCustomers = route2.Customers.Where(customer => !result.Contains(customer)).ToList();
+
+            foreach (var customer in otherCustomers)
             {
                 result.Add(customer);
             }
@@ -128,18 +133,23 @@ namespace RoutePlannerApi
 
             for (var i = EliteSize; i < rankedRoutes.Count; i++)
             {
-                if (random.NextDouble() * 100 <= routeSelectionPercentage[i])
+                var pick = random.NextDouble() * 100;
+                for (var j = 0; j < routeSelectionPercentage.Count; j++)
                 {
-                    result.Add(rankedRoutes[i]);
+                    if (pick <= routeSelectionPercentage[j])
+                    {
+                        result.Add(rankedRoutes[j]);
+                        break;
+                    }
                 }
             }
 
             return result;
         }
 
-        private List<int> GetRoutesSelectionPercentage(List<Route> rankedRoutes)
+        private List<double> GetRoutesSelectionPercentage(List<Route> rankedRoutes)
         {
-            var result = new List<int>();
+            var result = new List<double>();
             var sum = 0;
             foreach (var route in rankedRoutes)
             {

@@ -22,7 +22,7 @@ namespace RoutePlannerApi.Domain
         }
         public TimeSpan GetTravelTime(Coordinate otherCoordinate)
         {
-            return TimeSpan.FromMinutes(Math.Abs(Latitude - otherCoordinate.Latitude) + Math.Abs(Longitude - otherCoordinate.Longitude));
+            return TimeSpan.FromMinutes((Math.Abs(Latitude - otherCoordinate.Latitude) + Math.Abs(Longitude - otherCoordinate.Longitude)) * 2);
         }
 
         public override string ToString()
