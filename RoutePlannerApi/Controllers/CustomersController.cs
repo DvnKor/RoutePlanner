@@ -24,7 +24,7 @@ namespace RoutePlannerApi.Controllers
         }
 
        /// <summary>
-       /// Получение всех покупателей
+       /// Получение всех клиентов
        /// </summary>
        /// <returns></returns>
         [HttpGet]
@@ -34,22 +34,25 @@ namespace RoutePlannerApi.Controllers
             return customers.Select(customer => _mapper.Map<Customer, CustomerDto>(customer));
         }
 
-        // POST api/<CustomersController>
+       /// <summary>
+       /// Дообавление нового клиента
+       /// </summary>
+       /// <param name="customer"></param>
         [HttpPost]
         public void Post([FromBody] CustomerDto customer)
         {
+            _customersRepository.AddCustomer(_mapper.Map<CustomerDto, Customer>(customer));
         }
 
-        // PUT api/<CustomersController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
 
-        // DELETE api/<CustomersController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        /// <summary>
+        /// Удаление клиента по customerId
+        /// </summary>
+        /// <param name="customerId"></param>
+        [HttpDelete("{customerId}")]
+        public void Delete(int customerId)
         {
+            _customersRepository.DeleteCustomer(customerId);
         }
     }
 }

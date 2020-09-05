@@ -12,8 +12,8 @@ namespace RoutePlannerApi
         private readonly RouteVisualizer _routeVisualizer;
         private readonly ManagerRepository _managerRepository;
         private readonly CustomerRepository _customerRepository;
+        private readonly Random _random = new Random();
 
-        private readonly Random random = new Random();
         private const int PopulationSize = 20;
         private const int EliteSize = 4;
         private const double MutationRate = 0.01;
@@ -77,9 +77,9 @@ namespace RoutePlannerApi
 
         private void Mutate(Route route)
         {
-            if (random.NextDouble() > MutationRate) return;
-            var firstIndex = random.Next(0, MaxRouteLength);
-            var secondIndex = random.Next(0, MaxRouteLength);
+            if (_random.NextDouble() > MutationRate) return;
+            var firstIndex = _random.Next(0, MaxRouteLength);
+            var secondIndex = _random.Next(0, MaxRouteLength);
 
             var t = route.Customers[firstIndex];
             route.Customers[firstIndex] = route.Customers[secondIndex];
@@ -101,8 +101,8 @@ namespace RoutePlannerApi
         {
             var result = new List<Customer>();
 
-            var geneA = random.Next(0, MaxRouteLength);
-            var geneB = random.Next(0, MaxRouteLength);
+            var geneA = _random.Next(0, MaxRouteLength);
+            var geneB = _random.Next(0, MaxRouteLength);
 
             var startGene = Math.Min(geneA, geneB);
             var endGene = Math.Max(geneA, geneB);
@@ -133,7 +133,7 @@ namespace RoutePlannerApi
 
             for (var i = EliteSize; i < rankedRoutes.Count; i++)
             {
-                var pick = random.NextDouble() * 100;
+                var pick = _random.NextDouble() * 100;
                 for (var j = 0; j < routeSelectionPercentage.Count; j++)
                 {
                     if (pick <= routeSelectionPercentage[j])

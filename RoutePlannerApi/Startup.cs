@@ -37,17 +37,18 @@ namespace RoutePlannerApi
             if (env.IsDevelopment())
                 mvc.AddRazorRuntimeCompilation();
 
-            services.AddScoped<CustomerRepository>();
-            services.AddScoped<ManagerRepository>();
-            services.AddScoped<RouteVisualizer>();
-            services.AddScoped<RoutePlanner>();
-            services.AddScoped<RoutesRepository>();
+            services.AddSingleton<CustomerRepository>();
+            services.AddSingleton<ManagerRepository>();
+            services.AddSingleton<RouteVisualizer>();
+            services.AddSingleton<RoutePlanner>();
+            services.AddSingleton<RoutesRepository>();
 
             var mappingConfig = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<Customer, CustomerDto>();
                 cfg.CreateMap<CustomerDto, Customer>();
                 cfg.CreateMap<Coordinate, CoordinateDto>();
+                cfg.CreateMap<CoordinateDto, Coordinate>();
                 cfg.CreateMap<Manager, ManagerDto>();
             });
 

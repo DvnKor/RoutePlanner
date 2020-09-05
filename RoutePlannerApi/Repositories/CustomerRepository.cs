@@ -5,18 +5,39 @@ namespace RoutePlannerApi.Repositories
 {
     public class CustomerRepository
     {
-        private int currentCustomerId = 0;
-        private List<Customer> customers = null;
+        private int _currentCustomerId;
+        private readonly List<Customer> _customers;
+
+        public CustomerRepository()
+        {
+            _customers = GetRandomCustomers(50);
+        }
+        public List<Customer> GetAllCustomers()
+        {
+            return _customers;
+        }
+
+        public void AddCustomer(Customer customer)
+        {
+            _currentCustomerId++;
+            var newCustomer = new Customer(_currentCustomerId, customer.Coordinate, customer.MeetingDuration);
+            _customers.Add(newCustomer);
+        }
+
+        public void DeleteCustomer(int customerId)
+        {
+            _customers.Remove(FindCustomerById(customerId));
+        }
+
+        public Customer FindCustomerById(int customerId)
+        {
+            return _customers.Find(c => c.Id == customerId);
+        }
 
         private Customer GetRandomCustomer()
         {
-            currentCustomerId++;
-            return new Customer(currentCustomerId, new Coordinate(), 60);
-        }
-
-        public List<Customer> GetAllCustomers()
-        {
-            return customers ??= GetRandomCustomers(50);
+            _currentCustomerId++;
+            return new Customer(_currentCustomerId, new Coordinate(), 60);
         }
 
         private List<Customer> GetRandomCustomers(int count)
