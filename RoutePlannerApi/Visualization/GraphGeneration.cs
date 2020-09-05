@@ -14,38 +14,38 @@ namespace RoutePlannerApi.Visualization
     {
         private const string ProcessFolder = "GraphViz";
         private const string ConfigFile = "config6";
-        private readonly IGetStartProcessQuery startProcessQuery;
-        private readonly IGetProcessStartInfoQuery getProcessStartInfoQuery;
-        private readonly IRegisterLayoutPluginCommand registerLayoutPlugincommand;
-        private Enums.RenderingEngine renderingEngine;
-        private string graphvizPath;
+        private readonly IGetStartProcessQuery _startProcessQuery;
+        private readonly IGetProcessStartInfoQuery _getProcessStartInfoQuery;
+        private readonly IRegisterLayoutPluginCommand _registerLayoutPlugincommand;
+        private Enums.RenderingEngine _renderingEngine;
+        private string _graphvizPath;
 
         public GraphGeneration(
           IGetStartProcessQuery startProcessQuery,
           IGetProcessStartInfoQuery getProcessStartInfoQuery,
           IRegisterLayoutPluginCommand registerLayoutPlugincommand)
         {
-            this.startProcessQuery = startProcessQuery;
-            this.getProcessStartInfoQuery = getProcessStartInfoQuery;
-            this.registerLayoutPlugincommand = registerLayoutPlugincommand;
-            this.graphvizPath = ConfigurationManager.AppSettings["graphVizLocation"];
+            this._startProcessQuery = startProcessQuery;
+            this._getProcessStartInfoQuery = getProcessStartInfoQuery;
+            this._registerLayoutPlugincommand = registerLayoutPlugincommand;
+            this._graphvizPath = ConfigurationManager.AppSettings["graphVizLocation"];
         }
 
         public string GraphvizPath
         {
             get
             {
-                return this.graphvizPath ?? GraphGeneration.AssemblyDirectory + "/GraphViz";
+                return this._graphvizPath ?? GraphGeneration.AssemblyDirectory + "/GraphViz";
             }
             set
             {
                 if (value != null && value.Trim().Length > 0)
                 {
                     var str = value.Replace("\\", "/");
-                    this.graphvizPath = str.EndsWith("/") ? str.Substring(0, str.LastIndexOf('/')) : str;
+                    this._graphvizPath = str.EndsWith("/") ? str.Substring(0, str.LastIndexOf('/')) : str;
                 }
                 else
-                    this.graphvizPath = (string)null;
+                    this._graphvizPath = (string)null;
             }
         }
 
@@ -53,11 +53,11 @@ namespace RoutePlannerApi.Visualization
         {
             get
             {
-                return this.renderingEngine;
+                return this._renderingEngine;
             }
             set
             {
-                this.renderingEngine = value;
+                this._renderingEngine = value;
             }
         }
 
@@ -90,15 +90,15 @@ namespace RoutePlannerApi.Visualization
         {
             get
             {
-                return this.GraphvizPath + "/" + this.GetRenderingEngine(this.renderingEngine) + ".exe";
+                return this.GraphvizPath + "/" + this.GetRenderingEngine(this._renderingEngine) + ".exe";
             }
         }
 
         public byte[] GenerateGraph(string dotFile, Enums.GraphReturnType returnType)
         {
             if (!this.ConfigExists)
-                this.registerLayoutPlugincommand.Invoke(this.FilePath, this.RenderingEngine);
-            using (var process = this.startProcessQuery.Invoke(this.GetProcessStartInfo(this.GetReturnType(returnType))))
+                this._registerLayoutPlugincommand.Invoke(this.FilePath, this.RenderingEngine);
+            using (var process = this._startProcessQuery.Invoke(this.GetProcessStartInfo(this.GetReturnType(returnType))))
             {
                 process.BeginErrorReadLine();
                 using (var standardInput = process.StandardInput)
@@ -110,7 +110,7 @@ namespace RoutePlannerApi.Visualization
 
         private ProcessStartInfo GetProcessStartInfo(string returnType)
         {
-            return this.getProcessStartInfoQuery.Invoke((IProcessStartInfoWrapper)new ProcessStartInfoWrapper
+            return this._getProcessStartInfoQuery.Invoke((IProcessStartInfoWrapper)new ProcessStartInfoWrapper
             {
                 FileName = this.FilePath,
                 RedirectStandardInput = true,

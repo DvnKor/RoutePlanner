@@ -23,7 +23,7 @@ namespace RoutePlannerApi
         private const int DefaultWorkDayDuration = 60 * 8;
         private const int MaxRouteLength = DefaultWorkDayDuration /  MaxMeetingDuration;
 
-        private Dictionary<int, List<Customer>> currentRoutes = null;
+        private Dictionary<int, List<Customer>> _currentRoutes;
 
         public RoutePlanner(RouteVisualizer routeVisualizer, ManagerRepository managerRepository,
             CustomerRepository customerRepository)
@@ -35,9 +35,9 @@ namespace RoutePlannerApi
 
         public Dictionary<int, List<Customer>> GetAllCurrentRoutes()
         {
-            if (currentRoutes != null)
-                return currentRoutes;
-            currentRoutes = new Dictionary<int, List<Customer>>();
+            if (_currentRoutes != null)
+                return _currentRoutes;
+            _currentRoutes = new Dictionary<int, List<Customer>>();
             var customers = _customerRepository.GetAllCustomers();
             var managers = _managerRepository.GetAllManagers();
             foreach (var manager in managers)
@@ -53,11 +53,11 @@ namespace RoutePlannerApi
                 {
                     customer.IsVisited = true;
                 }
-                currentRoutes[manager.Id] = bestRoute;
+                _currentRoutes[manager.Id] = bestRoute;
             }
 
-            _routeVisualizer.VisualizeRoutes(currentRoutes.Values.ToList(), customers);
-            return currentRoutes;
+            _routeVisualizer.VisualizeRoutes(_currentRoutes.Values.ToList(), customers);
+            return _currentRoutes;
         }
 
 

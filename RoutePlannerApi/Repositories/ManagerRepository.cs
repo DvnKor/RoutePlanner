@@ -5,18 +5,18 @@ namespace RoutePlannerApi.Repositories
 {
     public class ManagerRepository
     {
-        private int currentManagerId = 0;
-        private List<Manager> managers;
+        private int _currentManagerId = 0;
+        private List<Manager> _managers;
 
         private Manager GetRandomManager()
         {
-            currentManagerId++;
-            return new Manager(new Coordinate(), new Coordinate(), currentManagerId, 8 * 60);
+            _currentManagerId++;
+            return new Manager(new Coordinate(), new Coordinate(), _currentManagerId, 8 * 60);
         }
 
         public List<Manager> GetAllManagers()
         {
-            return managers ??= GetRandomManagers(5);
+            return _managers ??= GetRandomManagers(5);
         }
 
         public List<Manager> GetRandomManagers(int count)

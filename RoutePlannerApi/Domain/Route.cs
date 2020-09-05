@@ -13,11 +13,11 @@ namespace RoutePlannerApi.Domain
 
         public List<Customer> Customers;
 
-        private List<Customer> route = null;
+        private List<Customer> _route = null;
 
         private int _fitness;
 
-        private List<Tuple<int, int>> meetingTimes = new List<Tuple<int, int>>();
+        private List<Tuple<int, int>> _meetingTimes = new List<Tuple<int, int>>();
 
         public Route(List<Customer> customers, Manager manager)
         {
@@ -27,22 +27,22 @@ namespace RoutePlannerApi.Domain
 
         public List<Customer> GetRoute()
         {
-            if (route == null)
+            if (_route == null)
             {
                 GetFitness();
             }
 
-            return route;
+            return _route;
         }
 
         public int GetFitness()
         {
-            if (route != null)
+            if (_route != null)
                 return _fitness;
             _fitness = 0;
             var currentWorkTimeMinutes = 0;
 
-            route = new List<Customer>();
+            _route = new List<Customer>();
             var isFirstVisited = false;
 
             var prevCustomer = Customers[0];
@@ -53,10 +53,10 @@ namespace RoutePlannerApi.Domain
                     continue;
                 if (!isFirstVisited)
                 {
-                    meetingTimes.Add(new Tuple<int, int>(currentWorkTimeMinutes,
+                    _meetingTimes.Add(new Tuple<int, int>(currentWorkTimeMinutes,
                         currentWorkTimeMinutes + customer.MeetingDuration));
                     currentWorkTimeMinutes += customer.MeetingDuration;
-                    route.Add(customer);
+                    _route.Add(customer);
 
                     if (Manager.PreferredStart.GetTravelTime(customer.Coordinate) < TimeSpan.FromMinutes(10))
                         _fitness += RouteStartSameAsPreferredReward;
@@ -72,10 +72,10 @@ namespace RoutePlannerApi.Domain
                 var nextTime = currentWorkTimeMinutes + travelTime + customer.MeetingDuration;
                 if (nextTime < Manager.WorkTimeMinutes)
                 {
-                    meetingTimes.Add(new Tuple<int, int>(currentWorkTimeMinutes + travelTime,
+                    _meetingTimes.Add(new Tuple<int, int>(currentWorkTimeMinutes + travelTime,
                         currentWorkTimeMinutes + travelTime + customer.MeetingDuration));
                     currentWorkTimeMinutes = nextTime;
-                    route.Add(customer);
+                    _route.Add(customer);
                     _fitness += CustomerVisitedReward;
                     prevCustomer = customer;
                 }

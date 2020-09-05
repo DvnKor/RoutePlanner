@@ -6,9 +6,9 @@ namespace RoutePlannerApi.Domain
     {
         public readonly int Latitude;
         public readonly int Longitude;
-        private const int maxX = 100;
-        private const int maxY = 100;
-        private static readonly Random random = new Random(5);
+        private const int MaxX = 100;
+        private const int MaxY = 100;
+        private static readonly Random Random = new Random(5);
         public Coordinate(int latitude, int longitude)
         {
             Latitude = latitude;
@@ -17,8 +17,8 @@ namespace RoutePlannerApi.Domain
 
         public Coordinate()
         {
-            Latitude = random.Next(0, maxX);
-            Longitude = random.Next(0, maxY);
+            Latitude = Random.Next(0, MaxX);
+            Longitude = Random.Next(0, MaxY);
         }
         public TimeSpan GetTravelTime(Coordinate otherCoordinate)
         {
