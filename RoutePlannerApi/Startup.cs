@@ -17,16 +17,16 @@ namespace RoutePlannerApi
 {
     public class Startup
     {
-        private IWebHostEnvironment env { get; }
-        private IConfiguration configuration { get; }
+        private IWebHostEnvironment Env { get; }
+
+        private IConfiguration Configuration { get; }
 
         public Startup(IWebHostEnvironment env, IConfiguration configuration)
         {
-            this.env = env;
-            this.configuration = configuration;
+            Env = env;
+            Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -34,7 +34,7 @@ namespace RoutePlannerApi
             services.AddControllers();
             var mvc = services.AddControllersWithViews();
             services.AddRazorPages();
-            if (env.IsDevelopment())
+            if (Env.IsDevelopment())
                 mvc.AddRazorRuntimeCompilation();
 
             services.AddSingleton<CustomerRepository>();

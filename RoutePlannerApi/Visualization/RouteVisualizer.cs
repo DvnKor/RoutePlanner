@@ -27,13 +27,13 @@ namespace RoutePlannerApi.Visualization
 
             File.WriteAllBytes("out.png", output);
         }
-        private string GetGraphString(List<List<Customer>> routes, List<Customer> allCustomers)
+        private string GetGraphString(IReadOnlyCollection<List<Customer>> routes, List<Customer> allCustomers)
         {
             var graphString = new StringBuilder("digraph {\nnode [style=filled]\n");
             var colors = GetColorsStrings(routes.Count);
             foreach (var customer in allCustomers)
             {
-                var position = GetPosition((Coordinate) customer.Coordinate);
+                var position = GetPosition(customer.Coordinate);
                 graphString.Append($"{customer.Id} [pos = \"{position.X},{position.Y}!\"];\n");
             }
 
@@ -73,12 +73,12 @@ namespace RoutePlannerApi.Visualization
             return result;
         }
 
-        private Point GetPosition(Coordinate coordinate)
+        private static Point GetPosition(Coordinate coordinate)
         {
             return new Point(coordinate.Latitude * 10, coordinate.Longitude * 10);
         }
 
-        private Color ColorFromHsv(double hue, double saturation, double value)
+        public Color ColorFromHsv(double hue, double saturation, double value)
         {
             var hi = Convert.ToInt32(Math.Floor(hue / 60)) % 6;
             var f = hue / 60 - Math.Floor(hue / 60);
