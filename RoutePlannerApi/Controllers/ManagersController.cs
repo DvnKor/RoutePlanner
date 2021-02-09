@@ -33,7 +33,5 @@ namespace RoutePlannerApi.Controllers
             var managers = _managerRepository.GetAllManagers();
             return managers.Select(manager => _mapper.Map<Manager, ManagerDto>(manager));
         }
-
-
     }
 }

@@ -13,6 +13,7 @@ using RoutePlannerApi.Domain;
 using RoutePlannerApi.Models;
 using RoutePlannerApi.Repositories;
 using RoutePlannerApi.Visualization;
+using Storages;
 
 namespace RoutePlannerApi
 {
@@ -45,6 +46,7 @@ namespace RoutePlannerApi
             services.AddSingleton<RoutesRepository>();
 
             services.AddSingleton<IRoutePlannerContextFactory, RoutePlannerContextFactory>();
+            services.AddScoped<IOrganizationStorage, OrganizationStorage>();
 
             var mappingConfig = new MapperConfiguration(cfg =>
             {
