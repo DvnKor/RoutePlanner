@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Reflection;
 using AutoMapper;
+using Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -42,6 +43,8 @@ namespace RoutePlannerApi
             services.AddSingleton<RouteVisualizer>();
             services.AddSingleton<RoutePlanner>();
             services.AddSingleton<RoutesRepository>();
+
+            services.AddSingleton<IRoutePlannerContextFactory, RoutePlannerContextFactory>();
 
             var mappingConfig = new MapperConfiguration(cfg =>
             {
