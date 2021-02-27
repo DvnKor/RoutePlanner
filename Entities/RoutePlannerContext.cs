@@ -1,5 +1,5 @@
 ﻿using System;
-using Entities.Contracts;
+using Entities.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Entities

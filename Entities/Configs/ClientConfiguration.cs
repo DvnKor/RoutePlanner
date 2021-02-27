@@ -1,5 +1,5 @@
 using Entities.Common;
-using Entities.Contracts;
+using Entities.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

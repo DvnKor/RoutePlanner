@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Entities.Contracts
+namespace Entities.Models
 {
     [Table("Organization")]
     public class Organization

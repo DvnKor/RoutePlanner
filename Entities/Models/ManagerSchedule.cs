@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using Infrastructure.Common;
 
-namespace Entities.Contracts
+namespace Entities.Models
 {
     [Table("ManagerSchedule")]
     public class ManagerSchedule
