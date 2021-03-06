@@ -92,8 +92,7 @@ namespace RoutePlannerApi
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
-               // endpoints.MapControllerRoute("default", "{controller}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute("default", "{controller}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
         }

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RoutePlannerApi.Domain;
 using RoutePlannerApi.Models;
@@ -12,6 +13,7 @@ namespace RoutePlannerApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CustomersController : ControllerBase
     {
         private readonly CustomerRepository _customersRepository;

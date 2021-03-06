@@ -131,7 +131,7 @@ namespace RoutePlannerApi.Areas.Identity.Pages.Account.Manage
         private string FormatKey(string unformattedKey)
         {
             var result = new StringBuilder();
-            var currentPosition = 0;
+            int currentPosition = 0;
             while (currentPosition + 4 < unformattedKey.Length)
             {
                 result.Append(unformattedKey.Substring(currentPosition, 4)).Append(" ");

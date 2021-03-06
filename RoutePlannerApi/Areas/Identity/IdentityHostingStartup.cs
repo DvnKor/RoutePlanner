@@ -17,7 +17,7 @@ namespace RoutePlannerApi.Areas.Identity
                     options.UseSqlite(
                         context.Configuration.GetConnectionString("UsersDbContextConnection")));
 
-                services.AddDefaultIdentity<RoutePlannerAppUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                services.AddDefaultIdentity<RoutePlannerAppUser>(options => options.SignIn.RequireConfirmedAccount = false)
                     .AddEntityFrameworkStores<UsersDbContext>();
             });
         }

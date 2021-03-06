@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Storages;
 
@@ -7,6 +8,7 @@ namespace RoutePlannerApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class OrganizationController : ControllerBase
     {
         private readonly IOrganizationStorage _organizationStorage;
