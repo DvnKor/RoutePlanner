@@ -77,7 +77,7 @@ namespace RoutePlannerApi
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseStaticFiles();
             app.UseHttpsRedirection();
             app.UseSwagger();
             app.UseSwaggerUI(c =>
@@ -89,7 +89,6 @@ namespace RoutePlannerApi
 
             app.UseAuthentication();
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute("default", "{controller}/{action=Index}/{id?}");
