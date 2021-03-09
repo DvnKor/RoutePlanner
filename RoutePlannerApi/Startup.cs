@@ -3,15 +3,19 @@ using System.IO;
 using System.Reflection;
 using AutoMapper;
 using Entities;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using RoutePlannerApi.Areas.Identity.Data;
 using RoutePlannerApi.Domain;
 using RoutePlannerApi.Models;
 using RoutePlannerApi.Repositories;
+using RoutePlannerApi.Services;
 using RoutePlannerApi.Visualization;
 using Storages;
 
@@ -28,16 +32,37 @@ namespace RoutePlannerApi
             Env = env;
             Configuration = configuration;
         }
-
-
+        
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
-            var mvc = services.AddControllersWithViews();
+            services.AddDatabaseDeveloperPageExceptionFilter();
+            
+            services.AddDbContext<UsersDbContext>(options =>
+                options.UseSqlite(Configuration.GetConnectionString("UsersDbContextConnection")));
+
+            services.AddDefaultIdentity<RoutePlannerAppUser>(options =>
+                {
+                    options.User.AllowedUserNameCharacters +=
+                        " абвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ";
+                    options.SignIn.RequireConfirmedAccount = false;
+                    options.SignIn.RequireConfirmedEmail = false;
+                })
+                .AddEntityFrameworkStores<UsersDbContext>();
+
+            services.AddIdentityServer()
+                .AddApiAuthorization<RoutePlannerAppUser, UsersDbContext>()
+                .AddClients(Configuration)
+                .AddProfileService<ProfileService>();
+            
+            services.AddAuthentication()
+                .AddIdentityServerJwt();    
+                
+            //services.AddControllers();
+            services.AddControllersWithViews();
             services.AddRazorPages();
-            if (Env.IsDevelopment())
-                mvc.AddRazorRuntimeCompilation();
+            // if (Env.IsDevelopment())
+            //     mvc.AddRazorRuntimeCompilation();
 
             services.AddSingleton<CustomerRepository>();
             services.AddSingleton<ManagerRepository>();
@@ -77,8 +102,14 @@ namespace RoutePlannerApi
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseExceptionHandler("/Error");
+            }
+            
             app.UseStaticFiles();
-            app.UseHttpsRedirection();
+            
+            //app.UseHttpsRedirection();
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
@@ -86,9 +117,11 @@ namespace RoutePlannerApi
             });
 
             app.UseRouting();
-
+            
             app.UseAuthentication();
+            app.UseIdentityServer();
             app.UseAuthorization();
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute("default", "{controller}/{action=Index}/{id?}");

@@ -14,7 +14,7 @@ namespace RoutePlannerApi.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class ManagersController : ControllerBase
+    public class ManagersController : Controller
     {
         private readonly ManagerRepository _managerRepository;
         private readonly IMapper _mapper;

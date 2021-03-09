@@ -13,12 +13,7 @@ namespace RoutePlannerApi.Areas.Identity
         public void Configure(IWebHostBuilder builder)
         {
             builder.ConfigureServices((context, services) => {
-                services.AddDbContext<UsersDbContext>(options =>
-                    options.UseSqlite(
-                        context.Configuration.GetConnectionString("UsersDbContextConnection")));
-
-                services.AddDefaultIdentity<RoutePlannerAppUser>(options => options.SignIn.RequireConfirmedAccount = false)
-                    .AddEntityFrameworkStores<UsersDbContext>();
+                
             });
         }
     }

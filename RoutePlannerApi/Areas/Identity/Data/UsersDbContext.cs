@@ -2,17 +2,22 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using IdentityServer4.EntityFramework.Options;
+using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using RoutePlannerApi.Areas.Identity.Data;
 
 namespace RoutePlannerApi.Areas.Identity.Data
 {
-    public class UsersDbContext : IdentityDbContext<RoutePlannerAppUser>
+    public class UsersDbContext : ApiAuthorizationDbContext<RoutePlannerAppUser>
     {
-        public UsersDbContext(DbContextOptions<UsersDbContext> options)
-            : base(options)
+        public UsersDbContext(
+            DbContextOptions options, 
+            IOptions<OperationalStoreOptions> operationalStoreOptions) 
+                : base(options, operationalStoreOptions)
         {
         }
 
