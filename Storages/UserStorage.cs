@@ -37,6 +37,7 @@ namespace Storages
         {
             await using var ctx = _contextFactory.Create();
             ctx.Users.Add(user);
+            await ctx.SaveChangesAsync();
             return user.Id;
         }
     }

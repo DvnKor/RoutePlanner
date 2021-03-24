@@ -9,6 +9,7 @@ namespace Entities
         public RoutePlannerContext(DbContextOptions<RoutePlannerContext> options)
             : base(options)
         {
+            Database.EnsureDeleted();
             Database.EnsureCreated();
         }
         
