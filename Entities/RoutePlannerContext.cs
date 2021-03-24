@@ -21,6 +21,8 @@ namespace Entities
         public DbSet<ManagerSchedule> ManagerSchedules { get; set; }
         
         public DbSet<ClientSchedule> ClientSchedules { get; set; }
+        
+        public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

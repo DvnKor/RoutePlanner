@@ -53,7 +53,7 @@ namespace RoutePlannerApi.Visualization
         {
             get
             {
-                var str = Uri.UnescapeDataString(new UriBuilder(Assembly.GetExecutingAssembly().CodeBase).Path);
+                var str = Uri.UnescapeDataString(new UriBuilder(Assembly.GetExecutingAssembly().Location).Path);
                 return str.Substring(0, str.LastIndexOf('/'));
             }
         }

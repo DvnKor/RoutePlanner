@@ -1,18 +1,20 @@
-using Microsoft.AspNetCore.Authorization;
+using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
+using RoutePlannerApi.Auth;
 
 namespace RoutePlannerApi.Controllers
 {
-    public class User
-    {
-        public string Name { get; set; }
-    }
-    
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class UsersController : Controller
     {
+        private IUserContext _userContext;
+
+        public UsersController(IUserContext userContext)
+        {
+            _userContext = userContext;
+        }
+
         /// <summary>
         /// Получение текущего пользователя
         /// </summary>
@@ -20,7 +22,7 @@ namespace RoutePlannerApi.Controllers
         [HttpGet("current")]
         public User GetCurrent()
         {
-            return new User {Name = "kek"};
+            return _userContext.User;
         }
     }
 }

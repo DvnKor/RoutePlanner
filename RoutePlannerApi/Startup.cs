@@ -3,19 +3,16 @@ using System.IO;
 using System.Reflection;
 using AutoMapper;
 using Entities;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using RoutePlannerApi.Areas.Identity.Data;
+using RoutePlannerApi.Auth;
 using RoutePlannerApi.Domain;
 using RoutePlannerApi.Models;
 using RoutePlannerApi.Repositories;
-using RoutePlannerApi.Services;
 using RoutePlannerApi.Visualization;
 using Storages;
 
@@ -37,32 +34,8 @@ namespace RoutePlannerApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDatabaseDeveloperPageExceptionFilter();
-            
-            services.AddDbContext<UsersDbContext>(options =>
-                options.UseSqlite(Configuration.GetConnectionString("UsersDbContextConnection")));
 
-            services.AddDefaultIdentity<RoutePlannerAppUser>(options =>
-                {
-                    options.User.AllowedUserNameCharacters +=
-                        " абвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ";
-                    options.SignIn.RequireConfirmedAccount = false;
-                    options.SignIn.RequireConfirmedEmail = false;
-                })
-                .AddEntityFrameworkStores<UsersDbContext>();
-
-            services.AddIdentityServer()
-                .AddApiAuthorization<RoutePlannerAppUser, UsersDbContext>()
-                .AddClients(Configuration)
-                .AddProfileService<ProfileService>();
-            
-            services.AddAuthentication()
-                .AddIdentityServerJwt();    
-                
-            //services.AddControllers();
-            services.AddControllersWithViews();
-            services.AddRazorPages();
-            // if (Env.IsDevelopment())
-            //     mvc.AddRazorRuntimeCompilation();
+            services.AddControllers();
 
             services.AddSingleton<CustomerRepository>();
             services.AddSingleton<ManagerRepository>();
@@ -70,8 +43,12 @@ namespace RoutePlannerApi
             services.AddSingleton<RoutePlanner>();
             services.AddSingleton<RoutesRepository>();
 
+            // storages
             services.AddSingleton<IRoutePlannerContextFactory, RoutePlannerContextFactory>();
             services.AddScoped<IOrganizationStorage, OrganizationStorage>();
+            services.AddScoped<IUserStorage, UserStorage>();
+            
+            services.AddSingleton<IUserContext, UserContext>();
 
             var mappingConfig = new MapperConfiguration(cfg =>
             {
@@ -81,8 +58,7 @@ namespace RoutePlannerApi
                 cfg.CreateMap<CoordinateDto, Coordinate>();
                 cfg.CreateMap<Manager, ManagerDto>();
             });
-
-
+            
             var mapper = mappingConfig.CreateMapper();
             services.AddSingleton(mapper);
 
@@ -102,14 +78,8 @@ namespace RoutePlannerApi
             {
                 app.UseDeveloperExceptionPage();
             }
-            else
-            {
-                app.UseExceptionHandler("/Error");
-            }
             
-            app.UseStaticFiles();
-            
-            //app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
@@ -118,14 +88,11 @@ namespace RoutePlannerApi
 
             app.UseRouting();
             
-            app.UseAuthentication();
-            app.UseIdentityServer();
-            app.UseAuthorization();
+            app.UseMiddleware<AuthMiddleware>();
             
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute("default", "{controller}/{action=Index}/{id?}");
-                endpoints.MapRazorPages();
             });
         }
     }
