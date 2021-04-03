@@ -7,9 +7,5 @@ namespace Entities.Models
         public int UserId { get; set; }
         
         public Right Right { get; set; }
-        
-        public User User { get; set; }
-        
-        public RightInfo RightInfo { get; set; }
     }
 }

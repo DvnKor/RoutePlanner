@@ -14,6 +14,11 @@ namespace Entities.Configs
 
             builder.Property(rightInfo => rightInfo.Right)
                 .HasConversion(new EnumToNumberConverter<Right, int>());
+            
+            builder
+                .HasMany(rightInfo => rightInfo.UserRights)
+                .WithOne()
+                .HasForeignKey(userRight => userRight.Right);
         }
     }
 }
