@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Entities.Models
 {
     public class User
@@ -9,5 +11,7 @@ namespace Entities.Models
         public string Email { get; set; }
         
         public string Picture { get; set; }
+        
+        public List<RightInfo> Rights { get; set; }
     }
 }

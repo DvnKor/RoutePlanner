@@ -45,7 +45,6 @@ namespace RoutePlannerApi
 
             // storages
             services.AddSingleton<IRoutePlannerContextFactory, RoutePlannerContextFactory>();
-            services.AddScoped<IOrganizationStorage, OrganizationStorage>();
             services.AddScoped<IUserStorage, UserStorage>();
             
             services.AddSingleton<IUserContext, UserContext>();

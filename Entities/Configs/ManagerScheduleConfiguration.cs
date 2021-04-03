@@ -11,14 +11,11 @@ namespace Entities.Configs
     {
         public void Configure(EntityTypeBuilder<ManagerSchedule> builder)
         {
-            builder.HasKey(managerSchedule => new {managerSchedule.ManagerId, managerSchedule.Day});
-
-            builder.Property(managerSchedule => managerSchedule.Day)
-                .HasConversion(new EnumToNumberConverter<DayOfWeek, int>());
+            builder.Property(managerSchedule => managerSchedule.StartCoordinate)
+                .HasSimpleJsonConversion();
             
-            builder.Property(managerSchedule => managerSchedule.StartCoordinate).HasSimpleJsonConversion();
-            
-            builder.Property(managerSchedule => managerSchedule.EndCoordinate).HasSimpleJsonConversion();
+            builder.Property(managerSchedule => managerSchedule.EndCoordinate)
+                .HasSimpleJsonConversion();
         }
     }
 }

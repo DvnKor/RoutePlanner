@@ -9,7 +9,8 @@ namespace Entities.Configs
     {
         public void Configure(EntityTypeBuilder<Client> builder)
         {
-            builder.Property(client => client.Coordinate).HasSimpleJsonConversion();
+            builder.Property(client => client.Coordinate)
+                .HasSimpleJsonConversion();
         }
     }
 }

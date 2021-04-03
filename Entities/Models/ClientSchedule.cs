@@ -6,9 +6,9 @@ namespace Entities.Models
     [Table("ClientSchedule")]
     public class ClientSchedule
     {
-        public int ClientId { get; set; }
+        public int Id { get; set; }
         
-        public DayOfWeek Day { get; set; }
+        public int ClientId { get; set; }
 
         public DateTime StartTime { get; set; }
         

@@ -24,13 +24,17 @@ namespace Storages
         public async Task<User> GetById(int id)
         {
             await using var ctx = _contextFactory.Create();
-            return await ctx.Users.FindAsync(id);
+            return await ctx.Users
+                .Include(user => user.Rights)
+                .FirstOrDefaultAsync(user => user.Id == id);
         }
 
         public async Task<User> GetByEmail(string email)
         {
             await using var ctx = _contextFactory.Create();
-            return await ctx.Users.FirstOrDefaultAsync(user => user.Email == email);
+            return await ctx.Users
+                .Include(user => user.Rights)
+                .FirstOrDefaultAsync(user => user.Email == email);
         }
 
         public async Task<int> AddUser(User user)

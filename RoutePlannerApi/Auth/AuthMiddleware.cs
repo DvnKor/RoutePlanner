@@ -33,7 +33,7 @@ namespace RoutePlannerApi.Auth
                 await context.Response.WriteAsync("Token is invalid");
                 return;
             }
-
+            
             var userStorage = context.RequestServices.GetRequiredService<IUserStorage>();
             var currentUser = await userStorage.GetByEmail(validPayload.Email);
             if (currentUser == null)
