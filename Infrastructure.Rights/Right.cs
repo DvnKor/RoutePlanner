@@ -1,4 +1,4 @@
-namespace Infrastructure.Common
+namespace Infrastructure.Rights
 {
     public enum Right
     {

@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Common", "In
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Storages", "Storages\Storages.csproj", "{33DC1A51-D5FB-416C-93AA-AC1AD40B9313}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Rights", "Infrastructure.Rights\Infrastructure.Rights.csproj", "{6BE7F20A-C6D1-410A-BC67-0B0319955B95}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,10 @@ Global
 		{33DC1A51-D5FB-416C-93AA-AC1AD40B9313}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{33DC1A51-D5FB-416C-93AA-AC1AD40B9313}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{33DC1A51-D5FB-416C-93AA-AC1AD40B9313}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6BE7F20A-C6D1-410A-BC67-0B0319955B95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BE7F20A-C6D1-410A-BC67-0B0319955B95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BE7F20A-C6D1-410A-BC67-0B0319955B95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BE7F20A-C6D1-410A-BC67-0B0319955B95}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -44,5 +50,6 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{4929C586-956A-4C70-A0A8-58C10020F83E} = {C1EA7CEF-0E46-459D-9FC1-26B4161C848E}
+		{6BE7F20A-C6D1-410A-BC67-0B0319955B95} = {C1EA7CEF-0E46-459D-9FC1-26B4161C848E}
 	EndGlobalSection
 EndGlobal

@@ -1,8 +1,10 @@
 using System.Collections.Generic;
-using Infrastructure.Common;
+using System.ComponentModel.DataAnnotations.Schema;
+using Infrastructure.Rights;
 
 namespace Entities.Models
 {
+    [Table("RightInfo")]
     public class RightInfo
     {
         public Right Right { get; set; }
@@ -16,8 +18,8 @@ namespace Entities.Models
     {
         public static RightInfo[] DefaultRights = new[]
         {
-            new RightInfo() {Right = Right.Manager, Description = "Менеджер банка"},
-            new RightInfo() {Right = Right.Admin, Description = "Админ"}
+            new RightInfo() {Right = Right.Manager, Description = "Менеджер"},
+            new RightInfo() {Right = Right.Admin, Description = "Администратор"}
         };
     }
 }

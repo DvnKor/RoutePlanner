@@ -1,5 +1,5 @@
 using Entities.Models;
-using Infrastructure.Common;
+using Infrastructure.Rights;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
