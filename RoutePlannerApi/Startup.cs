@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
 using RoutePlannerApi.Auth;
 using RoutePlannerApi.Domain;
 using RoutePlannerApi.Models;
@@ -35,7 +36,9 @@ namespace RoutePlannerApi
         {
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddControllers();
+            services.AddControllers()
+                .AddNewtonsoftJson(options => 
+                    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 
             services.AddSingleton<CustomerRepository>();
             services.AddSingleton<ManagerRepository>();
