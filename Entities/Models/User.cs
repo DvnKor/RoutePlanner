@@ -12,6 +12,6 @@ namespace Entities.Models
         
         public string Picture { get; set; }
         
-        public List<RightInfo> Rights { get; set; }
+        public List<UserRight> Rights { get; set; }
     }
 }

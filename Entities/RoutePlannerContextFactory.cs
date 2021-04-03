@@ -1,4 +1,5 @@
 using System.Configuration;
+using Entities.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Entities
@@ -20,6 +21,12 @@ namespace Entities
                 .Options;
         }
 
-        public RoutePlannerContext Create() => new RoutePlannerContext(Options);
+        public RoutePlannerContext Create()
+        {
+            var ctx = new RoutePlannerContext(Options);
+            // ctx.RightInfos.AddRange(RightInfoHelpers.DefaultRights);
+            // ctx.SaveChanges();
+            return ctx;
+        }
     }
 }
