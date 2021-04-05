@@ -8,11 +8,11 @@ using Microsoft.Extensions.DependencyInjection;
 namespace RoutePlannerApi.Auth
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
-    public class RightsAuthorize : Attribute, IAsyncAuthorizationFilter
+    public class RightsAuthorizeAttribute : Attribute, IAsyncAuthorizationFilter
     {
         private readonly Right[] _rights;
 
-        public RightsAuthorize(params Right[] rights)
+        public RightsAuthorizeAttribute(params Right[] rights)
         {
             _rights = rights;
         }
@@ -20,7 +20,7 @@ namespace RoutePlannerApi.Auth
         public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
         {
             var userContext = context.HttpContext.RequestServices.GetService<IUserContext>();
-            if (userContext?.User?.Rights == null)
+            if (userContext?.User?.UserRights == null)
             {
                 throw new InvalidOperationException("Пользователь не авторизован");
             }

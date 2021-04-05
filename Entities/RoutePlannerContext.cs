@@ -14,8 +14,6 @@ namespace Entities
 
         public DbSet<Client> Clients { get; set; }
         
-        public DbSet<Manager> Managers { get; set; }
-        
         public DbSet<ManagerSchedule> ManagerSchedules { get; set; }
         
         public DbSet<ClientSchedule> ClientSchedules { get; set; }

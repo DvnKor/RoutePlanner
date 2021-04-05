@@ -1,4 +1,4 @@
-using Entities.Models;
+using Contracts;
 using Microsoft.AspNetCore.Mvc;
 using RoutePlannerApi.Auth;
 
@@ -8,7 +8,7 @@ namespace RoutePlannerApi.Controllers
     [ApiController]
     public class UsersController : Controller
     {
-        private IUserContext _userContext;
+        private readonly IUserContext _userContext;
 
         public UsersController(IUserContext userContext)
         {
@@ -20,9 +20,9 @@ namespace RoutePlannerApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("current")]
-        public User GetCurrent()
+        public UserDto GetCurrent()
         {
-            return _userContext.User;
+            return _userContext.User.ToDto();
         }
     }
 }

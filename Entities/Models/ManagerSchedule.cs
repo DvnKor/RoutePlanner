@@ -9,7 +9,7 @@ namespace Entities.Models
     {
         public int Id { get; set; } 
             
-        public int ManagerId { get; set; }
+        public int UserId { get; set; }
 
         public DateTime StartTime { get; set; }
         
@@ -19,6 +19,6 @@ namespace Entities.Models
         
         public Coordinate EndCoordinate { get; set; }
         
-        public Manager Manager { get; set; }
+        public User User { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using Contracts;
 using Infrastructure.Rights;
 
 namespace Entities.Models
@@ -16,13 +17,33 @@ namespace Entities.Models
         
         public string Picture { get; set; }
         
-        public List<UserRight> Rights { get; set; }
+        public string MobilePhone { get; set; }
+        
+        public string Telegram { get; set; }
+        
+        public List<UserRight> UserRights { get; set; }
+        
+        public List<ManagerSchedule> ManagerSchedules { get; set; }
 
         public bool HasRights(Right[] rights)
         {
-            if (Rights == null) return false;
-            var userRightsValues = Rights.Select(userRight => userRight.Right);
+            if (UserRights == null) return false;
+            var userRightsValues = UserRights.Select(userRight => userRight.Right);
             return !rights.Except(userRightsValues).Any();
+        }
+
+        public UserDto ToDto()
+        {
+            return new UserDto
+            {
+                Id = Id,
+                Name = Name,
+                Email = Email,
+                Picture = Picture,
+                MobilePhone = MobilePhone,
+                Telegram = Telegram,
+                Rights = UserRights.Select(userRight => userRight.Right).ToArray()
+            };
         }
     }
 }

@@ -25,7 +25,7 @@ namespace Storages
         {
             await using var ctx = _contextFactory.Create();
             return await ctx.Users
-                .Include(user => user.Rights)
+                .Include(user => user.UserRights)
                 .FirstOrDefaultAsync(user => user.Id == id);
         }
 
@@ -33,7 +33,7 @@ namespace Storages
         {
             await using var ctx = _contextFactory.Create();
             return await ctx.Users
-                .Include(user => user.Rights)
+                .Include(user => user.UserRights)
                 .FirstOrDefaultAsync(user => user.Email == email);
         }
 
