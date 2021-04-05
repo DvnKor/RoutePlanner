@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Contracts;
 using Entities;
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ namespace Storages
         Task<User> GetById(int id);
         Task<User> GetByEmail(string email);
         Task<int> AddUser(User user);
+        Task<User> UpdateUser(int userId, UpdateUserDto updateUserDto);
     }
 
     public class UserStorage : IUserStorage
@@ -43,6 +45,25 @@ namespace Storages
             ctx.Users.Add(user);
             await ctx.SaveChangesAsync();
             return user.Id;
+        }
+
+        public async Task<User> UpdateUser(int userId, UpdateUserDto updateUserDto)
+        {
+            await using var ctx = _contextFactory.Create();
+            var userToUpdate = await ctx.Users
+                .Include(user => user.UserRights)
+                .FirstOrDefaultAsync(user => user.Id == userId);
+            if (userToUpdate == null)
+            {
+                return null;
+            }
+
+            userToUpdate.MobilePhone = updateUserDto.MobilePhone;
+            userToUpdate.Telegram = updateUserDto.Telegram;
+            ctx.Users.Update(userToUpdate);
+            await ctx.SaveChangesAsync();
+            
+            return userToUpdate;
         }
     }
 }
