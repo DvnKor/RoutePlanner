@@ -42,7 +42,7 @@ namespace Entities.Models
                 Picture = Picture,
                 MobilePhone = MobilePhone,
                 Telegram = Telegram,
-                Rights = UserRights.Select(userRight => userRight.Right).ToArray()
+                Rights = UserRights?.Select(userRight => userRight.Right).ToArray()
             };
         }
     }

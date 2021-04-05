@@ -16,6 +16,8 @@ namespace Contracts
         
         public string Telegram { get; set; }
         
+        public string Position { get; set; }
+        
         public Right[] Rights { get; set; }
     }
 }

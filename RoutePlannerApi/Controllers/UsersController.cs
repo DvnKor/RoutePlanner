@@ -1,6 +1,9 @@
+using System.Linq;
+using System.Threading.Tasks;
 using Contracts;
 using Microsoft.AspNetCore.Mvc;
 using RoutePlannerApi.Auth;
+using Storages;
 
 namespace RoutePlannerApi.Controllers
 {
@@ -9,10 +12,12 @@ namespace RoutePlannerApi.Controllers
     public class UsersController : Controller
     {
         private readonly IUserContext _userContext;
+        private readonly IRightInfoStorage _rightInfoStorage;
 
-        public UsersController(IUserContext userContext)
+        public UsersController(IUserContext userContext, IRightInfoStorage rightInfoStorage)
         {
             _userContext = userContext;
+            _rightInfoStorage = rightInfoStorage;
         }
 
         /// <summary>
@@ -20,9 +25,12 @@ namespace RoutePlannerApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("current")]
-        public UserDto GetCurrent()
+        public async Task<UserDto> GetCurrent()
         {
-            return _userContext.User.ToDto();
+            var userDto = _userContext.User.ToDto();
+            var maxRight = userDto.Rights.Max();
+            userDto.Position = await _rightInfoStorage.GetDescription(maxRight);
+            return userDto;
         }
     }
 }
