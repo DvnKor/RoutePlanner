@@ -11,6 +11,14 @@ namespace Entities.Models
         
         public string Name { get; set; }
         
+        public string Email { get; set; }
+        
+        public string Picture { get; set; }
+        
+        public string MobilePhone { get; set; }
+        
+        public string Telegram { get; set; }
+        
         public Coordinate Coordinate { get; set; }
         
         public List<ClientSchedule> ClientSchedules { get; set; }
