@@ -32,8 +32,11 @@ namespace RoutePlannerApi.Controllers
         public async Task<UserDto> GetCurrent()
         {
             var userDto = _userContext.User.ToDto();
-            var maxRight = userDto.Rights.Max();
-            userDto.Position = await _rightInfoStorage.GetDescription(maxRight);
+            if (userDto?.Rights?.Length > 0)
+            {
+                var maxRight = userDto?.Rights?.Max();
+                userDto.Position = await _rightInfoStorage.GetDescription(maxRight.Value);
+            }
             return userDto;
         }
 
