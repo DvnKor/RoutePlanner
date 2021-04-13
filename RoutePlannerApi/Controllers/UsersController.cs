@@ -29,7 +29,7 @@ namespace RoutePlannerApi.Controllers
         /// Получение текущего пользователя
         /// </summary>
         [HttpGet("current")]
-        public async Task<UserDto> GetCurrent()
+        public async Task<ActionResult> GetCurrent()
         {
             var userDto = _userContext.User.ToDto();
             if (userDto?.Rights?.Length > 0)
@@ -37,17 +37,23 @@ namespace RoutePlannerApi.Controllers
                 var maxRight = userDto?.Rights?.Max();
                 userDto.Position = await _rightInfoStorage.GetDescription(maxRight.Value);
             }
-            return userDto;
+            return Ok(userDto);
         }
 
         /// <summary>
         /// Обновление пользователя по id
         /// </summary>
-        [HttpPut("{userId:int}")]
-        public async Task<UserDto> UpdateUser(int userId, UpdateUserDto updateUserDto)
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult> UpdateUser(int id, [FromBody] UpdateUserDto updateUserDto)
         {
-            var user = await _userStorage.UpdateUser(userId, updateUserDto);
-            return user?.ToDto();
+            var user = await _userStorage.UpdateUser(id, updateUserDto);
+            var userDto = user?.ToDto();
+            if (userDto == null)
+            {
+                return NotFound(id);
+            }
+
+            return Ok(userDto);
         }
     }
 }
