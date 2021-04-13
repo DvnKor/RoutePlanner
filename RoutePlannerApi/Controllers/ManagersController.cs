@@ -1,18 +1,20 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using Infrastructure.Rights;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RoutePlannerApi.Auth;
 using RoutePlannerApi.Domain;
 using RoutePlannerApi.Models;
 using RoutePlannerApi.Repositories;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace RoutePlannerApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ManagersController : ControllerBase
+    [RightsAuthorize(Right.Manager)]
+    public class ManagersController : Controller
     {
         private readonly ManagerRepository _managerRepository;
         private readonly IMapper _mapper;
@@ -33,7 +35,5 @@ namespace RoutePlannerApi.Controllers
             var managers = _managerRepository.GetAllManagers();
             return managers.Select(manager => _mapper.Map<Manager, ManagerDto>(manager));
         }
-
-
     }
 }

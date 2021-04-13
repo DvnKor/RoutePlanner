@@ -2,46 +2,56 @@ using System;
 using System.IO;
 using System.Reflection;
 using AutoMapper;
+using Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
+using RoutePlannerApi.Auth;
 using RoutePlannerApi.Domain;
 using RoutePlannerApi.Models;
 using RoutePlannerApi.Repositories;
 using RoutePlannerApi.Visualization;
+using Storages;
 
 namespace RoutePlannerApi
 {
     public class Startup
     {
-        private IWebHostEnvironment env { get; }
-        private IConfiguration configuration { get; }
+        private IWebHostEnvironment Env { get; }
+
+        private IConfiguration Configuration { get; }
 
         public Startup(IWebHostEnvironment env, IConfiguration configuration)
         {
-            this.env = env;
-            this.configuration = configuration;
+            Env = env;
+            Configuration = configuration;
         }
-
-        public IConfiguration Configuration { get; }
-
+        
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
-            var mvc = services.AddControllersWithViews();
-            services.AddRazorPages();
-            if (env.IsDevelopment())
-                mvc.AddRazorRuntimeCompilation();
+            services.AddDatabaseDeveloperPageExceptionFilter();
+
+            services.AddControllers()
+                .AddNewtonsoftJson(options => 
+                    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 
             services.AddSingleton<CustomerRepository>();
             services.AddSingleton<ManagerRepository>();
             services.AddSingleton<RouteVisualizer>();
             services.AddSingleton<RoutePlanner>();
             services.AddSingleton<RoutesRepository>();
+
+            // storages
+            services.AddSingleton<IRoutePlannerContextFactory, RoutePlannerContextFactory>();
+            services.AddScoped<IUserStorage, UserStorage>();
+            services.AddScoped<IRightInfoStorage, RightInfoStorage>();
+            
+            services.AddSingleton<IUserContext, UserContext>();
 
             var mappingConfig = new MapperConfiguration(cfg =>
             {
@@ -51,8 +61,7 @@ namespace RoutePlannerApi
                 cfg.CreateMap<CoordinateDto, Coordinate>();
                 cfg.CreateMap<Manager, ManagerDto>();
             });
-
-
+            
             var mapper = mappingConfig.CreateMapper();
             services.AddSingleton(mapper);
 
@@ -72,8 +81,8 @@ namespace RoutePlannerApi
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            app.UseHttpsRedirection();
+            
+            // app.UseHttpsRedirection();
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
@@ -81,15 +90,12 @@ namespace RoutePlannerApi
             });
 
             app.UseRouting();
-
-            app.UseAuthentication();
-            app.UseAuthorization();
-
+            
+            app.UseMiddleware<AuthMiddleware>();
+            
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
-               // endpoints.MapControllerRoute("default", "{controller}/{action=Index}/{id?}");
-                endpoints.MapRazorPages();
+                endpoints.MapControllerRoute("default", "{controller}/{action=Index}/{id?}");
             });
         }
     }

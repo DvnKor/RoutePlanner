@@ -12,107 +12,71 @@ namespace RoutePlannerApi.Visualization
 {
     public class GraphGeneration : IGraphGeneration
     {
-        private const string ProcessFolder = "GraphViz";
-        private const string ConfigFile = "config6";
         private readonly IGetStartProcessQuery _startProcessQuery;
         private readonly IGetProcessStartInfoQuery _getProcessStartInfoQuery;
-        private readonly IRegisterLayoutPluginCommand _registerLayoutPlugincommand;
-        private Enums.RenderingEngine _renderingEngine;
+        private readonly IRegisterLayoutPluginCommand _registerLayoutPluginCommand;
         private string _graphvizPath;
 
         public GraphGeneration(
           IGetStartProcessQuery startProcessQuery,
           IGetProcessStartInfoQuery getProcessStartInfoQuery,
-          IRegisterLayoutPluginCommand registerLayoutPlugincommand)
+          IRegisterLayoutPluginCommand registerLayoutPluginCommand)
         {
-            this._startProcessQuery = startProcessQuery;
-            this._getProcessStartInfoQuery = getProcessStartInfoQuery;
-            this._registerLayoutPlugincommand = registerLayoutPlugincommand;
-            this._graphvizPath = ConfigurationManager.AppSettings["graphVizLocation"];
+            _startProcessQuery = startProcessQuery;
+            _getProcessStartInfoQuery = getProcessStartInfoQuery;
+            _registerLayoutPluginCommand = registerLayoutPluginCommand;
+            _graphvizPath = ConfigurationManager.AppSettings["graphVizLocation"];
         }
 
         public string GraphvizPath
         {
-            get
-            {
-                return this._graphvizPath ?? GraphGeneration.AssemblyDirectory + "/GraphViz";
-            }
+            get => _graphvizPath ?? AssemblyDirectory + "/GraphViz";
             set
             {
                 if (value != null && value.Trim().Length > 0)
                 {
                     var str = value.Replace("\\", "/");
-                    this._graphvizPath = str.EndsWith("/") ? str.Substring(0, str.LastIndexOf('/')) : str;
+                    _graphvizPath = str.EndsWith("/") ? str.Substring(0, str.LastIndexOf('/')) : str;
                 }
                 else
-                    this._graphvizPath = (string)null;
+                    _graphvizPath = null;
             }
         }
 
-        public Enums.RenderingEngine RenderingEngine
-        {
-            get
-            {
-                return this._renderingEngine;
-            }
-            set
-            {
-                this._renderingEngine = value;
-            }
-        }
+        public Enums.RenderingEngine RenderingEngine { get; set; }
 
-        private string ConfigLocation
-        {
-            get
-            {
-                return this.GraphvizPath + "/config6";
-            }
-        }
+        private string ConfigLocation => GraphvizPath + "/config6";
 
-        private bool ConfigExists
-        {
-            get
-            {
-                return File.Exists(this.ConfigLocation);
-            }
-        }
+        private bool ConfigExists => File.Exists(ConfigLocation);
 
         private static string AssemblyDirectory
         {
             get
             {
-                var str = Uri.UnescapeDataString(new UriBuilder(Assembly.GetExecutingAssembly().CodeBase).Path);
+                var str = Uri.UnescapeDataString(new UriBuilder(Assembly.GetExecutingAssembly().Location).Path);
                 return str.Substring(0, str.LastIndexOf('/'));
             }
         }
 
-        private string FilePath
-        {
-            get
-            {
-                return this.GraphvizPath + "/" + this.GetRenderingEngine(this._renderingEngine) + ".exe";
-            }
-        }
+        private string FilePath => GraphvizPath + "/" + GetRenderingEngine(RenderingEngine) + ".exe";
 
         public byte[] GenerateGraph(string dotFile, Enums.GraphReturnType returnType)
         {
-            if (!this.ConfigExists)
-                this._registerLayoutPlugincommand.Invoke(this.FilePath, this.RenderingEngine);
-            using (var process = this._startProcessQuery.Invoke(this.GetProcessStartInfo(this.GetReturnType(returnType))))
-            {
-                process.BeginErrorReadLine();
-                using (var standardInput = process.StandardInput)
-                    standardInput.WriteLine(dotFile);
-                using (var standardOutput = process.StandardOutput)
-                    return this.ReadFully(standardOutput.BaseStream);
-            }
+            if (!ConfigExists)
+                _registerLayoutPluginCommand.Invoke(FilePath, RenderingEngine);
+            using var process = _startProcessQuery.Invoke(GetProcessStartInfo(GetReturnType(returnType)));
+            process.BeginErrorReadLine();
+            using (var standardInput = process.StandardInput)
+                standardInput.WriteLine(dotFile);
+            using (var standardOutput = process.StandardOutput)
+                return ReadFully(standardOutput.BaseStream);
         }
 
         private ProcessStartInfo GetProcessStartInfo(string returnType)
         {
-            return this._getProcessStartInfoQuery.Invoke((IProcessStartInfoWrapper)new ProcessStartInfoWrapper
+            return _getProcessStartInfoQuery.Invoke(new ProcessStartInfoWrapper
             {
-                FileName = this.FilePath,
+                FileName = FilePath,
                 RedirectStandardInput = true,
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
@@ -122,16 +86,14 @@ namespace RoutePlannerApi.Visualization
             });
         }
 
-        private byte[] ReadFully(Stream input)
+        private static byte[] ReadFully(Stream input)
         {
-            using (var memoryStream = new MemoryStream())
-            {
-                input.CopyTo((Stream)memoryStream);
-                return memoryStream.ToArray();
-            }
+            using var memoryStream = new MemoryStream();
+            input.CopyTo(memoryStream);
+            return memoryStream.ToArray();
         }
 
-        private string GetReturnType(Enums.GraphReturnType returnType)
+        private static string GetReturnType(Enums.GraphReturnType returnType)
         {
             return new Dictionary<Enums.GraphReturnType, string>
             {
@@ -162,7 +124,7 @@ namespace RoutePlannerApi.Visualization
       }[returnType];
         }
 
-        private string GetRenderingEngine(Enums.RenderingEngine renderingType)
+        private static string GetRenderingEngine(Enums.RenderingEngine renderingType)
         {
             return new Dictionary<Enums.RenderingEngine, string>
             {

@@ -1,17 +1,18 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using Infrastructure.Rights;
 using Microsoft.AspNetCore.Mvc;
+using RoutePlannerApi.Auth;
 using RoutePlannerApi.Domain;
 using RoutePlannerApi.Models;
 using RoutePlannerApi.Repositories;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace RoutePlannerApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [RightsAuthorize(Right.Manager)]
     public class CustomersController : ControllerBase
     {
         private readonly CustomerRepository _customersRepository;
