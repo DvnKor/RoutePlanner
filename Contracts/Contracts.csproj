@@ -5,6 +5,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Infrastructure.Common\Infrastructure.Common.csproj" />
       <ProjectReference Include="..\Infrastructure.Rights\Infrastructure.Rights.csproj" />
     </ItemGroup>
 

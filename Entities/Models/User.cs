@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using Contracts;
+using Infrastructure.Common;
 using Infrastructure.Rights;
 
 namespace Entities.Models
@@ -20,6 +21,8 @@ namespace Entities.Models
         public string MobilePhone { get; set; }
         
         public string Telegram { get; set; }
+        
+        public Coordinate Coordinate { get; set; }
         
         public List<UserRight> UserRights { get; set; }
         
@@ -42,6 +45,7 @@ namespace Entities.Models
                 Picture = Picture,
                 MobilePhone = MobilePhone,
                 Telegram = Telegram,
+                Coordinate = Coordinate,
                 Rights = UserRights?.Select(userRight => userRight.Right).ToArray()
             };
         }

@@ -1,3 +1,4 @@
+using Entities.Common;
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -11,6 +12,10 @@ namespace Entities.Configs
             builder
                 .HasIndex(user => user.Email)
                 .IsUnique();
+            
+            builder
+                .Property(user => user.Coordinate)
+                .HasSimpleJsonConversion();
         }
     }
 }

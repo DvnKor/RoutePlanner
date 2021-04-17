@@ -1,4 +1,5 @@
-﻿using Infrastructure.Rights;
+﻿using Infrastructure.Common;
+using Infrastructure.Rights;
 
 namespace Contracts
 {
@@ -17,6 +18,8 @@ namespace Contracts
         public string Telegram { get; set; }
         
         public string Position { get; set; }
+        
+        public Coordinate Coordinate { get; set; }
         
         public Right[] Rights { get; set; }
     }
