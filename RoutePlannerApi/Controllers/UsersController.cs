@@ -44,11 +44,11 @@ namespace RoutePlannerApi.Controllers
         {
             var user = await _userStorage.UpdateUser(id, updateUserDto);
             var userDto = user?.ToDto();
-            await SetPositionToUserDto(userDto);
             if (userDto == null)
             {
                 return NotFound(id);
             }
+            await SetPositionToUserDto(userDto);
 
             return Ok(userDto);
         }
