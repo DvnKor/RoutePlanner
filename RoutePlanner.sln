@@ -17,6 +17,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Rights", "In
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contracts", "Contracts\Contracts.csproj", "{5DB5E7A0-9563-433D-AE0E-B96268988C04}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GenetiсAlgorithm ", "GenetiсAlgorithm ", "{140E35EC-B17E-4632-989D-D848E442E4DC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneticAlgorithm.Domain", "GeneticAlgorithm.Domain\GeneticAlgorithm.Domain.csproj", "{C9D8D201-6F5A-4645-8BA1-4194E17ED974}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneticAlgorithm.Contracts", "GeneticAlgorithm.Contracts\GeneticAlgorithm.Contracts.csproj", "{4D246586-5801-45EF-8E8F-8D4843E8502B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +53,14 @@ Global
 		{5DB5E7A0-9563-433D-AE0E-B96268988C04}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5DB5E7A0-9563-433D-AE0E-B96268988C04}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5DB5E7A0-9563-433D-AE0E-B96268988C04}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9D8D201-6F5A-4645-8BA1-4194E17ED974}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9D8D201-6F5A-4645-8BA1-4194E17ED974}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9D8D201-6F5A-4645-8BA1-4194E17ED974}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9D8D201-6F5A-4645-8BA1-4194E17ED974}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D246586-5801-45EF-8E8F-8D4843E8502B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D246586-5801-45EF-8E8F-8D4843E8502B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D246586-5801-45EF-8E8F-8D4843E8502B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D246586-5801-45EF-8E8F-8D4843E8502B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -57,5 +71,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{4929C586-956A-4C70-A0A8-58C10020F83E} = {C1EA7CEF-0E46-459D-9FC1-26B4161C848E}
 		{6BE7F20A-C6D1-410A-BC67-0B0319955B95} = {C1EA7CEF-0E46-459D-9FC1-26B4161C848E}
+		{C9D8D201-6F5A-4645-8BA1-4194E17ED974} = {140E35EC-B17E-4632-989D-D848E442E4DC}
+		{4D246586-5801-45EF-8E8F-8D4843E8502B} = {140E35EC-B17E-4632-989D-D848E442E4DC}
 	EndGlobalSection
 EndGlobal

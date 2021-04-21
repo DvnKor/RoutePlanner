@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Entities.Configs
 {
-    public class ClientScheduleConfiguration : IEntityTypeConfiguration<ClientSchedule>
+    public class MeetingConfiguration : IEntityTypeConfiguration<Meeting>
     {
-        public void Configure(EntityTypeBuilder<ClientSchedule> builder)
+        public void Configure(EntityTypeBuilder<Meeting> builder)
         {
         }
     }

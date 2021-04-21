@@ -21,6 +21,6 @@ namespace Entities.Models
         
         public Coordinate Coordinate { get; set; }
         
-        public List<ClientSchedule> ClientSchedules { get; set; }
+        public List<Meeting> Meetings { get; set; }
     }
 }

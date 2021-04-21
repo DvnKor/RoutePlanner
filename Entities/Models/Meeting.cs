@@ -3,8 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entities.Models
 {
-    [Table("ClientSchedule")]
-    public class ClientSchedule
+    [Table("Meeting")]
+    public class Meeting
     {
         public int Id { get; set; }
         
