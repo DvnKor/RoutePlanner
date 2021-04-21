@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Infrastructure.Common
+﻿namespace Infrastructure.Common
 {
     public class Coordinate
     {

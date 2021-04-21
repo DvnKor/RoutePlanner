@@ -60,6 +60,7 @@ namespace Storages
 
             userToUpdate.MobilePhone = updateUserDto.MobilePhone;
             userToUpdate.Telegram = updateUserDto.Telegram;
+            userToUpdate.Coordinate = updateUserDto.Coordinate;
             ctx.Users.Update(userToUpdate);
             await ctx.SaveChangesAsync();
             

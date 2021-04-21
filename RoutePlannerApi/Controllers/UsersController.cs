@@ -32,11 +32,7 @@ namespace RoutePlannerApi.Controllers
         public async Task<ActionResult> GetCurrent()
         {
             var userDto = _userContext.User.ToDto();
-            if (userDto?.Rights?.Length > 0)
-            {
-                var maxRight = userDto?.Rights?.Max();
-                userDto.Position = await _rightInfoStorage.GetDescription(maxRight.Value);
-            }
+            await SetPositionToUserDto(userDto);
             return Ok(userDto);
         }
 
@@ -52,8 +48,18 @@ namespace RoutePlannerApi.Controllers
             {
                 return NotFound(id);
             }
+            await SetPositionToUserDto(userDto);
 
             return Ok(userDto);
+        }
+
+        private async Task SetPositionToUserDto(UserDto userDto)
+        {
+            if (userDto?.Rights?.Length > 0)
+            {
+                var maxRight = userDto?.Rights?.Max();
+                userDto.Position = await _rightInfoStorage.GetDescription(maxRight.Value);
+            }
         }
     }
 }
