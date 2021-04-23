@@ -27,21 +27,20 @@ namespace GeneticAlgorithm.Domain
             //toDo добавить фейковую встречу в конце пути менеджера
             
             var suitableMeetings = new List<Meeting>();
+            var currentCoordinate = managerSchedule.StartCoordinate;
             var currentTime = managerSchedule.StartTime;
             var pathDistance = 0d;
             var waitingTime = new TimeSpan();
             
             //toDo обеспечить возвращение менеджера в нужную точку в конце маршрута
-            for (var index = 0; index < possibleMeetings.Count - 1; index++)
+            foreach (var nextMeeting in possibleMeetings)
             {
-                var currentMeeting = possibleMeetings[index];
-                var nextMeeting = possibleMeetings[index + 1];
-                
                 //toDO остальные проверки
                 if (nextMeeting.EndTime > managerSchedule.EndTime) continue;
-                
+
+                var nextCoordinate = nextMeeting.Client.Coordinate;
                 var (distanceToNext, timeToNext) = _routeStepCache.Get(
-                    (currentMeeting.Client.Coordinate, nextMeeting.Client.Coordinate));
+                    (currentCoordinate, nextCoordinate));
 
                 var arrivalTime = currentTime.AddMinutes(timeToNext);
 
@@ -55,6 +54,7 @@ namespace GeneticAlgorithm.Domain
                 suitableMeetings.Add(nextMeeting);
                 pathDistance += distanceToNext;
                 currentTime = nextMeeting.EndTime;
+                currentCoordinate = nextCoordinate;
             }
 
             var waitingTimeMinutes = waitingTime.TotalMinutes;
