@@ -6,6 +6,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\GeneticAlgorithm.Contracts\GeneticAlgorithm.Contracts.csproj" />
+      <ProjectReference Include="..\Infrastructure.Cache\Infrastructure.Cache.csproj" />
     </ItemGroup>
 
 </Project>

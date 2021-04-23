@@ -1,13 +1,40 @@
+using System;
 using GeneticAlgorithm.Contracts;
+using Infrastructure.Common;
 
 namespace GeneticAlgorithm.Domain
 {
     public class FakeRouteStepCalculator : IRouteStepCalculator
     {
-        public (double distance, double time) CalculateRouteStep()
+        private const double EarthRadius = 6376500.0;
+
+        /// <summary>
+        /// Средняя скорость менеджера в м/c
+        /// </summary>
+        private const double Velocity = 7;
+        
+        public (double distance, double time) CalculateRouteStep(Coordinate from, Coordinate to)
         {
-            // toDo реализовать манхеттенскую метрику, время ???
-            throw new System.NotImplementedException();
+            var distance = GetDistance(from, to);
+
+            var time = distance / Velocity;
+
+            return (distance, time);
+        }
+
+        /// <summary>
+        /// Возвращает расстояние между двумя координатами
+        /// </summary>
+        private static double GetDistance(Coordinate from, Coordinate to)
+        {
+            var d1 = from.Latitude * (Math.PI / 180.0);
+            var num1 = from.Longitude * (Math.PI / 180.0);
+            var d2 = to.Latitude * (Math.PI / 180.0);
+            var num2 = to.Longitude * (Math.PI / 180.0) - num1;
+            var d3 = Math.Pow(Math.Sin((d2 - d1) / 2.0), 2.0) 
+                     + Math.Cos(d1) * Math.Cos(d2) * Math.Pow(Math.Sin(num2 / 2.0), 2.0);
+
+            return EarthRadius * (2.0 * Math.Atan2(Math.Sqrt(d3), Math.Sqrt(1.0 - d3)));
         }
     }
 }

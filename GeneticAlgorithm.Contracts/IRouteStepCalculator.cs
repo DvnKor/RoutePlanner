@@ -1,8 +1,9 @@
+using Infrastructure.Common;
+
 namespace GeneticAlgorithm.Contracts
 {
-    // toDo сделать кэширующую обертку над CalculateNextStep
     public interface IRouteStepCalculator
     {
-        (double distance, double time) CalculateRouteStep();
+        (double distance, double time) CalculateRouteStep(Coordinate from, Coordinate to);
     }
 }
