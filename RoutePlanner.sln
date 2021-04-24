@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneticAlgorithm.Contracts"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Cache", "Infrastructure.Cache\Infrastructure.Cache.csproj", "{6614245D-D753-4836-970F-EE672D61962F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneticAlhorithm.Tests", "GeneticAlhorithm.Tests\GeneticAlhorithm.Tests.csproj", "{1557D643-6ECB-4248-B282-24B7A09BB1FC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,6 +69,10 @@ Global
 		{6614245D-D753-4836-970F-EE672D61962F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6614245D-D753-4836-970F-EE672D61962F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6614245D-D753-4836-970F-EE672D61962F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1557D643-6ECB-4248-B282-24B7A09BB1FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1557D643-6ECB-4248-B282-24B7A09BB1FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1557D643-6ECB-4248-B282-24B7A09BB1FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1557D643-6ECB-4248-B282-24B7A09BB1FC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -80,5 +86,6 @@ Global
 		{C9D8D201-6F5A-4645-8BA1-4194E17ED974} = {140E35EC-B17E-4632-989D-D848E442E4DC}
 		{4D246586-5801-45EF-8E8F-8D4843E8502B} = {140E35EC-B17E-4632-989D-D848E442E4DC}
 		{6614245D-D753-4836-970F-EE672D61962F} = {C1EA7CEF-0E46-459D-9FC1-26B4161C848E}
+		{1557D643-6ECB-4248-B282-24B7A09BB1FC} = {140E35EC-B17E-4632-989D-D848E442E4DC}
 	EndGlobalSection
 EndGlobal
