@@ -16,7 +16,7 @@ namespace GeneticAlgorithm.Domain
             _routeCreator = routeCreator;
         }
         
-        public Genotype[] CreateRankedPopulation(
+        public Genotype[] CreatePopulation(
             List<ManagerSchedule> managerSchedules,
             List<Meeting> meetings, 
             int populationSize)
@@ -27,7 +27,7 @@ namespace GeneticAlgorithm.Domain
                 .ToArray();
         }
 
-        private Genotype CreateGenotype(List<ManagerSchedule> managerSchedules, List<Meeting> meetings)
+        private Genotype CreateGenotype(IEnumerable<ManagerSchedule> managerSchedules, List<Meeting> meetings)
         {
             var routes = managerSchedules
                 .Select(managerSchedule => CreateRoute(managerSchedule, meetings))
