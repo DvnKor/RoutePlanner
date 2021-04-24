@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Entities.Models;
 using GeneticAlgorithm.Contracts;
 using Infrastructure.Cache;
@@ -24,7 +25,14 @@ namespace GeneticAlgorithm.Domain
 
         public Route Create(ManagerSchedule managerSchedule, List<Meeting> possibleMeetings)
         {
-            //toDo добавить фейковую встречу в конце пути менеджера
+            var managerEndFakeMeeting = new Meeting
+            {
+                StartTime = managerSchedule.EndTime,
+                EndTime = managerSchedule.EndTime,
+                Coordinate = managerSchedule.EndCoordinate
+            };
+
+            var allMeetings = possibleMeetings.Concat(new[] {managerEndFakeMeeting});
             
             var suitableMeetings = new List<Meeting>();
             var currentCoordinate = managerSchedule.StartCoordinate;
@@ -32,20 +40,21 @@ namespace GeneticAlgorithm.Domain
             var pathDistance = 0d;
             var waitingTime = new TimeSpan();
             
-            //toDo обеспечить возвращение менеджера в нужную точку в конце маршрута
-            foreach (var nextMeeting in possibleMeetings)
+            foreach (var nextMeeting in allMeetings)
             {
-                //toDO остальные проверки
+                // Менеджер не успвает провести встречу до конца рабочего дня
                 if (nextMeeting.EndTime > managerSchedule.EndTime) continue;
 
-                var nextCoordinate = nextMeeting.Client.Coordinate;
+                var nextCoordinate = nextMeeting.Coordinate;
                 var (distanceToNext, timeToNext) = _routeStepCache.Get(
                     (currentCoordinate, nextCoordinate));
 
                 var arrivalTime = currentTime.AddMinutes(timeToNext);
 
+                // Менеджер не успевает на встречу
                 if (arrivalTime > nextMeeting.StartTime) continue;
                 
+                // Перед встречей остаётся свободное время
                 if (arrivalTime < nextMeeting.StartTime)
                 {
                     waitingTime += nextMeeting.StartTime - arrivalTime;
@@ -58,10 +67,12 @@ namespace GeneticAlgorithm.Domain
             }
 
             var waitingTimeMinutes = waitingTime.TotalMinutes;
+            var routeFinishesAsPreferred = suitableMeetings.Last() == managerEndFakeMeeting;
             var fitness = _fitnessCalculator.Calculate(
                 suitableMeetings.Count,
                 pathDistance, 
-                waitingTimeMinutes);
+                waitingTimeMinutes,
+                routeFinishesAsPreferred);
             
             return new Route
             {

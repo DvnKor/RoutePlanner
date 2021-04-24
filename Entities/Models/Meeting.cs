@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using Infrastructure.Common;
 
 namespace Entities.Models
 {
@@ -13,6 +14,8 @@ namespace Entities.Models
         public DateTime StartTime { get; set; }
         
         public DateTime EndTime { get; set; }
+
+        public Coordinate Coordinate { get; set; }
         
         public Client Client { get; set; }
     }

@@ -12,12 +12,17 @@ namespace GeneticAlgorithm.Domain
         /// Средняя скорость менеджера в м/c
         /// </summary>
         private const double Velocity = 7;
+
+        /// <summary>
+        /// Временной запас в минутах
+        /// </summary>
+        private const double ExtraMinutes = 10; 
         
         public (double distance, double time) CalculateRouteStep(Coordinate from, Coordinate to)
         {
             var distance = GetDistance(from, to);
 
-            var time = distance / Velocity;
+            var time = distance / Velocity + ExtraMinutes;
 
             return (distance, time);
         }

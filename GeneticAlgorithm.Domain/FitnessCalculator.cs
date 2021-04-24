@@ -4,9 +4,24 @@ namespace GeneticAlgorithm.Domain
 {
     public class FitnessCalculator : IFitnessCalculator
     {
-        public double Calculate(int suitableMeetingsCount, double distance, double waitingTime)
+        private const int SuitableMeetingReward = 50;
+        private const int RouteFinishSameAsPreferredReward = 200;
+        
+        public double Calculate(
+            int suitableMeetingsCount,
+            double distance, 
+            double waitingTime,
+            bool routeFinishesAsPreferred)
         {
-            return 50 * suitableMeetingsCount / (distance / 1000 + waitingTime / 5);
+            var numerator = SuitableMeetingReward * suitableMeetingsCount;
+            if (routeFinishesAsPreferred)
+            {
+                numerator += RouteFinishSameAsPreferredReward;
+            }
+
+            var denominator = distance / 1000 + waitingTime / 5;
+            
+            return numerator / denominator;
         }
     }
 }

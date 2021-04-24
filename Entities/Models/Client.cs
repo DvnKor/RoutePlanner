@@ -18,9 +18,7 @@ namespace Entities.Models
         public string MobilePhone { get; set; }
         
         public string Telegram { get; set; }
-        
-        public Coordinate Coordinate { get; set; }
-        
+
         public List<Meeting> Meetings { get; set; }
     }
 }
