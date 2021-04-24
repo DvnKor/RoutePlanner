@@ -11,7 +11,7 @@ namespace GeneticAlgorithm.Domain
         /// <summary>
         /// Средняя скорость менеджера в м/c
         /// </summary>
-        private const double Velocity = 7;
+        private const double Velocity = 8;
 
         /// <summary>
         /// Временной запас в минутах
@@ -28,7 +28,7 @@ namespace GeneticAlgorithm.Domain
         }
 
         /// <summary>
-        /// Возвращает расстояние между двумя координатами
+        /// Возвращает расстояние между двумя координатами в метрах
         /// </summary>
         private static double GetDistance(Coordinate from, Coordinate to)
         {

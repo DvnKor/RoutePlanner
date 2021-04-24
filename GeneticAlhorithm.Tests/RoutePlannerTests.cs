@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using Entities.Models;
 using GeneticAlgorithm.Contracts;
@@ -18,11 +17,11 @@ namespace GeneticAlgorithm.Tests
         [Test]
         public void GetBestRoute()
         {
-            var managerSchedules = Enumerable.Range(0, 3)
-                .Select(_ => GetRandomManagerSchedule())
+            var managerSchedules = Enumerable.Range(0, 5)
+                .Select(GetRandomManagerSchedule)
                 .ToList();
             var clients = Enumerable.Range(0, 30)
-                .Select(_ => GetRandomMeeting())
+                .Select(GetRandomMeeting)
                 .ToList();
             var generationCount = 500;
             var populationSize = 100;
@@ -36,33 +35,32 @@ namespace GeneticAlgorithm.Tests
                 populationSize,
                 eliteSize,
                 mutationRate);
-            
-            Console.WriteLine($"Fitness: {bestRoutes.Fitness}");
-            Console.WriteLine($"Distance: {bestRoutes.Distance}");
-            Console.WriteLine($"WaitingTime: {bestRoutes.WaitingTime}");
-            Console.WriteLine($"SuitableMeetingsCount: {bestRoutes.SuitableMeetingsCount}");
+
+            Console.WriteLine(bestRoutes);
         }
 
-        private Meeting GetRandomMeeting()
+        private Meeting GetRandomMeeting(int clientId)
         {
             var startTime = _dateTime.AddHours(_random.Next(7, 20)).AddMinutes(_random.Next(0, 60));
             var endTime = startTime.AddMinutes(_random.Next(15, 120));
             return new Meeting
             {
+                ClientId = clientId,
                 StartTime = startTime,
                 EndTime = endTime,
                 Coordinate = GetRandomCoordinate()
             };
         }
 
-        private ManagerSchedule GetRandomManagerSchedule()
+        private ManagerSchedule GetRandomManagerSchedule(int userId)
         {
             return new ManagerSchedule
             {
+                UserId = userId,
                 StartCoordinate = GetRandomCoordinate(),
                 EndCoordinate = GetRandomCoordinate(),
                 StartTime = _dateTime.AddHours(_random.Next(7, 10)),
-                EndTime = _dateTime.AddHours(_random.Next(17, 20))
+                EndTime = _dateTime.AddHours(_random.Next(17, 20)),
             };
         }
         
@@ -70,8 +68,8 @@ namespace GeneticAlgorithm.Tests
         {
             return new Coordinate
             {
-                Latitude = _random.NextDouble() / 2 + 60,
-                Longitude = _random.NextDouble() / 2 + 55
+                Latitude = _random.NextDouble() / 100 + 60,
+                Longitude = _random.NextDouble() / 100 + 55
             };
         }
     }

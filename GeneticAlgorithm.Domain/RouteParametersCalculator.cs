@@ -72,7 +72,7 @@ namespace GeneticAlgorithm.Domain
             }
 
             var waitingTimeMinutes = waitingTime.TotalMinutes;
-            var routeFinishesAsPreferred = suitableMeetings.Last() == managerEndFakeMeeting;
+            var routeFinishesAsPreferred = suitableMeetings.LastOrDefault() == managerEndFakeMeeting;
             var fitness = _fitnessCalculator.Calculate(
                 suitableMeetings.Count,
                 pathDistance, 
