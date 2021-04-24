@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using Entities.Models;
-using GeneticAlgorithm.Domain.Models;
+using GeneticAlgorithm.Contracts.Models;
 
 namespace GeneticAlgorithm.Contracts
 {
-    public interface IBreeder
+    public interface IGenerationBreeder
     {
         List<Genotype> Breed(List<Genotype> matingPool, int eliteSize);
 

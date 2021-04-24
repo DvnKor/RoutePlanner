@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using Entities.Models;
-using GeneticAlgorithm.Domain.Models;
+using GeneticAlgorithm.Contracts.Models;
 
 namespace GeneticAlgorithm.Contracts
 {
@@ -12,7 +12,7 @@ namespace GeneticAlgorithm.Contracts
         /// <param name="managerSchedules">Расписания менеджеров</param>
         /// <param name="meetings">Все встречи</param>
         /// <param name="populationSize">Размер популяции</param>
-        Genotype[] CreatePopulation(
+        List<Genotype> CreatePopulation(
             List<ManagerSchedule> managerSchedules,
             List<Meeting> meetings,
             int populationSize);

@@ -2,25 +2,25 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using GeneticAlgorithm.Contracts;
-using GeneticAlgorithm.Domain.Models;
+using GeneticAlgorithm.Contracts.Models;
 using Infrastructure.Common;
 
 namespace GeneticAlgorithm.Domain
 {
-    public class GenotypeSelector : IGenotypeSelector
+    public class GenerationSelector : IGenerationSelector
     {
         private readonly Random _random = new Random();
         
-        public List<Genotype> MakeSelection(Genotype[] rankedGenotypes, int eliteSize)
+        public List<Genotype> GetSelection(List<Genotype> rankedGeneration, int eliteSize)
         {
             var selection = new List<Genotype>();
             for (var index = 0; index < eliteSize; index++)
             {
-                selection.Add(rankedGenotypes[index]);
+                selection.Add(rankedGeneration[index]);
             }
 
-            var rankedGenotypesCount = rankedGenotypes.Length;
-            var routeSelectionPercentage = rankedGenotypes
+            var rankedGenotypesCount = rankedGeneration.Count;
+            var routeSelectionPercentage = rankedGeneration
                 .Select(genotype => genotype.Fitness)
                 .CumulativePercentage()
                 .ToArray();
@@ -31,7 +31,7 @@ namespace GeneticAlgorithm.Domain
                 {
                     if (pick <= routeSelectionPercentage[j])
                     {
-                        selection.Add(rankedGenotypes[j]);
+                        selection.Add(rankedGeneration[j]);
                         break;
                     }
                 }

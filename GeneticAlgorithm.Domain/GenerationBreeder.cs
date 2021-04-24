@@ -3,27 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using Entities.Models;
 using GeneticAlgorithm.Contracts;
-using GeneticAlgorithm.Domain.Models;
+using GeneticAlgorithm.Contracts.Models;
 using Infrastructure.Common;
 
 namespace GeneticAlgorithm.Domain
 {
-    public class Breeder : IBreeder
+    public class GenerationBreeder : IGenerationBreeder
     {
         private readonly Random _random = new Random();
-        private readonly IRouteCreator _routeCreator;
-
-        public Breeder(IRouteCreator routeCreator)
-        {
-            _routeCreator = routeCreator;
-        }
 
         public List<Genotype> Breed(List<Genotype> genotypes, int eliteSize)
         {
-            var breedResult = new List<Genotype>();
+            var children = new List<Genotype>();
             for (var index = 0; index < eliteSize; index++)
             {
-                breedResult.Add(genotypes[index]);
+                children.Add(genotypes[index]);
             }
 
             var matingPool = genotypes.Shuffle();
@@ -33,10 +27,10 @@ namespace GeneticAlgorithm.Domain
                 var firstParent = matingPool[index];
                 var secondParent = matingPool[matingPoolLength - (index + 1)];
                 var child = BreedGenotypes(firstParent, secondParent);
-                breedResult.Add(child);
+                children.Add(child);
             }
 
-            return breedResult;
+            return children;
         }
 
         public Genotype BreedGenotypes(Genotype firstGenotype, Genotype secondGenotype)
@@ -74,12 +68,12 @@ namespace GeneticAlgorithm.Domain
                 breedMeetingsResult[index] = firstRoute.PossibleMeetings[index];
             }
 
-            var otherCustomers = secondRoute.PossibleMeetings
+            var otherMeetings = secondRoute.PossibleMeetings
                 .Where(customer => !breedMeetingsResult.Contains(customer))
                 .ToList();
 
             var indexInResult = 0;
-            foreach (var meeting in secondRoute.PossibleMeetings)
+            foreach (var meeting in otherMeetings)
             {
                 while (breedMeetingsResult[indexInResult] != null)
                 {
@@ -88,7 +82,12 @@ namespace GeneticAlgorithm.Domain
                 breedMeetingsResult[indexInResult++] = meeting;
             }
 
-            return _routeCreator.Create(managerSchedule, breedMeetingsResult);
+            return new Route
+            {
+                ManagerScheduleId = managerSchedule.Id,
+                ManagerSchedule = managerSchedule,
+                PossibleMeetings = breedMeetingsResult
+            };
         }
     }
 }

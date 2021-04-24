@@ -2,21 +2,14 @@ using System.Collections.Generic;
 using System.Linq;
 using Entities.Models;
 using GeneticAlgorithm.Contracts;
-using GeneticAlgorithm.Domain.Models;
+using GeneticAlgorithm.Contracts.Models;
 using Infrastructure.Common;
 
 namespace GeneticAlgorithm.Domain
 {
     public class PopulationGenerator : IPopulationGenerator
     {
-        private readonly IRouteCreator _routeCreator;
-
-        public PopulationGenerator(IRouteCreator routeCreator)
-        {
-            _routeCreator = routeCreator;
-        }
-        
-        public Genotype[] CreatePopulation(
+        public List<Genotype> CreatePopulation(
             List<ManagerSchedule> managerSchedules,
             List<Meeting> meetings, 
             int populationSize)
@@ -24,7 +17,7 @@ namespace GeneticAlgorithm.Domain
             return Enumerable.Range(0, populationSize)
                 .Select(_ => CreateGenotype(managerSchedules, meetings))
                 .OrderByDescending(genotype => genotype.Fitness)
-                .ToArray();
+                .ToList();
         }
 
         private Genotype CreateGenotype(IEnumerable<ManagerSchedule> managerSchedules, List<Meeting> meetings)
@@ -38,7 +31,12 @@ namespace GeneticAlgorithm.Domain
         private Route CreateRoute(ManagerSchedule managerSchedule, IList<Meeting> meetings)
         {
             var possibleMeetings = meetings.Shuffle();
-            return _routeCreator.Create(managerSchedule, possibleMeetings);
+            return new Route
+            {
+                ManagerScheduleId = managerSchedule.Id,
+                ManagerSchedule = managerSchedule,
+                PossibleMeetings = possibleMeetings
+            };
         }
     }
 }

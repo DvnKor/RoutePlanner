@@ -1,7 +1,7 @@
 using System.Linq;
 using Entities.Models;
 
-namespace GeneticAlgorithm.Domain.Models
+namespace GeneticAlgorithm.Contracts.Models
 {
     public class Genotype
     {

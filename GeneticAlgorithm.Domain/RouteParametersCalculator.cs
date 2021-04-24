@@ -8,13 +8,13 @@ using Infrastructure.Common;
 
 namespace GeneticAlgorithm.Domain
 {
-    public class RouteCreator : IRouteCreator
+    public class RouteParametersCalculator : IRouteParametersCalculator
     {
         private readonly IFitnessCalculator _fitnessCalculator;
         private readonly IRouteStepCalculator _routeStepCalculator;
         private readonly ExpiringCache<(Coordinate, Coordinate), (double, double)> _routeStepCache;
 
-        public RouteCreator(IFitnessCalculator fitnessCalculator, IRouteStepCalculator routeStepCalculator)
+        public RouteParametersCalculator(IFitnessCalculator fitnessCalculator, IRouteStepCalculator routeStepCalculator)
         {
             _fitnessCalculator = fitnessCalculator;
             _routeStepCalculator = routeStepCalculator;
@@ -23,8 +23,10 @@ namespace GeneticAlgorithm.Domain
                 .CreateExpiringCache<(Coordinate, Coordinate), (double, double)>(RouteStepCacheValueFactory, 5);
         }
 
-        public Route Create(ManagerSchedule managerSchedule, IList<Meeting> possibleMeetings)
+        public void CalculateParameters(Route route, List<Meeting> takenMeetings)
         {
+            var managerSchedule = route.ManagerSchedule;
+            var possibleMeetings = route.PossibleMeetings;
             var managerEndFakeMeeting = new Meeting
             {
                 StartTime = managerSchedule.EndTime,
@@ -42,6 +44,9 @@ namespace GeneticAlgorithm.Domain
             
             foreach (var nextMeeting in allMeetings)
             {
+                // Встреча уже взята другим менеджером
+                if (takenMeetings.Contains(nextMeeting)) continue;
+                
                 // Менеджер не успвает провести встречу до конца рабочего дня
                 if (nextMeeting.EndTime > managerSchedule.EndTime) continue;
 
@@ -59,7 +64,7 @@ namespace GeneticAlgorithm.Domain
                 {
                     waitingTime += nextMeeting.StartTime - arrivalTime;
                 }
-                
+
                 suitableMeetings.Add(nextMeeting);
                 pathDistance += distanceToNext;
                 currentTime = nextMeeting.EndTime;
@@ -73,17 +78,11 @@ namespace GeneticAlgorithm.Domain
                 pathDistance, 
                 waitingTimeMinutes,
                 routeFinishesAsPreferred);
-            
-            return new Route
-            {
-                ManagerScheduleId = managerSchedule.Id,
-                ManagerSchedule = managerSchedule,
-                PossibleMeetings = possibleMeetings,
-                SuitableMeetings = suitableMeetings,
-                Distance = pathDistance,
-                WaitingTime = waitingTimeMinutes,
-                Fitness = fitness
-            };
+
+            route.SuitableMeetings = suitableMeetings;
+            route.Distance = pathDistance;
+            route.WaitingTime = waitingTimeMinutes;
+            route.Fitness = fitness;
         }
         
         private (double distance, double time) RouteStepCacheValueFactory((Coordinate from, Coordinate to) coordinates)
