@@ -16,13 +16,14 @@ namespace GeneticAlgorithm.Domain
             _routeCreator = routeCreator;
         }
         
-        public Genotype[] CreatePopulation(
+        public Genotype[] CreateRankedPopulation(
             List<ManagerSchedule> managerSchedules,
             List<Meeting> meetings, 
             int populationSize)
         {
             return Enumerable.Range(0, populationSize)
                 .Select(_ => CreateGenotype(managerSchedules, meetings))
+                .OrderByDescending(genotype => genotype.Fitness)
                 .ToArray();
         }
 
