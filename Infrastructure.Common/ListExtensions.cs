@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Infrastructure.Common
 {
@@ -22,6 +23,26 @@ namespace Infrastructure.Common
             }
 
             return result;
+        }
+        
+        public static IEnumerable<double> CumulativeSum(this IEnumerable<double> values)
+        {
+            double sum = 0;
+            foreach(var item in values)
+            {
+                sum += item;
+                yield return sum;
+            }        
+        }
+
+        public static IEnumerable<double> CumulativePercentage(this IEnumerable<double> values)
+        {
+            var cumulativeSum = values.CumulativeSum().ToArray();
+            var sum = cumulativeSum.Last();
+            foreach (var cumSum in cumulativeSum)
+            {
+                yield return (100 * cumSum) / sum;
+            }
         }
     }
 }
