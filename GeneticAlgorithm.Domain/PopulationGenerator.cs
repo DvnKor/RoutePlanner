@@ -35,10 +35,10 @@ namespace GeneticAlgorithm.Domain
             return new Genotype(routes);
         }
 
-        private Route CreateRoute(ManagerSchedule managerSchedule, List<Meeting> meetings)
+        private Route CreateRoute(ManagerSchedule managerSchedule, IList<Meeting> meetings)
         {
             var possibleMeetings = meetings.Shuffle();
-            return _routeCreator.Create(managerSchedule, meetings);
+            return _routeCreator.Create(managerSchedule, possibleMeetings);
         }
     }
 }

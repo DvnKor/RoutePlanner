@@ -23,7 +23,7 @@ namespace GeneticAlgorithm.Domain
                 .CreateExpiringCache<(Coordinate, Coordinate), (double, double)>(RouteStepCacheValueFactory, 5);
         }
 
-        public Route Create(ManagerSchedule managerSchedule, List<Meeting> possibleMeetings)
+        public Route Create(ManagerSchedule managerSchedule, IList<Meeting> possibleMeetings)
         {
             var managerEndFakeMeeting = new Meeting
             {

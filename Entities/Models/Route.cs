@@ -18,7 +18,7 @@ namespace Entities.Models
         /// Все возможные встречи
         /// </summary>
         [NotMapped]
-        public List<Meeting> PossibleMeetings { get; set; }
+        public IList<Meeting> PossibleMeetings { get; set; }
         
         /// <summary>
         /// Встречи, которые менеджер посетит

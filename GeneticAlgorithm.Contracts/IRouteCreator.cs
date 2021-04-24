@@ -5,6 +5,6 @@ namespace GeneticAlgorithm.Contracts
 {
     public interface IRouteCreator
     {
-        Route Create(ManagerSchedule managerSchedule, List<Meeting> possibleMeetings);
+        Route Create(ManagerSchedule managerSchedule, IList<Meeting> possibleMeetings);
     }
 }
