@@ -20,12 +20,12 @@ namespace GeneticAlgorithm.Tests
             var managerSchedules = Enumerable.Range(0, 5)
                 .Select(GetRandomManagerSchedule)
                 .ToList();
-            var clients = Enumerable.Range(0, 30)
+            var clients = Enumerable.Range(0, 40)
                 .Select(GetRandomMeeting)
                 .ToList();
             var generationCount = 500;
             var populationSize = 100;
-            var eliteSize = 50;
+            var eliteSize = 20;
             var mutationRate = 0.1;
 
             var bestRoutes = _routePlanner.GetBestRoutes(

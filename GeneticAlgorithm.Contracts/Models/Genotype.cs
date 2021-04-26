@@ -26,13 +26,28 @@ namespace GeneticAlgorithm.Contracts.Models
             var builder = new StringBuilder();
             foreach (var route in Routes)
             {
-                builder.AppendLine($"Менеджер {route.ManagerSchedule.UserId}").AppendLine();
+                builder.AppendLine($"### Менеджер {route.ManagerSchedule.UserId}.");
+                builder.AppendLine(
+                    $"Начальная координата: {route.ManagerSchedule.StartCoordinate.Latitude}," +
+                    $" {route.ManagerSchedule.StartCoordinate.Longitude}");
+                builder.AppendLine($"Начало смены {route.ManagerSchedule.StartTime:g}.");
+                builder.AppendLine($"Конец смены {route.ManagerSchedule.EndTime:g}.");
+                builder.AppendLine(
+                    $"Конечная желаемая координата: {route.ManagerSchedule.StartCoordinate.Latitude}," +
+                    $" {route.ManagerSchedule.StartCoordinate.Longitude}");
+                builder.AppendLine();
+                
                 builder.AppendLine($"Встречи:").AppendLine();
                 foreach (var meeting in route.SuitableMeetings)
                 {
                     builder.Append($"{meeting.StartTime:HH:mm} - {meeting.EndTime:HH:mm}. ");
                     builder.Append($"Клиент: {meeting.ClientId}. ");
                     builder.Append($"Широта: {meeting.Coordinate.Latitude}. Долгота: {meeting.Coordinate.Longitude}.\n");
+                }
+
+                if (route.FinishesAsPreferred)
+                {
+                    builder.AppendLine($"Маршрут заканчивается в желаемой конечной точке менеджера.");
                 }
 
                 builder.AppendLine().AppendLine($"Фитнес: {route.Fitness}");
@@ -46,7 +61,7 @@ namespace GeneticAlgorithm.Contracts.Models
             builder.AppendLine($"Общее расстояние в метрах: {Distance}");
             builder.AppendLine($"Общее время ожидания в минутах: {WaitingTime}");
             builder.AppendLine($"Общее количество встреч: {SuitableMeetingsCount}");
-            builder.AppendLine();
+            builder.AppendLine().AppendLine();
 
             return builder.ToString();
         }

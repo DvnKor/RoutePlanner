@@ -39,5 +39,7 @@ namespace Entities.Models
         /// Значение функции приспособленности
         /// </summary>
         public double Fitness { get; set; }
+        
+        public bool FinishesAsPreferred { get; set; }
     }
 }

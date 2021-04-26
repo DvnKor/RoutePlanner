@@ -25,7 +25,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneticAlgorithm.Contracts"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Cache", "Infrastructure.Cache\Infrastructure.Cache.csproj", "{6614245D-D753-4836-970F-EE672D61962F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneticAlhorithm.Tests", "GeneticAlhorithm.Tests\GeneticAlhorithm.Tests.csproj", "{1557D643-6ECB-4248-B282-24B7A09BB1FC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneticAlgorithm.Tests", "GeneticAlgorithm.Tests\GeneticAlgorithm.Tests.csproj", "{1557D643-6ECB-4248-B282-24B7A09BB1FC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

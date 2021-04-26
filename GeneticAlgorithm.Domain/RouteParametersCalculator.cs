@@ -41,6 +41,7 @@ namespace GeneticAlgorithm.Domain
             var currentTime = managerSchedule.StartTime;
             var pathDistance = 0d;
             var waitingTime = new TimeSpan();
+            var routeFinishesAsPreferred = false;
             
             foreach (var nextMeeting in allMeetings)
             {
@@ -65,6 +66,12 @@ namespace GeneticAlgorithm.Domain
                     waitingTime += nextMeeting.StartTime - arrivalTime;
                 }
 
+                if (nextMeeting == managerEndFakeMeeting)
+                {
+                    routeFinishesAsPreferred = true;
+                    break;
+                }
+
                 suitableMeetings.Add(nextMeeting);
                 pathDistance += distanceToNext;
                 currentTime = nextMeeting.EndTime;
@@ -72,7 +79,6 @@ namespace GeneticAlgorithm.Domain
             }
 
             var waitingTimeMinutes = waitingTime.TotalMinutes;
-            var routeFinishesAsPreferred = suitableMeetings.LastOrDefault() == managerEndFakeMeeting;
             var fitness = _fitnessCalculator.Calculate(
                 suitableMeetings.Count,
                 pathDistance, 
@@ -82,6 +88,7 @@ namespace GeneticAlgorithm.Domain
             route.SuitableMeetings = suitableMeetings;
             route.Distance = pathDistance;
             route.WaitingTime = waitingTimeMinutes;
+            route.FinishesAsPreferred = routeFinishesAsPreferred;
             route.Fitness = fitness;
         }
         
