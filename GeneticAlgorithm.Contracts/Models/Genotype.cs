@@ -22,8 +22,22 @@ namespace GeneticAlgorithm.Contracts.Models
         {
             Routes = routes;
         }
+        
+        public string PrintParameters()
+        {
+            var builder = new StringBuilder();
+            builder.AppendLine().AppendLine($"Общий фитнес: {Fitness}");
+            builder.AppendLine($"Общее расстояние в метрах: {Distance}");
+            builder.AppendLine($"Общее время ожидания в минутах: {WaitingTime}");
+            builder.AppendLine($"Общее количество встреч: {SuitableMeetingsCount}");
+            builder.AppendLine(
+                $"Количество маршрутов заканчивающихся в желаемой точке: {CountRouteFinishesAsPreferred}");
+            builder.AppendLine().AppendLine();
 
-        public override string ToString()
+            return builder.ToString();
+        }
+
+        public string PrintRoutesWithParameters()
         {
             var builder = new StringBuilder();
             foreach (var route in Routes)
@@ -57,14 +71,8 @@ namespace GeneticAlgorithm.Contracts.Models
                 builder.AppendLine($"Количество встреч: {route.SuitableMeetings.Count}");
                 builder.AppendLine();
             }
-            
-            builder.AppendLine().AppendLine($"Общий фитнес: {Fitness}");
-            builder.AppendLine($"Общее расстояние в метрах: {Distance}");
-            builder.AppendLine($"Общее время ожидания в минутах: {WaitingTime}");
-            builder.AppendLine($"Общее количество встреч: {SuitableMeetingsCount}");
-            builder.AppendLine(
-                $"Количество маршрутов заканчивающихся в желаемой точке: {CountRouteFinishesAsPreferred}");
-            builder.AppendLine().AppendLine();
+
+            builder.Append(PrintParameters());
 
             return builder.ToString();
         }

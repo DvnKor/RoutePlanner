@@ -25,7 +25,7 @@ namespace GeneticAlgorithm.Tests
                 .ToList();
             var generationCount = 500;
             var populationSize = 100;
-            var eliteSize = 20;
+            var eliteSize = 15;
             var mutationRate = 0.1;
 
             var bestRoutes = _routePlanner.GetBestRoutes(
@@ -36,7 +36,7 @@ namespace GeneticAlgorithm.Tests
                 eliteSize,
                 mutationRate);
 
-            Console.WriteLine(bestRoutes);
+            Console.WriteLine(bestRoutes.PrintRoutesWithParameters());
         }
 
         private Meeting GetRandomMeeting(int clientId)
