@@ -16,13 +16,15 @@ namespace Entities
         
         public DbSet<ManagerSchedule> ManagerSchedules { get; set; }
         
-        public DbSet<ClientSchedule> ClientSchedules { get; set; }
+        public DbSet<Meeting> Meetings { get; set; }
 
         public DbSet<User> Users { get; set; }
         
         public DbSet<RightInfo> RightInfos { get; set; }
         
         public DbSet<UserRight> UserRights { get; set; }
+        
+        public DbSet<Route> Routes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

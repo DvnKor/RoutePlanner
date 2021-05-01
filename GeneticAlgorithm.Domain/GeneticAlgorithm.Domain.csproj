@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\GeneticAlgorithm.Contracts\GeneticAlgorithm.Contracts.csproj" />
+      <ProjectReference Include="..\Infrastructure.Cache\Infrastructure.Cache.csproj" />
+    </ItemGroup>
+
+</Project>
