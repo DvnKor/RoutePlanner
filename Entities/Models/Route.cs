@@ -34,12 +34,7 @@ namespace Entities.Models
         /// Суммарное время ожидания (в минутах)
         /// </summary>
         public double WaitingTime { get; set; }
-        
-        /// <summary>
-        /// Значение функции приспособленности
-        /// </summary>
-        public double Fitness { get; set; }
-        
+
         public bool FinishesAsPreferred { get; set; }
     }
 }

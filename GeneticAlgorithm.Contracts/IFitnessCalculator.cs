@@ -6,6 +6,6 @@ namespace GeneticAlgorithm.Contracts
             int suitableMeetingsCount,
             double distance, 
             double waitingTime,
-            bool routeFinishesAsPreferred);
+            int countRouteFinishesAsPreferred);
     }
 }

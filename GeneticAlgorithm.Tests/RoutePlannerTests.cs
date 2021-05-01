@@ -11,16 +11,16 @@ namespace GeneticAlgorithm.Tests
     public class RoutePlannerTests
     {
         private readonly Random _random = new Random();
-        private readonly DateTime _dateTime = DateTime.Now.Date;
+        private readonly DateTime _dateTime = DateTime.Now.AddMonths(-1).Date;
         private readonly IRoutePlanner _routePlanner = TestRoutePlannerFactory.Create();
         
         [Test]
         public void GetBestRoute()
         {
-            var managerSchedules = Enumerable.Range(0, 5)
+            var managerSchedules = Enumerable.Range(0, 3)
                 .Select(GetRandomManagerSchedule)
                 .ToList();
-            var clients = Enumerable.Range(0, 40)
+            var clients = Enumerable.Range(0, 100)
                 .Select(GetRandomMeeting)
                 .ToList();
             var generationCount = 500;

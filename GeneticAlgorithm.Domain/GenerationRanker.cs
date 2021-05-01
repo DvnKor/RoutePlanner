@@ -9,10 +9,14 @@ namespace GeneticAlgorithm.Domain
     public class GenerationRanker : IGenerationRanker
     {
         private readonly IRouteParametersCalculator _routeParametersCalculator;
+        private readonly IFitnessCalculator _fitnessCalculator;
 
-        public GenerationRanker(IRouteParametersCalculator routeParametersCalculator)
+        public GenerationRanker(
+            IRouteParametersCalculator routeParametersCalculator, 
+            IFitnessCalculator fitnessCalculator)
         {
             _routeParametersCalculator = routeParametersCalculator;
+            _fitnessCalculator = fitnessCalculator;
         }
 
         /// <summary>
@@ -28,6 +32,12 @@ namespace GeneticAlgorithm.Domain
                     _routeParametersCalculator.CalculateParameters(route, takenMeetings);
                     takenMeetings.AddRange(route.SuitableMeetings);
                 }
+                var fitness = _fitnessCalculator.Calculate(
+                    genotype.SuitableMeetingsCount,
+                    genotype.Distance, 
+                    genotype.WaitingTime,
+                    genotype.CountRouteFinishesAsPreferred);
+                genotype.Fitness = fitness;
             }
             
             return generation

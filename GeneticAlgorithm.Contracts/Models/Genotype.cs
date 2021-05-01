@@ -8,13 +8,15 @@ namespace GeneticAlgorithm.Contracts.Models
     {
         public Route[] Routes { get; }
 
-        public double Fitness => Routes.Select(route => route.Fitness).Sum();
+        public double Fitness { get; set; }
 
         public double Distance => Routes.Select(route => route.Distance).Sum();
 
         public double WaitingTime => Routes.Select(route => route.WaitingTime).Sum();
 
         public int SuitableMeetingsCount => Routes.SelectMany(route => route.SuitableMeetings).Count();
+
+        public int CountRouteFinishesAsPreferred => Routes.Count(x => x.FinishesAsPreferred);
 
         public Genotype(Route[] routes)
         {
@@ -50,7 +52,6 @@ namespace GeneticAlgorithm.Contracts.Models
                     builder.AppendLine($"Маршрут заканчивается в желаемой конечной точке менеджера.");
                 }
 
-                builder.AppendLine().AppendLine($"Фитнес: {route.Fitness}");
                 builder.AppendLine($"Расстояние в метрах: {route.Distance}");
                 builder.AppendLine($"Время ожидания в минутах: {route.WaitingTime}");
                 builder.AppendLine($"Количество встреч: {route.SuitableMeetings.Count}");
@@ -61,6 +62,8 @@ namespace GeneticAlgorithm.Contracts.Models
             builder.AppendLine($"Общее расстояние в метрах: {Distance}");
             builder.AppendLine($"Общее время ожидания в минутах: {WaitingTime}");
             builder.AppendLine($"Общее количество встреч: {SuitableMeetingsCount}");
+            builder.AppendLine(
+                $"Количество маршрутов заканчивающихся в желаемой точке: {CountRouteFinishesAsPreferred}");
             builder.AppendLine().AppendLine();
 
             return builder.ToString();

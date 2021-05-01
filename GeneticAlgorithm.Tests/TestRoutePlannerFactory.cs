@@ -7,9 +7,8 @@ namespace GeneticAlgorithm.Tests
         public static RoutePlanner Create()
         {
             var populationGenerator = new PopulationGenerator();
-            var routeParametersCalculator = new RouteParametersCalculator(
-                new FitnessCalculator(), new FakeRouteStepCalculator());
-            var generationRanker = new GenerationRanker(routeParametersCalculator);
+            var routeParametersCalculator = new RouteParametersCalculator(new FakeRouteStepCalculator());
+            var generationRanker = new GenerationRanker(routeParametersCalculator, new FitnessCalculator());
             var generationCreator = new GenerationCreator(
                 generationRanker,
                 new GenerationSelector(),

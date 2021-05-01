@@ -10,13 +10,11 @@ namespace GeneticAlgorithm.Domain
 {
     public class RouteParametersCalculator : IRouteParametersCalculator
     {
-        private readonly IFitnessCalculator _fitnessCalculator;
         private readonly IRouteStepCalculator _routeStepCalculator;
         private readonly ExpiringCache<(Coordinate, Coordinate), (double, double)> _routeStepCache;
 
-        public RouteParametersCalculator(IFitnessCalculator fitnessCalculator, IRouteStepCalculator routeStepCalculator)
+        public RouteParametersCalculator(IRouteStepCalculator routeStepCalculator)
         {
-            _fitnessCalculator = fitnessCalculator;
             _routeStepCalculator = routeStepCalculator;
             // Расчет расстояния и времени в пути между двумя координатами кэшируется на 5 минут
             _routeStepCache = CacheFactory
@@ -79,17 +77,11 @@ namespace GeneticAlgorithm.Domain
             }
 
             var waitingTimeMinutes = waitingTime.TotalMinutes;
-            var fitness = _fitnessCalculator.Calculate(
-                suitableMeetings.Count,
-                pathDistance, 
-                waitingTimeMinutes,
-                routeFinishesAsPreferred);
 
             route.SuitableMeetings = suitableMeetings;
             route.Distance = pathDistance;
             route.WaitingTime = waitingTimeMinutes;
             route.FinishesAsPreferred = routeFinishesAsPreferred;
-            route.Fitness = fitness;
         }
         
         private (double distance, double time) RouteStepCacheValueFactory((Coordinate from, Coordinate to) coordinates)

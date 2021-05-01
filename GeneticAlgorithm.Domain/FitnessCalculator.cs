@@ -11,13 +11,10 @@ namespace GeneticAlgorithm.Domain
             int suitableMeetingsCount,
             double distance, 
             double waitingTime,
-            bool routeFinishesAsPreferred)
+            int countRouteFinishesAsPreferred)
         {
-            var numerator = SuitableMeetingReward * suitableMeetingsCount;
-            if (routeFinishesAsPreferred)
-            {
-                numerator += RouteFinishSameAsPreferredReward;
-            }
+            var numerator = SuitableMeetingReward * suitableMeetingsCount +
+                countRouteFinishesAsPreferred * RouteFinishSameAsPreferredReward;
 
             var denominator = distance / 1000 + waitingTime / 5;
             

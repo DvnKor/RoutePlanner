@@ -10,6 +10,8 @@ namespace Entities.Models
         public int Id { get; set; }
         
         public int ClientId { get; set; }
+        
+        public string Name { get; set; }
 
         public DateTime StartTime { get; set; }
         
