@@ -19,7 +19,7 @@ namespace Entities.Models
         
         public string Telegram { get; set; }
         
-        public string Coordinate { get; set; }
+        public Coordinate Coordinate { get; set; }
 
         public List<Meeting> Meetings { get; set; }
     }
