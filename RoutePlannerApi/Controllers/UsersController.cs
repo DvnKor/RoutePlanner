@@ -54,5 +54,27 @@ namespace RoutePlannerApi.Controllers
 
             return Ok(userDto);
         }
+        
+        /// <summary>
+        /// Получение пользователей, которые не имеют ни одного права
+        /// </summary>
+        [RightsAuthorize(Right.Admin)]
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult> GetUsersWithoutRights()
+        {
+            var usersWithoutRights = await _userStorage.GetUsersWithoutRights();
+            return Ok(usersWithoutRights);
+        }
+
+        /// <summary>
+        /// Получение пользователей, которые имеют хотя бы одно право
+        /// </summary>
+        [RightsAuthorize(Right.Admin)]
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult> GetUsersWithAnyRight()
+        {
+            var usersWithAnyRight = await _userStorage.GetUsersWithAnyRight();
+            return Ok(usersWithAnyRight);
+        }
     }
 }

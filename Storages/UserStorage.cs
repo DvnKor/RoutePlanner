@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading.Tasks;
 using Contracts;
 using Entities;
@@ -12,6 +13,8 @@ namespace Storages
         Task<User> GetByEmail(string email);
         Task<int> AddUser(User user);
         Task<User> UpdateUser(int userId, UpdateUserDto updateUserDto);
+        Task<User[]> GetUsersWithoutRights();
+        Task<User[]> GetUsersWithAnyRight();
     }
 
     public class UserStorage : IUserStorage
@@ -65,6 +68,26 @@ namespace Storages
             await ctx.SaveChangesAsync();
             
             return userToUpdate;
+        }
+
+        public async Task<User[]> GetUsersWithoutRights()
+        {
+            await using var ctx = _contextFactory.Create();
+            var usersWithoutRights = await ctx.Users
+                .WithRights()
+                .Where(user => user.UserRights == null || user.UserRights.Count == 0)
+                .ToArrayAsync();
+            return usersWithoutRights;
+        }
+
+        public async Task<User[]> GetUsersWithAnyRight()
+        {
+            await using var ctx = _contextFactory.Create();
+            var usersWithAnyRight = await ctx.Users
+                .WithRights()
+                .Where(user => user.UserRights != null && user.UserRights.Count > 0)
+                .ToArrayAsync();
+            return usersWithAnyRight;
         }
     }
 }
