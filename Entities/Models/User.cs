@@ -28,6 +28,11 @@ namespace Entities.Models
         
         public List<ManagerSchedule> ManagerSchedules { get; set; }
 
+        public bool HasRight(Right right)
+        {
+            return HasRights(new[] {right});
+        }
+        
         public bool HasRights(Right[] rights)
         {
             if (UserRights == null) return false;
@@ -37,7 +42,7 @@ namespace Entities.Models
 
         public UserDto ToDto()
         {
-            return new UserDto
+            var userDto = new UserDto
             {
                 Id = Id,
                 Name = Name,
@@ -46,8 +51,17 @@ namespace Entities.Models
                 MobilePhone = MobilePhone,
                 Telegram = Telegram,
                 Coordinate = Coordinate,
-                Rights = UserRights?.Select(userRight => userRight.Right).ToArray()
+                Rights = UserRights?.Select(userRight => userRight.Right).ToArray(),
             };
+            
+            if (UserRights?.Count > 0)
+            {
+                var maxUserRight = UserRights
+                    .OrderByDescending(userRight => userRight.Right)
+                    .FirstOrDefault();
+                userDto.Position = maxUserRight?.RightInfo.Description;
+            }
+            return userDto;
         }
     }
 }

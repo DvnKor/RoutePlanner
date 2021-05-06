@@ -11,7 +11,7 @@ namespace RoutePlannerApi.Auth
             {
                 Name = payload.Name,
                 Email = payload.Email,
-                Picture = payload.Picture
+                Picture = payload.Picture,
             };
         }
     }

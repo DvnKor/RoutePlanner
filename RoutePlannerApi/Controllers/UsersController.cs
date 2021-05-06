@@ -1,6 +1,6 @@
-using System.Linq;
 using System.Threading.Tasks;
 using Contracts;
+using Infrastructure.Rights;
 using Microsoft.AspNetCore.Mvc;
 using RoutePlannerApi.Auth;
 using Storages;
@@ -13,15 +13,12 @@ namespace RoutePlannerApi.Controllers
     {
         private readonly IUserContext _userContext;
         private readonly IUserStorage _userStorage;
-        private readonly IRightInfoStorage _rightInfoStorage;
 
         public UsersController(
             IUserContext userContext,
-            IRightInfoStorage rightInfoStorage,
             IUserStorage userStorage)
         {
             _userContext = userContext;
-            _rightInfoStorage = rightInfoStorage;
             _userStorage = userStorage;
         }
 
@@ -32,7 +29,6 @@ namespace RoutePlannerApi.Controllers
         public async Task<ActionResult> GetCurrent()
         {
             var userDto = _userContext.User.ToDto();
-            await SetPositionToUserDto(userDto);
             return Ok(userDto);
         }
 
@@ -42,24 +38,21 @@ namespace RoutePlannerApi.Controllers
         [HttpPut("{id:int}")]
         public async Task<ActionResult> UpdateUser(int id, [FromBody] UpdateUserDto updateUserDto)
         {
+            // Пользователь может обновлять только себя, если он не админ
+            var currentUser = _userContext.User;
+            if (!currentUser.HasRight(Right.Admin) && currentUser.Id != id)
+            {
+                return Forbid();
+            }
+            
             var user = await _userStorage.UpdateUser(id, updateUserDto);
             var userDto = user?.ToDto();
             if (userDto == null)
             {
                 return NotFound(id);
             }
-            await SetPositionToUserDto(userDto);
 
             return Ok(userDto);
-        }
-
-        private async Task SetPositionToUserDto(UserDto userDto)
-        {
-            if (userDto?.Rights?.Length > 0)
-            {
-                var maxRight = userDto?.Rights?.Max();
-                userDto.Position = await _rightInfoStorage.GetDescription(maxRight.Value);
-            }
         }
     }
 }

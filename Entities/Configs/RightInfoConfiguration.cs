@@ -17,7 +17,7 @@ namespace Entities.Configs
             
             builder
                 .HasMany(rightInfo => rightInfo.UserRights)
-                .WithOne()
+                .WithOne(userRight => userRight.RightInfo)
                 .HasForeignKey(userRight => userRight.Right);
         }
     }
