@@ -59,7 +59,7 @@ namespace RoutePlannerApi.Controllers
         /// Получение пользователей, которые не имеют ни одного права
         /// </summary>
         [RightsAuthorize(Right.Admin)]
-        [HttpGet("{id:int}")]
+        [HttpGet("without-rights")]
         public async Task<ActionResult> GetUsersWithoutRights()
         {
             var usersWithoutRights = await _userStorage.GetUsersWithoutRights();
@@ -70,11 +70,22 @@ namespace RoutePlannerApi.Controllers
         /// Получение пользователей, которые имеют хотя бы одно право
         /// </summary>
         [RightsAuthorize(Right.Admin)]
-        [HttpGet("{id:int}")]
+        [HttpGet("with-rights")]
         public async Task<ActionResult> GetUsersWithAnyRight()
         {
             var usersWithAnyRight = await _userStorage.GetUsersWithAnyRight();
             return Ok(usersWithAnyRight);
+        }
+        
+        /// <summary>
+        /// Удаление пользователя по id
+        /// </summary>
+        [RightsAuthorize(Right.Admin)]
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult> DeleteUser(int id)
+        {
+            await _userStorage.DeleteUser(id);
+            return Ok();
         }
     }
 }

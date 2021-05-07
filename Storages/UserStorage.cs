@@ -15,6 +15,7 @@ namespace Storages
         Task<User> UpdateUser(int userId, UpdateUserDto updateUserDto);
         Task<User[]> GetUsersWithoutRights();
         Task<User[]> GetUsersWithAnyRight();
+        Task DeleteUser(int id);
     }
 
     public class UserStorage : IUserStorage
@@ -88,6 +89,15 @@ namespace Storages
                 .Where(user => user.UserRights != null && user.UserRights.Count > 0)
                 .ToArrayAsync();
             return usersWithAnyRight;
+        }
+
+        public async Task DeleteUser(int id)
+        {
+            await using var ctx = _contextFactory.Create();
+            var entry = new User {Id = id};
+            ctx.Users.Attach(entry);
+            ctx.Users.Remove(entry);
+            await ctx.SaveChangesAsync();
         }
     }
 }
