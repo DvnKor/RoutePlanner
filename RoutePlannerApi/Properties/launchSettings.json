@@ -20,8 +20,8 @@
     "RoutePlannerApi": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "api/managers",
       "applicationUrl": "http://192.168.0.104:7654",
+      "launchUrl": "api/users/current",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

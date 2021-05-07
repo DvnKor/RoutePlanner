@@ -1,5 +1,5 @@
+using System;
 using System.Configuration;
-using Entities.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Entities
@@ -15,7 +15,8 @@ namespace Entities
 
         public RoutePlannerContextFactory()
         {
-            var connectionString = ConfigurationManager.ConnectionStrings["PostgreSQLConnection"].ConnectionString;
+            var connectionString = Environment.GetEnvironmentVariable("DATABASE_CONNECTION_STRING") ?? 
+                                   ConfigurationManager.ConnectionStrings["PostgreSQLConnection"].ConnectionString;
             Options = new DbContextOptionsBuilder<RoutePlannerContext>()
                 .UseNpgsql(connectionString)
                 .Options;
@@ -23,10 +24,7 @@ namespace Entities
 
         public RoutePlannerContext Create()
         {
-            var ctx = new RoutePlannerContext(Options);
-            // ctx.RightInfos.AddRange(RightInfoHelpers.DefaultRights);
-            // ctx.SaveChanges();
-            return ctx;
+            return new RoutePlannerContext(Options);
         }
     }
 }
