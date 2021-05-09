@@ -23,16 +23,16 @@ namespace Storages
         public async Task<UserRight> AddRightToUser(int id, Right right)
         {
             await using var ctx = _contextFactory.Create();
-            var entity = await ctx.UserRights
+            var userRight = await ctx.UserRights
                 .FirstOrDefaultAsync(x => x.UserId == id && x.Right == right);
-            if (entity != null)
+            if (userRight != null)
             {
-                var userRight = new UserRight {UserId = id, Right = right};
-                ctx.Add(userRight);
-                await ctx.SaveChangesAsync();
                 return userRight;
             }
-            return null;
+            userRight = new UserRight {UserId = id, Right = right};
+            ctx.Add(userRight);
+            await ctx.SaveChangesAsync();
+            return userRight;
         }
     }
 }
