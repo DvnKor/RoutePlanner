@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Google.Apis.Auth;
 using Microsoft.AspNetCore.Http;
@@ -25,27 +26,28 @@ namespace RoutePlannerApi.Auth
                 return;
             }
             var token = authorizationHeader[0].Split(' ')[1];
-            var validPayload = await GoogleJsonWebSignature.ValidateAsync(token);
-
-            if (validPayload == null)
+            try
             {
+                var validPayload = await GoogleJsonWebSignature.ValidateAsync(token);
+                var userStorage = context.RequestServices.GetRequiredService<IUserStorage>();
+                var currentUser = await userStorage.GetByEmail(validPayload.Email);
+                if (currentUser == null)
+                {
+                    currentUser = validPayload.ToUser();
+                    currentUser.Id = await userStorage.AddUser(currentUser);
+                }
+
+                var userContext = context.RequestServices.GetRequiredService<IUserContext>();
+                userContext.SetUser(currentUser);
+            
+                await _next.Invoke(context);
+            }
+            catch (InvalidJwtException ex)
+            {
+                Console.WriteLine(ex);
                 context.Response.StatusCode = 403;
-                await context.Response.WriteAsync("Token is invalid");
-                return;
+                await context.Response.WriteAsync("JWT has expired");
             }
-            
-            var userStorage = context.RequestServices.GetRequiredService<IUserStorage>();
-            var currentUser = await userStorage.GetByEmail(validPayload.Email);
-            if (currentUser == null)
-            {
-                currentUser = validPayload.ToUser();
-                currentUser.Id = await userStorage.AddUser(currentUser);
-            }
-
-            var userContext = context.RequestServices.GetRequiredService<IUserContext>();
-            userContext.SetUser(currentUser);
-            
-            await _next.Invoke(context);
         }
     }
 }
