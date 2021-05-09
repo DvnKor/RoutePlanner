@@ -45,7 +45,7 @@ namespace RoutePlannerApi.Auth
             catch (InvalidJwtException ex)
             {
                 Console.WriteLine(ex);
-                context.Response.StatusCode = 403;
+                context.Response.StatusCode = 401;
                 await context.Response.WriteAsync("JWT has expired");
             }
         }
