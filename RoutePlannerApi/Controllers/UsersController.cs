@@ -85,7 +85,7 @@ namespace RoutePlannerApi.Controllers
         public async Task<ActionResult> DeleteUser(int id)
         {
             await _userStorage.DeleteUser(id);
-            return Ok();
+            return Ok(id);
         }
     }
 }
