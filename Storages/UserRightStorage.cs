@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using Entities;
 using Entities.Models;
 using Infrastructure.Rights;
+using Microsoft.EntityFrameworkCore;
 
 namespace Storages
 {
@@ -23,7 +24,7 @@ namespace Storages
         {
             await using var ctx = _contextFactory.Create();
             var entity = await ctx.UserRights
-                .FindAsync(new {UserId = id, Right = right});
+                .FirstOrDefaultAsync(x => x.UserId == id && x.Right == right);
             if (entity != null)
             {
                 var userRight = new UserRight {UserId = id, Right = right};
