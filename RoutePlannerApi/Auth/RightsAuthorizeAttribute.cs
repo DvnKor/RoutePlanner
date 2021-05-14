@@ -2,6 +2,7 @@ using System;
 using System.Net;
 using System.Threading.Tasks;
 using Infrastructure.Rights;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -29,7 +30,7 @@ namespace RoutePlannerApi.Auth
 
             if (!hasRight)
             {
-                context.HttpContext.Response.StatusCode = (int) HttpStatusCode.Forbidden;
+                await context.HttpContext.ForbidAsync();
             }
         }
     }
