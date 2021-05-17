@@ -13,8 +13,8 @@ namespace Storages
         Task<User> GetByEmail(string email);
         Task<int> AddUser(User user);
         Task<User> UpdateUser(int userId, UpdateUserDto updateUserDto);
-        Task<User[]> GetUsersWithoutRights();
-        Task<User[]> GetUsersWithAnyRight();
+        Task<User[]> GetUsersWithoutRights(int offset, int limit, string query);
+        Task<User[]> GetUsersWithAnyRight(int offset, int limit, string query);
         Task DeleteUser(int id);
     }
 
@@ -71,22 +71,26 @@ namespace Storages
             return userToUpdate;
         }
 
-        public async Task<User[]> GetUsersWithoutRights()
+        public async Task<User[]> GetUsersWithoutRights(int offset, int limit, string query)
         {
             await using var ctx = _contextFactory.Create();
             var usersWithoutRights = await ctx.Users
                 .WithRights()
                 .Where(user => user.UserRights == null || user.UserRights.Count == 0)
+                .Search(query)
+                .LimitByOffset(offset, limit)
                 .ToArrayAsync();
             return usersWithoutRights;
         }
 
-        public async Task<User[]> GetUsersWithAnyRight()
+        public async Task<User[]> GetUsersWithAnyRight(int offset, int limit, string query)
         {
             await using var ctx = _contextFactory.Create();
             var usersWithAnyRight = await ctx.Users
                 .WithRights()
                 .Where(user => user.UserRights != null && user.UserRights.Count > 0)
+                .Search(query)
+                .LimitByOffset(offset, limit)
                 .ToArrayAsync();
             return usersWithAnyRight;
         }
