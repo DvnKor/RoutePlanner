@@ -9,12 +9,11 @@ namespace Storages
 {
     public interface IUserStorage
     {
-        Task<User> GetById(int id);
         Task<User> GetByEmail(string email);
         Task<int> AddUser(User user);
-        Task<User> UpdateUser(int userId, UpdateUserDto updateUserDto);
-        Task<User[]> GetUsersWithoutRights(int offset, int limit, string query);
-        Task<User[]> GetUsersWithAnyRight(int offset, int limit, string query);
+        Task<UserDto> UpdateUser(int userId, UpdateUserDto updateUserDto);
+        Task<UserDto[]> GetUsersWithoutRights(int offset, int limit, string query);
+        Task<UserDto[]> GetUsersWithAnyRight(int offset, int limit, string query);
         Task DeleteUser(int id);
     }
 
@@ -25,14 +24,6 @@ namespace Storages
         public UserStorage(IRoutePlannerContextFactory contextFactory)
         {
             _contextFactory = contextFactory;
-        }
-
-        public async Task<User> GetById(int id)
-        {
-            await using var ctx = _contextFactory.Create();
-            return await ctx.Users
-                .WithRights()
-                .FirstOrDefaultAsync(user => user.Id == id);
         }
 
         public async Task<User> GetByEmail(string email)
@@ -51,7 +42,7 @@ namespace Storages
             return user.Id;
         }
 
-        public async Task<User> UpdateUser(int userId, UpdateUserDto updateUserDto)
+        public async Task<UserDto> UpdateUser(int userId, UpdateUserDto updateUserDto)
         {
             await using var ctx = _contextFactory.Create();
             var userToUpdate = await ctx.Users
@@ -68,10 +59,10 @@ namespace Storages
             ctx.Users.Update(userToUpdate);
             await ctx.SaveChangesAsync();
             
-            return userToUpdate;
+            return userToUpdate.ToDto();
         }
 
-        public async Task<User[]> GetUsersWithoutRights(int offset, int limit, string query)
+        public async Task<UserDto[]> GetUsersWithoutRights(int offset, int limit, string query)
         {
             await using var ctx = _contextFactory.Create();
             var usersWithoutRights = await ctx.Users
@@ -79,11 +70,12 @@ namespace Storages
                 .Where(user => user.UserRights == null || user.UserRights.Count == 0)
                 .Search(query)
                 .LimitByOffset(offset, limit)
+                .Select(user => user.ToDto())
                 .ToArrayAsync();
             return usersWithoutRights;
         }
 
-        public async Task<User[]> GetUsersWithAnyRight(int offset, int limit, string query)
+        public async Task<UserDto[]> GetUsersWithAnyRight(int offset, int limit, string query)
         {
             await using var ctx = _contextFactory.Create();
             var usersWithAnyRight = await ctx.Users
@@ -91,6 +83,7 @@ namespace Storages
                 .Where(user => user.UserRights != null && user.UserRights.Count > 0)
                 .Search(query)
                 .LimitByOffset(offset, limit)
+                .Select(user => user.ToDto())
                 .ToArrayAsync();
             return usersWithAnyRight;
         }

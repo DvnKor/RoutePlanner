@@ -45,8 +45,7 @@ namespace RoutePlannerApi.Controllers
                 return Forbid();
             }
             
-            var user = await _userStorage.UpdateUser(id, updateUserDto);
-            var userDto = user?.ToDto();
+            var userDto = await _userStorage.UpdateUser(id, updateUserDto);
             if (userDto == null)
             {
                 return NotFound(id);
