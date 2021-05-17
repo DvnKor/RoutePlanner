@@ -61,9 +61,9 @@ namespace RoutePlannerApi.Controllers
         [RightsAuthorize(Right.Admin)]
         [HttpGet("without-rights")]
         public async Task<ActionResult> GetUsersWithoutRights(
-            [FromQuery] int offset, [FromQuery] int limit, [FromQuery] string search)
+            [FromQuery] int offset, [FromQuery] int limit, [FromQuery] string query)
         {
-            var usersWithoutRights = await _userStorage.GetUsersWithoutRights(offset, limit, search);
+            var usersWithoutRights = await _userStorage.GetUsersWithoutRights(offset, limit, query);
             return Ok(usersWithoutRights);
         }
 
@@ -73,9 +73,9 @@ namespace RoutePlannerApi.Controllers
         [RightsAuthorize(Right.Admin)]
         [HttpGet("with-rights")]
         public async Task<ActionResult> GetUsersWithAnyRight(
-            [FromQuery] int offset, [FromQuery] int limit, [FromQuery] string search)
+            [FromQuery] int offset, [FromQuery] int limit, [FromQuery] string query)
         {
-            var usersWithAnyRight = await _userStorage.GetUsersWithAnyRight(offset, limit, search);
+            var usersWithAnyRight = await _userStorage.GetUsersWithAnyRight(offset, limit, query);
             return Ok(usersWithAnyRight);
         }
         

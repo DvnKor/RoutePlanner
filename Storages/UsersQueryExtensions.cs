@@ -21,10 +21,10 @@ namespace Storages
             }
             var lowerQuery = query.ToLower();
             return users.Where(user =>
-                user.Name.Contains(lowerQuery) ||
-                user.Email.Contains(lowerQuery) ||
-                user.MobilePhone.Contains(lowerQuery) ||
-                user.Telegram.Contains(lowerQuery));
+                user.Name.ToLower().Contains(lowerQuery) ||
+                (user.Email != null && user.Email.ToLower().Contains(lowerQuery)) ||
+                (user.MobilePhone != null && user.MobilePhone.ToLower().Contains(lowerQuery)) ||
+                (user.Telegram != null && user.Telegram.ToLower().Contains(lowerQuery)));
         }
     }
 }
