@@ -11,7 +11,7 @@ namespace Storages
     {
         Task<User> GetByEmail(string email);
         Task<int> AddUser(User user);
-        Task<UserDto> UpdateUser(int userId, UpdateUserDto updateUserDto);
+        Task<UserDto> UpdateUser(int id, UpdateUserDto updateUserDto);
         Task<UserDto[]> GetUsersWithoutRights(int offset, int limit, string query);
         Task<UserDto[]> GetUsersWithAnyRight(int offset, int limit, string query);
         Task DeleteUser(int id);
@@ -42,12 +42,12 @@ namespace Storages
             return user.Id;
         }
 
-        public async Task<UserDto> UpdateUser(int userId, UpdateUserDto updateUserDto)
+        public async Task<UserDto> UpdateUser(int id, UpdateUserDto updateUserDto)
         {
             await using var ctx = _contextFactory.Create();
             var userToUpdate = await ctx.Users
                 .WithRights()
-                .FirstOrDefaultAsync(user => user.Id == userId);
+                .FirstOrDefaultAsync(user => user.Id == id);
             if (userToUpdate == null)
             {
                 return null;
