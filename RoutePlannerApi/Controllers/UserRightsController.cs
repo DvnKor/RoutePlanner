@@ -19,6 +19,9 @@ namespace RoutePlannerApi.Controllers
             _userRightStorage = userRightStorage;
         }
 
+        /// <summary>
+        /// Выдача права пользователю
+        /// </summary>
         [HttpPost("{id:int}/rights/{right:int}")]
         public async Task<ActionResult> AddRightToUser(int id, int right)
         {
