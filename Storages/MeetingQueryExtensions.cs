@@ -3,7 +3,7 @@ using Entities.Models;
 
 namespace Storages
 {
-    public static class MeetingsQueryExtensions
+    public static class MeetingQueryExtensions
     {
         public static IQueryable<Meeting> Search(this IQueryable<Meeting> meetings, string query)
         {

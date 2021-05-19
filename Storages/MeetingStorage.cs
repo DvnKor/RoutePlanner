@@ -19,11 +19,11 @@ namespace Storages
         Task<bool> DeleteMeeting(int id);
     }
     
-    public class MeetingsStorage : IMeetingsStorage
+    public class MeetingStorage : IMeetingsStorage
     {
         private readonly IRoutePlannerContextFactory _contextFactory;
 
-        public MeetingsStorage(IRoutePlannerContextFactory contextFactory)
+        public MeetingStorage(IRoutePlannerContextFactory contextFactory)
         {
             _contextFactory = contextFactory;
         }

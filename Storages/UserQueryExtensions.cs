@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Storages
 {
-    public static class UsersQueryExtensions
+    public static class UserQueryExtensions
     {
         public static IQueryable<User> IncludeRights(this IQueryable<User> users)
         {
