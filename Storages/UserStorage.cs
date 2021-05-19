@@ -12,8 +12,7 @@ namespace Storages
         Task<User> GetByEmail(string email);
         Task<int> AddUser(User user);
         Task<UserDto> UpdateUser(int id, UpdateUserDto updateUserDto);
-        Task<UserDto[]> GetUsersWithoutRights(int offset, int limit, string query);
-        Task<UserDto[]> GetUsersWithAnyRight(int offset, int limit, string query);
+        Task<UserDto[]> GetUsers(int offset, int limit, string query, bool shouldHaveRights);
         Task DeleteUser(int id);
     }
 
@@ -30,7 +29,7 @@ namespace Storages
         {
             await using var ctx = _contextFactory.Create();
             return await ctx.Users
-                .WithRights()
+                .IncludeRights()
                 .FirstOrDefaultAsync(user => user.Email == email);
         }
 
@@ -46,7 +45,7 @@ namespace Storages
         {
             await using var ctx = _contextFactory.Create();
             var userToUpdate = await ctx.Users
-                .WithRights()
+                .IncludeRights()
                 .FirstOrDefaultAsync(user => user.Id == id);
             if (userToUpdate == null)
             {
@@ -62,30 +61,31 @@ namespace Storages
             return userToUpdate.ToDto();
         }
 
-        public async Task<UserDto[]> GetUsersWithoutRights(int offset, int limit, string query)
+        public async Task<UserDto[]> GetUsers(
+            int offset,
+            int limit, 
+            string query,
+            bool shouldHaveRights)
         {
             await using var ctx = _contextFactory.Create();
-            var usersWithoutRights = await ctx.Users
-                .WithRights()
-                .Where(user => user.UserRights == null || user.UserRights.Count == 0)
+            var usersQuery = ctx.Users.IncludeRights();
+            if (shouldHaveRights)
+            {
+                usersQuery = usersQuery
+                    .Where(user => user.UserRights != null && user.UserRights.Count > 0);
+            }
+            else
+            {
+                usersQuery = usersQuery
+                    .Where(user => user.UserRights == null || user.UserRights.Count == 0);
+            }
+            var suitableUsers = await usersQuery
                 .Search(query)
+                .OrderBy(user => user.Id)
                 .LimitByOffset(offset, limit)
                 .Select(user => user.ToDto())
                 .ToArrayAsync();
-            return usersWithoutRights;
-        }
-
-        public async Task<UserDto[]> GetUsersWithAnyRight(int offset, int limit, string query)
-        {
-            await using var ctx = _contextFactory.Create();
-            var usersWithAnyRight = await ctx.Users
-                .WithRights()
-                .Where(user => user.UserRights != null && user.UserRights.Count > 0)
-                .Search(query)
-                .LimitByOffset(offset, limit)
-                .Select(user => user.ToDto())
-                .ToArrayAsync();
-            return usersWithAnyRight;
+            return suitableUsers;
         }
 
         public async Task DeleteUser(int id)

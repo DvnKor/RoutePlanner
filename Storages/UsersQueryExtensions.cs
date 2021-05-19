@@ -6,7 +6,7 @@ namespace Storages
 {
     public static class UsersQueryExtensions
     {
-        public static IQueryable<User> WithRights(this IQueryable<User> users)
+        public static IQueryable<User> IncludeRights(this IQueryable<User> users)
         {
             return users
                 .Include(user => user.UserRights)
