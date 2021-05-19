@@ -44,6 +44,7 @@ namespace Storages
                 .Include(meeting => meeting.Client)
                 .Where(meeting => meeting.StartTime.Date == date)
                 .Search(query)
+                .OrderBy(meeting => meeting.Id)
                 .LimitByOffset(offset, limit)
                 .ToArrayAsync();
             return meetings;

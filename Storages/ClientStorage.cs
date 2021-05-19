@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading.Tasks;
 using Contracts;
 using Entities;
@@ -40,6 +41,7 @@ namespace Storages
             await using var ctx = _contextFactory.Create();
             var clients = await ctx.Clients
                 .Search(query)
+                .OrderBy(client => client.Id)
                 .LimitByOffset(offset, limit)
                 .ToArrayAsync();
             return clients;
