@@ -2,7 +2,7 @@ using System.Linq;
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Storages
+namespace Storages.Extensions
 {
     public static class UserQueryExtensions
     {

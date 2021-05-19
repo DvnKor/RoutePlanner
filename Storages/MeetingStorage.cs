@@ -5,6 +5,7 @@ using Contracts;
 using Entities;
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
+using Storages.Extensions;
 
 namespace Storages
 {
@@ -14,7 +15,7 @@ namespace Storages
 
         Task<Meeting[]> GetMeetings(int offset, int limit, string query, DateTime date);
 
-        Task<Meeting> UpdateMeeting(int id, UpdateMeetingDto meeting);
+        Task<Meeting> UpdateMeeting(int id, UpdateMeetingDto updateMeetingDto);
 
         Task<bool> DeleteMeeting(int id);
     }

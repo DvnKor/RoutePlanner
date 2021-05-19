@@ -1,7 +1,7 @@
 using System.Linq;
 using Entities.Models;
 
-namespace Storages
+namespace Storages.Extensions
 {
     public static class MeetingQueryExtensions
     {
