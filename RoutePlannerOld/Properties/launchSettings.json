@@ -3,8 +3,11 @@
   "profiles": {
     "RoutePlannerOld": {
       "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "api/managers",
+      "applicationUrl": "http://192.168.0.104:7654",
       "environmentVariables": {
-        
+        "ASPNETCORE_ENVIRONMENT": "Development"
       }
     }
   }
