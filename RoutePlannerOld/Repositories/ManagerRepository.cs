@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using RoutePlannerApi.Domain;
+using RoutePlannerOld.Domain;
 
-namespace RoutePlannerApi.Repositories
+namespace RoutePlannerOld.Repositories
 {
     public class ManagerRepository
     {

@@ -1,4 +1,4 @@
-﻿namespace RoutePlannerApi.Domain
+﻿namespace RoutePlannerOld.Domain
 {
     public class Customer
     {

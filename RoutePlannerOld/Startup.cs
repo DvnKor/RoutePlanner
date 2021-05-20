@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 using System.Reflection;
-using Entities;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -9,10 +9,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
-using RoutePlannerApi.Auth;
-using Storages;
+using RoutePlannerOld.Domain;
+using RoutePlannerOld.Models;
+using RoutePlannerOld.Repositories;
+using RoutePlannerOld.Visualization;
 
-namespace RoutePlannerApi
+namespace RoutePlannerOld
 {
     public class Startup
     {
@@ -26,6 +28,7 @@ namespace RoutePlannerApi
             Configuration = configuration;
         }
         
+        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDatabaseDeveloperPageExceptionFilter();
@@ -36,16 +39,23 @@ namespace RoutePlannerApi
                     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                 });
 
-            // storages
-            services.AddSingleton<IRoutePlannerContextFactory, RoutePlannerContextFactory>();
-            services.AddSingleton<IUserStorage, UserStorage>();
-            services.AddSingleton<IUserRightStorage, UserRightStorage>();
-            services.AddSingleton<IClientStorage, ClientStorage>();
-            services.AddSingleton<IMeetingsStorage, MeetingStorage>();
-            services.AddSingleton<IManagerScheduleStorage, ManagerScheduleStorage>();
-            services.AddSingleton<IRouteStorage, RouteStorage>();
+            services.AddSingleton<CustomerRepository>();
+            services.AddSingleton<ManagerRepository>();
+            services.AddSingleton<RouteVisualizer>();
+            services.AddSingleton<RoutePlanner>();
+            services.AddSingleton<RoutesRepository>();
 
-            services.AddSingleton<IUserContext, UserContext>();
+            var mappingConfig = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<Customer, CustomerDto>();
+                cfg.CreateMap<CustomerDto, Customer>();
+                cfg.CreateMap<Coordinate, CoordinateDto>();
+                cfg.CreateMap<CoordinateDto, Coordinate>();
+                cfg.CreateMap<Manager, ManagerDto>();
+            });
+            
+            var mapper = mappingConfig.CreateMapper();
+            services.AddSingleton(mapper);
 
             services.AddSwaggerGen(options =>
             {
@@ -68,12 +78,10 @@ namespace RoutePlannerApi
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "RoutePlanner API V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "RoutePlannerOld API V1");
             });
 
             app.UseRouting();
-            
-            app.UseMiddleware<AuthMiddleware>();
             
             app.UseEndpoints(endpoints =>
             {

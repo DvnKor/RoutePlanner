@@ -6,9 +6,9 @@ using System.Text;
 using GraphVizWrapper;
 using GraphVizWrapper.Commands;
 using GraphVizWrapper.Queries;
-using RoutePlannerApi.Domain;
+using RoutePlannerOld.Domain;
 
-namespace RoutePlannerApi.Visualization
+namespace RoutePlannerOld.Visualization
 {
     public class RouteVisualizer
     {

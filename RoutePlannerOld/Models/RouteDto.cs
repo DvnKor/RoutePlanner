@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace RoutePlannerApi.Models
+namespace RoutePlannerOld.Models
 {
     public class RouteDto
     {

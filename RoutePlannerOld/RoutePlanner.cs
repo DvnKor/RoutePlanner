@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using RoutePlannerApi.Domain;
-using RoutePlannerApi.Repositories;
-using RoutePlannerApi.Visualization;
+using RoutePlannerOld.Domain;
+using RoutePlannerOld.Repositories;
+using RoutePlannerOld.Visualization;
 
-namespace RoutePlannerApi
+namespace RoutePlannerOld
 {
     public class RoutePlanner
     {

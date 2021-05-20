@@ -8,7 +8,7 @@ using GraphVizWrapper;
 using GraphVizWrapper.Commands;
 using GraphVizWrapper.Queries;
 
-namespace RoutePlannerApi.Visualization
+namespace RoutePlannerOld.Visualization
 {
     public class GraphGeneration : IGraphGeneration
     {

@@ -1,4 +1,4 @@
-﻿namespace RoutePlannerApi.Models
+﻿namespace RoutePlannerOld.Models
 {
     public class ManagerDto
     {

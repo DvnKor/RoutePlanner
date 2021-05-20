@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace RoutePlannerApi.Domain
+namespace RoutePlannerOld.Domain
 {
     public class Route
     {
