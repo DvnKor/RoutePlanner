@@ -28,7 +28,7 @@ namespace RoutePlannerApi.Controllers
         public async Task<ActionResult> CreateMeeting([FromBody] Meeting meeting)
         {
             var meetingId = await _meetingsStorage.CreateMeeting(meeting);
-            return Ok(meetingId);
+            return Ok(meeting);
         }
         
         /// <summary>

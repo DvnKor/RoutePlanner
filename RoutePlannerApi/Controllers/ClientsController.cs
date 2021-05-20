@@ -27,7 +27,7 @@ namespace RoutePlannerApi.Controllers
         public async Task<ActionResult> CreateClient([FromBody] Client client)
         {
             var clientId = await _clientStorage.CreateClient(client);
-            return Ok(clientId);
+            return Ok(client);
         }
         
         /// <summary>
