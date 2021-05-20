@@ -52,6 +52,7 @@ namespace RoutePlannerApi
             services.AddScoped<IUserRightStorage, UserRightStorage>();
             services.AddScoped<IClientStorage, ClientStorage>();
             services.AddScoped<IMeetingsStorage, MeetingStorage>();
+            services.AddScoped<IManagerScheduleStorage, ManagerScheduleStorage>();
 
             services.AddSingleton<IUserContext, UserContext>();
 
