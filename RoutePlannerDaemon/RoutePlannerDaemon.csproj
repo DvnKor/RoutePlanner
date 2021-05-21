@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net5.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="SimpleInjector" Version="5.3.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\GeneticAlgorithm.Contracts\GeneticAlgorithm.Contracts.csproj" />
+      <ProjectReference Include="..\GeneticAlgorithm.Domain\GeneticAlgorithm.Domain.csproj" />
+    </ItemGroup>
+
+</Project>
