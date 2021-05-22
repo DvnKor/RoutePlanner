@@ -23,8 +23,8 @@ namespace GeneticAlgorithm.Domain
         }
 
         public Genotype GetBestRoutes(
-            List<ManagerSchedule> managerSchedules,
-            List<Meeting> meetings, 
+            IList<ManagerSchedule> managerSchedules,
+            IList<Meeting> meetings, 
             int generationCount, 
             int populationSize,
             int eliteSize, 

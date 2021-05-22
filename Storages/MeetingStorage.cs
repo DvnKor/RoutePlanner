@@ -9,9 +9,11 @@ using Storages.Extensions;
 
 namespace Storages
 {
-    public interface IMeetingsStorage
+    public interface IMeetingStorage
     {
         Task<int> CreateMeeting(Meeting meeting);
+
+        Task<Meeting[]> GetMeetings(DateTime date);
 
         Task<Meeting[]> GetMeetings(int offset, int limit, string query, DateTime date);
 
@@ -20,7 +22,7 @@ namespace Storages
         Task<bool> DeleteMeeting(int id);
     }
     
-    public class MeetingStorage : IMeetingsStorage
+    public class MeetingStorage : IMeetingStorage
     {
         private readonly IRoutePlannerContextFactory _contextFactory;
 
@@ -37,12 +39,23 @@ namespace Storages
             return meeting.Id;
         }
 
+        public async Task<Meeting[]> GetMeetings(DateTime date)
+        {
+            await using var ctx = _contextFactory.Create();
+            var meetings = await ctx.Meetings
+                .Include(meeting => meeting.Client)
+                .Where(meeting => meeting.StartTime.Date == date.Date && meeting.StartTime > date)
+                .OrderBy(meeting => meeting.Id)
+                .ToArrayAsync();
+            return meetings;
+        }
+
         public async Task<Meeting[]> GetMeetings(int offset, int limit, string query, DateTime date)
         {
             await using var ctx = _contextFactory.Create();
             var meetings = await ctx.Meetings
                 .Include(meeting => meeting.Client)
-                .Where(meeting => meeting.StartTime.Date == date)
+                .Where(meeting => meeting.StartTime.Date == date.Date)
                 .Search(query)
                 .OrderBy(meeting => meeting.Id)
                 .LimitByOffset(offset, limit)

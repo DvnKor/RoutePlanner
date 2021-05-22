@@ -2,6 +2,7 @@
 using GeneticAlgorithm.Contracts;
 using GeneticAlgorithm.Domain;
 using SimpleInjector;
+using Storages;
 
 namespace RoutePlannerDaemon
 {
@@ -25,6 +26,9 @@ namespace RoutePlannerDaemon
             container.RegisterSingleton<IGenerationCreator, GenerationCreator>();
             
             container.RegisterSingleton<IRoutePlanner, RoutePlanner>();
+
+            container.RegisterSingleton<IMeetingStorage, MeetingStorage>();
+            container.RegisterSingleton<IManagerScheduleStorage, ManagerScheduleStorage>();
             
             container.Register<RoutesUpdater>();
 

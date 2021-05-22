@@ -14,9 +14,9 @@ namespace RoutePlannerApi.Controllers
     [ApiController]
     public class MeetingsController : Controller
     {
-        private readonly IMeetingsStorage _meetingsStorage;
+        private readonly IMeetingStorage _meetingsStorage;
 
-        public MeetingsController(IMeetingsStorage meetingsStorage)
+        public MeetingsController(IMeetingStorage meetingsStorage)
         {
             _meetingsStorage = meetingsStorage;
         }

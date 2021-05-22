@@ -31,7 +31,7 @@ namespace Storages
                 .Include(route => route.ManagerSchedule)
                 .FirstOrDefaultAsync(route =>
                     route.ManagerSchedule.UserId == managerId &&
-                    route.ManagerSchedule.StartTime.Date == DateTime.Now.Date);
+                    route.ManagerSchedule.StartTime.Date == DateTime.UtcNow.AddHours(5).Date);
             return suitableRoute;
         }
 

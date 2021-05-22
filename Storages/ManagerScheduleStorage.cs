@@ -11,6 +11,8 @@ namespace Storages
 {
     public interface IManagerScheduleStorage
     {
+        Task<ManagerSchedule[]> GetManagerSchedules(DateTime date);
+        
         Task<ManagerSchedule[]> GetManagerScheduleForWeek(int managerId, DateTime weekDate);
         
         Task<int> CreateManagerSchedule(ManagerSchedule managerSchedule);
@@ -28,6 +30,16 @@ namespace Storages
         public ManagerScheduleStorage(IRoutePlannerContextFactory contextFactory)
         {
             _contextFactory = contextFactory;
+        }
+        
+        public async Task<ManagerSchedule[]> GetManagerSchedules(DateTime date)
+        {
+            await using var ctx = _contextFactory.Create();
+            var managerSchedules = await ctx.ManagerSchedules
+                .Where(managerSchedule => managerSchedule.StartTime.Date == date.Date)
+                .OrderBy(managerSchedule => managerSchedule.StartTime)
+                .ToArrayAsync();
+            return managerSchedules;
         }
 
         public async Task<ManagerSchedule[]> GetManagerScheduleForWeek(int managerId, DateTime weekDate)

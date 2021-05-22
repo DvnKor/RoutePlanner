@@ -10,8 +10,8 @@ namespace GeneticAlgorithm.Domain
     public class PopulationGenerator : IPopulationGenerator
     {
         public List<Genotype> CreatePopulation(
-            List<ManagerSchedule> managerSchedules,
-            List<Meeting> meetings, 
+            IList<ManagerSchedule> managerSchedules,
+            IList<Meeting> meetings, 
             int populationSize)
         {
             return Enumerable.Range(0, populationSize)
@@ -20,7 +20,7 @@ namespace GeneticAlgorithm.Domain
                 .ToList();
         }
 
-        private Genotype CreateGenotype(IEnumerable<ManagerSchedule> managerSchedules, List<Meeting> meetings)
+        private Genotype CreateGenotype(IEnumerable<ManagerSchedule> managerSchedules, IList<Meeting> meetings)
         {
             var routes = managerSchedules
                 .Select(managerSchedule => CreateRoute(managerSchedule, meetings))

@@ -12,6 +12,7 @@
     <ItemGroup>
       <ProjectReference Include="..\GeneticAlgorithm.Contracts\GeneticAlgorithm.Contracts.csproj" />
       <ProjectReference Include="..\GeneticAlgorithm.Domain\GeneticAlgorithm.Domain.csproj" />
+      <ProjectReference Include="..\Storages\Storages.csproj" />
     </ItemGroup>
 
 </Project>

@@ -20,7 +20,7 @@ namespace GeneticAlgorithm.Tests
             var managerSchedules = Enumerable.Range(0, 3)
                 .Select(GetRandomManagerSchedule)
                 .ToList();
-            var clients = Enumerable.Range(0, 100)
+            var meetings = Enumerable.Range(0, 100)
                 .Select(GetRandomMeeting)
                 .ToList();
             var generationCount = 500;
@@ -30,7 +30,7 @@ namespace GeneticAlgorithm.Tests
 
             var bestRoutes = _routePlanner.GetBestRoutes(
                 managerSchedules,
-                clients,
+                meetings,
                 generationCount,
                 populationSize,
                 eliteSize,

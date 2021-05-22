@@ -41,7 +41,7 @@ namespace RoutePlannerApi
             services.AddSingleton<IUserStorage, UserStorage>();
             services.AddSingleton<IUserRightStorage, UserRightStorage>();
             services.AddSingleton<IClientStorage, ClientStorage>();
-            services.AddSingleton<IMeetingsStorage, MeetingStorage>();
+            services.AddSingleton<IMeetingStorage, MeetingStorage>();
             services.AddSingleton<IManagerScheduleStorage, ManagerScheduleStorage>();
             services.AddSingleton<IRouteStorage, RouteStorage>();
 
