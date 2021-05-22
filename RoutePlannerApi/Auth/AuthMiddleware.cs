@@ -18,14 +18,16 @@ namespace RoutePlannerApi.Auth
 
         public async Task InvokeAsync(HttpContext context)
         {
+            var accessToken = context.Request.Query["access_token"].ToString();
             var authorizationHeader = context.Request.Headers["Authorization"].ToArray();
-            if (authorizationHeader.Length == 0)
+            if (authorizationHeader.Length == 0 && string.IsNullOrEmpty(accessToken))
             {
                 context.Response.StatusCode = 403;
                 await context.Response.WriteAsync("Token is invalid");
                 return;
             }
-            var token = authorizationHeader[0].Split(' ')[1];
+
+            var token = !string.IsNullOrEmpty(accessToken) ? accessToken : authorizationHeader[0].Split(' ')[1];
             try
             {
                 var validPayload = await GoogleJsonWebSignature.ValidateAsync(token);
