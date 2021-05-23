@@ -18,7 +18,7 @@ namespace GeneticAlgorithm.Domain
 
             var denominator = distance / 1000 + waitingTime / 5;
             
-            return numerator / denominator;
+            return denominator != 0 ? numerator / denominator : numerator;
         }
     }
 }

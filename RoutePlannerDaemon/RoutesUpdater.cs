@@ -36,7 +36,7 @@ namespace RoutePlannerDaemon
             while (true)
             {
                 var now = DateTime.UtcNow.AddHours(5);
-                Console.WriteLine($"Start update routes {now:g}");
+                Console.WriteLine($"Началось обновление маршрутов {now:g}");
 
                 var algorithmStartTime = now + _reserveMeetingTime;
                 var meetings = await _meetingStorage.GetMeetings(algorithmStartTime);
