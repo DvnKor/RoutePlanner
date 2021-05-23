@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Entities;
 using GeneticAlgorithm.Contracts;
 using GeneticAlgorithm.Domain;
 using SimpleInjector;
@@ -27,6 +28,7 @@ namespace RoutePlannerDaemon
             
             container.RegisterSingleton<IRoutePlanner, RoutePlanner>();
 
+            container.RegisterSingleton<IRoutePlannerContextFactory, RoutePlannerContextFactory>();
             container.RegisterSingleton<IMeetingStorage, MeetingStorage>();
             container.RegisterSingleton<IManagerScheduleStorage, ManagerScheduleStorage>();
             container.RegisterSingleton<IRouteStorage, RouteStorage>();
