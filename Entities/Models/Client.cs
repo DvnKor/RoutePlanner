@@ -13,8 +13,6 @@ namespace Entities.Models
         
         public string Email { get; set; }
         
-        public string Picture { get; set; }
-        
         public string MobilePhone { get; set; }
         
         public string Telegram { get; set; }
