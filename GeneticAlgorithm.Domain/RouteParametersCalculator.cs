@@ -16,9 +16,9 @@ namespace GeneticAlgorithm.Domain
         public RouteParametersCalculator(IRouteStepCalculator routeStepCalculator)
         {
             _routeStepCalculator = routeStepCalculator;
-            // Расчет расстояния и времени в пути между двумя координатами кэшируется на 15 минут
+            // Расчет расстояния и времени в пути между двумя координатами кэшируется на 10 минут
             _routeStepCache = CacheFactory
-                .CreateExpiringCache<(Coordinate, Coordinate), (double, double)>(RouteStepCacheValueFactory, 15);
+                .CreateExpiringCache<(Coordinate, Coordinate), (double, double)>(RouteStepCacheValueFactory, 10);
         }
 
         public void CalculateParameters(Route route, List<Meeting> takenMeetings)

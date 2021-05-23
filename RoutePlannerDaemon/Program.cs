@@ -29,6 +29,7 @@ namespace RoutePlannerDaemon
 
             container.RegisterSingleton<IMeetingStorage, MeetingStorage>();
             container.RegisterSingleton<IManagerScheduleStorage, ManagerScheduleStorage>();
+            container.RegisterSingleton<IRouteStorage, RouteStorage>();
             
             container.Register<RoutesUpdater>();
 
