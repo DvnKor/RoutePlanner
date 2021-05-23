@@ -9,4 +9,8 @@
       <ProjectReference Include="..\Infrastructure.Cache\Infrastructure.Cache.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="gmaps-api-net" Version="0.32.0" />
+    </ItemGroup>
+
 </Project>
