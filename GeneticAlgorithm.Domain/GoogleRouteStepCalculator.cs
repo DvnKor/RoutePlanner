@@ -10,13 +10,14 @@ namespace GeneticAlgorithm.Domain
 {
     public class GoogleRouteStepCalculator : IRouteStepCalculator
     {
+        private const string RussianLanguage = "ru";
         private readonly DistanceMatrixService _distanceMatrixService;
 
         public GoogleRouteStepCalculator()
         {
             var mapsApiKey = 
                 Environment.GetEnvironmentVariable("GOOGLE_MAPS_API_KEY") ??
-                ConfigurationManager.AppSettings["GoogleMapsApiKey"];
+                ConfigurationManager.AppSettings.Get("GoogleMapsApiKey");
 
             GoogleSigned.AssignAllServices(new GoogleSigned(mapsApiKey));
             _distanceMatrixService = new DistanceMatrixService();
@@ -24,7 +25,10 @@ namespace GeneticAlgorithm.Domain
 
         public (double distance, double time) CalculateRouteStep(Coordinate from, Coordinate to)
         {
-            var matrixRequest = new DistanceMatrixRequest();
+            var matrixRequest = new DistanceMatrixRequest
+            {
+                Language = RussianLanguage,
+            };
             matrixRequest.AddOrigin(new LatLng(from.Latitude, from.Longitude));
             matrixRequest.AddDestination(new LatLng(to.Latitude, to.Longitude));
             var response = _distanceMatrixService.GetResponse(matrixRequest);
