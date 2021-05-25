@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Google.Maps;
 using Google.Maps.Internal;
 
-namespace GeneticAlgorithm.Domain.RouteStepCalculator
+namespace GoogleMaps.Client
 {
     public class DistanceMatrixAdvancedService : IDisposable
     {

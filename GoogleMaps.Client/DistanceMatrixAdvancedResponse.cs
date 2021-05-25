@@ -1,27 +1,14 @@
 using Google.Maps;
-using Google.Maps.Common;
 using Google.Maps.DistanceMatrix;
 using Newtonsoft.Json;
 
-namespace GeneticAlgorithm.Domain.RouteStepCalculator
+namespace GoogleMaps.Client
 {
     [JsonObject(MemberSerialization.OptIn)]
-    public class DistanceMatrixAdvancedResponse : IServiceResponse
+    public class DistanceMatrixAdvancedResponse : DistanceMatrixResponse
     {
-        [JsonProperty("status")]
-        public ServiceResponseStatus Status { get; set; }
-
-        [JsonProperty("error_message")]
-        public string ErrorMessage { get; set; }
-
-        [JsonProperty("destination_addresses")]
-        public string[] DestinationAddresses { get; set; }
-
-        [JsonProperty("origin_addresses")]
-        public string[] OriginAddresses { get; set; }
-
         [JsonProperty("rows")]
-        public DistanceMatrixAdvancedRows[] Rows { get; set; }
+        public new DistanceMatrixAdvancedRows[] Rows { get; set; }
 
         [JsonObject(MemberSerialization.OptIn)]
         public class DistanceMatrixAdvancedRows

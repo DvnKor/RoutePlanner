@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Linq;
 using GeneticAlgorithm.Contracts;
 using Google.Maps;
+using GoogleMaps.Client;
 using Infrastructure.Common;
 
 namespace GeneticAlgorithm.Domain.RouteStepCalculator
@@ -29,7 +30,7 @@ namespace GeneticAlgorithm.Domain.RouteStepCalculator
             {
                 Language = RussianLanguage,
                 Mode = TravelMode.driving,
-                DepartureTime = departureTime
+                DepartureTime = departureTime.AddHours(-TimezoneProvider.OffsetInHours)
             };
             matrixRequest.AddOrigin(new LatLng(from.Latitude, from.Longitude));
             matrixRequest.AddDestination(new LatLng(to.Latitude, to.Longitude));
@@ -39,7 +40,6 @@ namespace GeneticAlgorithm.Domain.RouteStepCalculator
                 var element = response.Rows.FirstOrDefault()?.Elements?.FirstOrDefault();
                 if (element != null && element.Status == ServiceResponseStatus.Ok)
                 {
-                    // toDO надо как-то получить duration_in_traffic
                     var distanceInMeters = element.Distance.Value;
                     var timeInSeconds = element.DurationInTraffic.Value;
                     var timeInMinutes = timeInSeconds / 60 + 1;

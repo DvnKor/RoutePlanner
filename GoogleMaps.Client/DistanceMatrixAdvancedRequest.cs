@@ -1,8 +1,7 @@
 using System;
 using Google.Maps.DistanceMatrix;
-using Infrastructure.Common;
 
-namespace GeneticAlgorithm.Domain.RouteStepCalculator
+namespace GoogleMaps.Client
 {
     public class DistanceMatrixAdvancedRequest : DistanceMatrixRequest
     {
@@ -13,7 +12,7 @@ namespace GeneticAlgorithm.Domain.RouteStepCalculator
             var uriString = base.ToUri().ToString();
             if (DepartureTime != default)
             {
-                var departureTimeInSeconds = new DateTimeOffset(DepartureTime.AddHours(-TimezoneProvider.OffsetInHours))
+                var departureTimeInSeconds = new DateTimeOffset(DepartureTime)
                     .ToUnixTimeSeconds();
                 var nowTimeInSeconds = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
                 var departureTimeQuery =
