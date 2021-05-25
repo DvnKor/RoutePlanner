@@ -14,7 +14,7 @@ namespace GeneticAlgorithm.Contracts.Models
 
         public double WaitingTime => Routes.Select(route => route.WaitingTime).Sum();
 
-        public int SuitableMeetingsCount => Routes.SelectMany(route => route.SuitableMeetings).Count();
+        public int SuitableMeetingsCount => Routes.Select(route => route.SuitableMeetings.Count).Sum();
 
         public int CountRouteFinishesAsPreferred => Routes.Count(x => x.FinishesAsPreferred);
 

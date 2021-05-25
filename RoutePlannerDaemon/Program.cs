@@ -2,6 +2,7 @@
 using Entities;
 using GeneticAlgorithm.Contracts;
 using GeneticAlgorithm.Domain;
+using GeneticAlgorithm.Domain.RouteStepCalculator;
 using SimpleInjector;
 using Storages;
 

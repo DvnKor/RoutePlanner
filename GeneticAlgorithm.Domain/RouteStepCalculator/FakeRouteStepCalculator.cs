@@ -2,7 +2,7 @@ using System;
 using GeneticAlgorithm.Contracts;
 using Infrastructure.Common;
 
-namespace GeneticAlgorithm.Domain
+namespace GeneticAlgorithm.Domain.RouteStepCalculator
 {
     public class FakeRouteStepCalculator : IRouteStepCalculator
     {
@@ -18,7 +18,8 @@ namespace GeneticAlgorithm.Domain
         /// </summary>
         private const double ExtraMinutes = 10; 
         
-        public (double distance, double time) CalculateRouteStep(Coordinate from, Coordinate to)
+        public (double distance, double time) CalculateRouteStep(
+            Coordinate from, Coordinate to, DateTime departureTime)
         {
             var distance = GetDistance(from, to);
 

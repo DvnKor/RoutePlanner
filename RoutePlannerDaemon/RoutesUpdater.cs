@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using GeneticAlgorithm.Contracts;
+using Infrastructure.Common;
 using Storages;
 
 namespace RoutePlannerDaemon
@@ -48,7 +49,7 @@ namespace RoutePlannerDaemon
 
         private async Task UpdateRoutes()
         {
-            var now = DateTime.UtcNow.AddHours(5);
+            var now = DateTime.UtcNow.AddHours(TimezoneProvider.OffsetInHours);
             Console.WriteLine($"Началось обновление маршрутов {now:g}");
 
             var algorithmStartTime = now + _reserveMeetingTime;

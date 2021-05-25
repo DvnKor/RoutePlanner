@@ -26,13 +26,20 @@ namespace Infrastructure.Cache
         {
             TValue value;
 
+            var stringKey = key.ToString();
             var exist = _cache.TryGetValue(key.ToString(), out var objValue);
-            if (exist) return (TValue)objValue;
+            if (exist)
+            {
+	            return (TValue)objValue;
+            }
 
 		    lock (_locker)
 		    {
 			    exist = _cache.TryGetValue(key.ToString(), out objValue);
-                if (exist) return (TValue)objValue;
+			    if (exist)
+			    {
+				    return (TValue)objValue;
+			    }
 
                 value = _valueProvider(key);
                 

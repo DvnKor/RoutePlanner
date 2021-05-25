@@ -6,7 +6,7 @@ using Google.Maps;
 using Google.Maps.DistanceMatrix;
 using Infrastructure.Common;
 
-namespace GeneticAlgorithm.Domain
+namespace GeneticAlgorithm.Domain.RouteStepCalculator
 {
     public class GoogleRouteStepCalculator : IRouteStepCalculator
     {
@@ -23,11 +23,14 @@ namespace GeneticAlgorithm.Domain
             _distanceMatrixService = new DistanceMatrixService();
         }
 
-        public (double distance, double time) CalculateRouteStep(Coordinate from, Coordinate to)
+        public (double distance, double time) CalculateRouteStep(
+            Coordinate from, Coordinate to, DateTime departureTime)
         {
-            var matrixRequest = new DistanceMatrixRequest
+            var matrixRequest = new DistanceMatrixAdvancedRequest
             {
                 Language = RussianLanguage,
+                Mode = TravelMode.driving,
+                DepartureTime = departureTime
             };
             matrixRequest.AddOrigin(new LatLng(from.Latitude, from.Longitude));
             matrixRequest.AddDestination(new LatLng(to.Latitude, to.Longitude));

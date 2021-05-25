@@ -11,14 +11,15 @@ namespace GeneticAlgorithm.Domain
     public class RouteParametersCalculator : IRouteParametersCalculator
     {
         private readonly IRouteStepCalculator _routeStepCalculator;
-        private readonly ExpiringCache<(Coordinate, Coordinate), (double, double)> _routeStepCache;
+        private readonly ExpiringCache<(Coordinate, Coordinate, DateTime), (double, double)> _routeStepCache;
 
         public RouteParametersCalculator(IRouteStepCalculator routeStepCalculator)
         {
             _routeStepCalculator = routeStepCalculator;
             // Расчет расстояния и времени в пути между двумя координатами кэшируется на 10 минут
             _routeStepCache = CacheFactory
-                .CreateExpiringCache<(Coordinate, Coordinate), (double, double)>(RouteStepCacheValueFactory, 10);
+                .CreateExpiringCache<(Coordinate, Coordinate, DateTime), (double, double)>(
+                    RouteStepCacheValueFactory, 10);
         }
 
         public void CalculateParameters(Route route, List<Meeting> takenMeetings)
@@ -51,7 +52,7 @@ namespace GeneticAlgorithm.Domain
 
                 var nextCoordinate = nextMeeting.Coordinate;
                 var (distanceToNext, timeToNext) = _routeStepCache.Get(
-                    (currentCoordinate, nextCoordinate));
+                    (currentCoordinate, nextCoordinate, currentTime));
 
                 var arrivalTime = currentTime.AddMinutes(timeToNext);
 
@@ -84,10 +85,11 @@ namespace GeneticAlgorithm.Domain
             route.FinishesAsPreferred = routeFinishesAsPreferred;
         }
         
-        private (double distance, double time) RouteStepCacheValueFactory((Coordinate from, Coordinate to) coordinates)
+        private (double distance, double time) RouteStepCacheValueFactory(
+            (Coordinate from, Coordinate to, DateTime departureTime) parameters)
         {
-            var (from, to) = coordinates;
-            return _routeStepCalculator.CalculateRouteStep(from, to);
+            var (from, to, departureTime) = parameters;
+            return _routeStepCalculator.CalculateRouteStep(from, to, departureTime);
         }
     }
 }

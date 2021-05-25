@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Entities;
 using Entities.Models;
+using Infrastructure.Common;
 using Microsoft.EntityFrameworkCore;
 
 namespace Storages
@@ -37,7 +38,7 @@ namespace Storages
                 .Include(route => route.ManagerSchedule)
                 .FirstOrDefaultAsync(route =>
                     route.ManagerSchedule.UserId == managerId &&
-                    route.ManagerSchedule.StartTime.Date == DateTime.UtcNow.AddHours(5).Date);
+                    route.ManagerSchedule.StartTime.Date == DateTime.UtcNow.AddHours(TimezoneProvider.OffsetInHours).Date);
             return suitableRoute;
         }
         

@@ -1,4 +1,5 @@
 using GeneticAlgorithm.Domain;
+using GeneticAlgorithm.Domain.RouteStepCalculator;
 
 namespace GeneticAlgorithm.Tests
 {
