@@ -26,7 +26,6 @@ namespace Infrastructure.Cache
         {
             TValue value;
 
-            var stringKey = key.ToString();
             var exist = _cache.TryGetValue(key.ToString(), out var objValue);
             if (exist)
             {
@@ -42,10 +41,10 @@ namespace Infrastructure.Cache
 			    }
 
                 value = _valueProvider(key);
-                
-                _cache.Set(key, value, new MemoryCacheEntryOptions
+
+                _cache.Set(key.ToString(), value, new MemoryCacheEntryOptions
 		        {
-			        AbsoluteExpiration = new DateTimeOffset(DateTime.Now.AddMinutes(_cacheExpirationMinutes))
+			        AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(_cacheExpirationMinutes),
 		        });
 		    }
 
