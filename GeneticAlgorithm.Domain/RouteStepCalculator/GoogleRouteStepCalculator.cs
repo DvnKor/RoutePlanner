@@ -3,7 +3,6 @@ using System.Configuration;
 using System.Linq;
 using GeneticAlgorithm.Contracts;
 using Google.Maps;
-using Google.Maps.DistanceMatrix;
 using Infrastructure.Common;
 
 namespace GeneticAlgorithm.Domain.RouteStepCalculator
@@ -11,7 +10,7 @@ namespace GeneticAlgorithm.Domain.RouteStepCalculator
     public class GoogleRouteStepCalculator : IRouteStepCalculator
     {
         private const string RussianLanguage = "ru";
-        private readonly DistanceMatrixService _distanceMatrixService;
+        private readonly DistanceMatrixAdvancedService _distanceMatrixAdvancedService;
 
         public GoogleRouteStepCalculator()
         {
@@ -20,7 +19,7 @@ namespace GeneticAlgorithm.Domain.RouteStepCalculator
                 ConfigurationManager.AppSettings.Get("GoogleMapsApiKey");
 
             GoogleSigned.AssignAllServices(new GoogleSigned(mapsApiKey));
-            _distanceMatrixService = new DistanceMatrixService();
+            _distanceMatrixAdvancedService = new DistanceMatrixAdvancedService();
         }
 
         public (double distance, double time) CalculateRouteStep(
@@ -34,15 +33,16 @@ namespace GeneticAlgorithm.Domain.RouteStepCalculator
             };
             matrixRequest.AddOrigin(new LatLng(from.Latitude, from.Longitude));
             matrixRequest.AddDestination(new LatLng(to.Latitude, to.Longitude));
-            var response = _distanceMatrixService.GetResponse(matrixRequest);
+            var response = _distanceMatrixAdvancedService.GetResponse(matrixRequest);
             if (response.Status == ServiceResponseStatus.Ok)
             {
                 var element = response.Rows.FirstOrDefault()?.Elements?.FirstOrDefault();
                 if (element != null && element.Status == ServiceResponseStatus.Ok)
                 {
-                    var distanceInMeters = element.distance.Value;
-                    var timeInSeconds = element.duration.Value;
-                    var timeInMinutes = timeInSeconds / 60;
+                    // toDO надо как-то получить duration_in_traffic
+                    var distanceInMeters = element.Distance.Value;
+                    var timeInSeconds = element.DurationInTraffic.Value;
+                    var timeInMinutes = timeInSeconds / 60 + 1;
                     return (distanceInMeters, timeInMinutes);
                 }
 
