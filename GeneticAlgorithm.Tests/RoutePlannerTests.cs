@@ -68,8 +68,8 @@ namespace GeneticAlgorithm.Tests
         {
             return new Coordinate
             {
-                Latitude = _random.NextDouble() / 100 + 60,
-                Longitude = _random.NextDouble() / 100 + 55
+                Latitude = _random.NextDouble() / 50 + 56.8519,
+                Longitude = _random.NextDouble() / 50 + 60.6122
             };
         }
     }

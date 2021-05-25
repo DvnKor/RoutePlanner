@@ -42,7 +42,7 @@ namespace GeneticAlgorithm.Domain.RouteStepCalculator
                 {
                     var distanceInMeters = element.Distance.Value;
                     var timeInSeconds = element.DurationInTraffic.Value;
-                    var timeInMinutes = timeInSeconds / 60 + 1;
+                    var timeInMinutes = Math.Ceiling(timeInSeconds / 60d + 1);
                     return (distanceInMeters, timeInMinutes);
                 }
 
