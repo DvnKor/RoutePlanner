@@ -20,7 +20,7 @@ namespace GeneticAlgorithm.Domain
             _generationMutator = generationMutator;
         }
 
-        public List<Genotype> CreateNextGeneration(
+        public IEnumerable<Genotype> CreateNextGeneration(
             List<Genotype> rankedGeneration,
             int eliteSize,
             double mutationRate)

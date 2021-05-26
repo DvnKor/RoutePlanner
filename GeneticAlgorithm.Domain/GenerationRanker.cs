@@ -22,25 +22,25 @@ namespace GeneticAlgorithm.Domain
         /// <summary>
         /// Возвращает отсортированный в порядке убывания фитнесс функции набор генотипов
         /// </summary>
-        public List<Genotype> Rank(List<Genotype> generation)
+        public List<Genotype> Rank(IEnumerable<Genotype> generation)
         {
-            foreach (var genotype in generation)
-            {
-                var takenMeetings = new List<Meeting>();
-                foreach (var route in genotype.Routes)
+            return generation.Select(genotype =>
                 {
-                    _routeParametersCalculator.CalculateParameters(route, takenMeetings);
-                    takenMeetings.AddRange(route.SuitableMeetings);
-                }
-                var fitness = _fitnessCalculator.Calculate(
-                    genotype.SuitableMeetingsCount,
-                    genotype.Distance, 
-                    genotype.WaitingTime,
-                    genotype.CountRouteFinishesAsPreferred);
-                genotype.Fitness = fitness;
-            }
-            
-            return generation
+                    var takenMeetings = new List<Meeting>();
+                    foreach (var route in genotype.Routes)
+                    {
+                        _routeParametersCalculator.CalculateParameters(route, takenMeetings);
+                        takenMeetings.AddRange(route.SuitableMeetings);
+                    }
+
+                    var fitness = _fitnessCalculator.Calculate(
+                        genotype.SuitableMeetingsCount,
+                        genotype.Distance,
+                        genotype.WaitingTime,
+                        genotype.CountRouteFinishesAsPreferred);
+                    genotype.Fitness = fitness;
+                    return genotype;
+                })
                 .OrderByDescending(genotype => genotype.Fitness)
                 .ToList();
         }

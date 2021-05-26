@@ -11,11 +11,9 @@ namespace GeneticAlgorithm.Domain
     {
         private readonly Random _random = new Random();
         
-        public List<Genotype> Mutate(List<Genotype> matingPool, double mutationRate)
+        public IEnumerable<Genotype> Mutate(IEnumerable<Genotype> matingPool, double mutationRate)
         {
-            return matingPool
-                .Select(genotype => MutateGenotype(genotype, mutationRate))
-                .ToList();
+            return matingPool.Select(genotype => MutateGenotype(genotype, mutationRate));
         }
 
         public Genotype MutateGenotype(Genotype genotype, double mutationRate)

@@ -6,7 +6,7 @@ namespace Infrastructure.Common
 {
     public static class ListExtensions
     {
-        private static readonly Random Random = new Random();  
+        private static readonly Random Random = new ();  
 
         public static IList<T> Shuffle<T>(this IList<T> list)
         {
@@ -38,7 +38,7 @@ namespace Infrastructure.Common
         public static IEnumerable<double> CumulativePercentage(this IEnumerable<double> values)
         {
             var cumulativeSum = values.CumulativeSum().ToArray();
-            var sum = cumulativeSum.Last();
+            var sum = cumulativeSum[^1];
             foreach (var cumSum in cumulativeSum)
             {
                 yield return (100 * cumSum) / sum;

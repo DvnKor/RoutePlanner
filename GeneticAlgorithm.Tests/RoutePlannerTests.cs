@@ -11,7 +11,7 @@ namespace GeneticAlgorithm.Tests
     [TestFixture]
     public class RoutePlannerTests
     {
-        private readonly Random _random = new Random();
+        private readonly Random _random = new ();
         private readonly DateTime _dateTime = DateTime.Now.AddMonths(-1).Date;
         private readonly IRoutePlanner _routePlanner = TestRoutePlannerFactory.Create();
         
@@ -24,7 +24,7 @@ namespace GeneticAlgorithm.Tests
             var meetings = Enumerable.Range(0, 25)
                 .Select(GetRandomMeeting)
                 .ToList();
-            var generationCount = 1200;
+            var generationCount = 800;
             var populationSize = 100;
             var eliteSize = 20;
             var mutationRate = 0.1;
@@ -37,13 +37,13 @@ namespace GeneticAlgorithm.Tests
                 eliteSize,
                 mutationRate);
 
-            Genotype bestRoutes = null;
+            var bestRoutes = new Genotype(Array.Empty<Route>()) {Fitness = double.MinValue};
             var i = 0;
             Console.WriteLine("Прогресс");
             foreach (var genotype in progress)
             {
                 Console.WriteLine($"{i}. Фитнес: {genotype.Fitness}. Кол-во встреч: {genotype.SuitableMeetingsCount}. Расстояние: {genotype.Distance} м. Время ожидания: {genotype.WaitingTime} минут");
-                if (i == generationCount)
+                if (genotype.Fitness > bestRoutes.Fitness)
                 {
                     bestRoutes = genotype;
                 }
@@ -51,7 +51,7 @@ namespace GeneticAlgorithm.Tests
             }
             Console.WriteLine();
             
-            Console.WriteLine(bestRoutes?.PrintRoutesWithParameters());
+            Console.WriteLine(bestRoutes.PrintRoutesWithParameters());
         }
 
         private Meeting GetRandomMeeting(int clientId)

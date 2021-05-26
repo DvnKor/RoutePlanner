@@ -11,8 +11,8 @@ namespace RoutePlannerDaemon
     {
         private const int GenerationCount = 500;
         private const int PopulationSize = 100;
-        private const int  EliteSize = 15;
-        private const double MutationRate = 0.1;
+        private const int  EliteSize = 20;
+        private const double MutationRate = 0.05;
         private readonly TimeSpan _reserveMeetingTime = TimeSpan.FromMinutes(60);
 
         private readonly IMeetingStorage _meetingStorage;
@@ -78,14 +78,15 @@ namespace RoutePlannerDaemon
                 }
             }
 
-            var progress = _routePlanner.GetBestRoutesProgress(
+            var bestRoutes = _routePlanner.GetBestRoutesProgress(
                 managerSchedules,
                 meetings,
                 GenerationCount,
                 PopulationSize,
                 EliteSize,
-                MutationRate);
-            var bestRoutes = progress.Last();
+                MutationRate)
+                .OrderByDescending(x => x.Fitness)
+                .First();
 
             Console.WriteLine(bestRoutes.PrintRoutesWithParameters());
 

@@ -6,7 +6,7 @@ namespace GeneticAlgorithm.Contracts
 {
     public interface IGenerationBreeder
     {
-        List<Genotype> Breed(List<Genotype> matingPool, int eliteSize);
+        IEnumerable<Genotype> Breed(List<Genotype> matingPool, int eliteSize);
 
         Genotype BreedGenotypes(Genotype firstGenotype, Genotype secondGenotype);
 

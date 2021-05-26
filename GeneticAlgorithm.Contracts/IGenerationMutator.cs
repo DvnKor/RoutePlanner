@@ -6,7 +6,7 @@ namespace GeneticAlgorithm.Contracts
 {
     public interface IGenerationMutator
     {
-        List<Genotype> Mutate(List<Genotype> matingPool, double mutationRate);
+        IEnumerable<Genotype> Mutate(IEnumerable<Genotype> matingPool, double mutationRate);
 
         Genotype MutateGenotype(Genotype genotype, double mutationRate);
 

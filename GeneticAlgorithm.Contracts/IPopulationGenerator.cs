@@ -12,7 +12,7 @@ namespace GeneticAlgorithm.Contracts
         /// <param name="managerSchedules">Расписания менеджеров</param>
         /// <param name="meetings">Все встречи</param>
         /// <param name="populationSize">Размер популяции</param>
-        List<Genotype> CreatePopulation(
+        IEnumerable<Genotype> CreatePopulation(
             IList<ManagerSchedule> managerSchedules,
             IList<Meeting> meetings,
             int populationSize);

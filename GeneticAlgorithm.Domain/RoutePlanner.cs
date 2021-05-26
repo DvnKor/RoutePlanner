@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Entities.Models;
@@ -30,6 +31,8 @@ namespace GeneticAlgorithm.Domain
             int eliteSize, 
             double mutationRate)
         {
+            CheckParameters(generationCount, populationSize, eliteSize, mutationRate);
+
             var generation = _populationGenerator.CreatePopulation(
                 managerSchedules, meetings, populationSize);
             var rankedGeneration = _generationRanker.Rank(generation);
@@ -39,6 +42,33 @@ namespace GeneticAlgorithm.Domain
                 generation = _generationCreator.CreateNextGeneration(rankedGeneration, eliteSize, mutationRate);
                 rankedGeneration = _generationRanker.Rank(generation);
                 yield return rankedGeneration.First();
+            }
+        }
+
+        private static void CheckParameters(
+            int generationCount, 
+            int populationSize,
+            int eliteSize,
+            double mutationRate)
+        {
+            if (generationCount <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(generationCount));
+            }
+
+            if (populationSize <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(populationSize));
+            }
+
+            if (eliteSize < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(eliteSize));
+            }
+
+            if (mutationRate < 0 || mutationRate > 1)
+            {
+                throw new ArgumentOutOfRangeException(nameof(mutationRate));
             }
         }
     }

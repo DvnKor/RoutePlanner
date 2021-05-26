@@ -12,12 +12,11 @@ namespace GeneticAlgorithm.Domain
     {
         private readonly Random _random = new Random();
 
-        public List<Genotype> Breed(List<Genotype> genotypes, int eliteSize)
+        public IEnumerable<Genotype> Breed(List<Genotype> genotypes, int eliteSize)
         {
-            var children = new List<Genotype>();
             for (var index = 0; index < eliteSize; index++)
             {
-                children.Add(genotypes[index]);
+                yield return genotypes[index];
             }
 
             var matingPool = genotypes.Shuffle();
@@ -26,11 +25,8 @@ namespace GeneticAlgorithm.Domain
             {
                 var firstParent = matingPool[index];
                 var secondParent = matingPool[matingPoolLength - (index + 1)];
-                var child = BreedGenotypes(firstParent, secondParent);
-                children.Add(child);
+                yield return BreedGenotypes(firstParent, secondParent);
             }
-
-            return children;
         }
 
         public Genotype BreedGenotypes(Genotype firstGenotype, Genotype secondGenotype)
@@ -69,8 +65,7 @@ namespace GeneticAlgorithm.Domain
             }
 
             var otherMeetings = secondRoute.PossibleMeetings
-                .Where(customer => !breedMeetingsResult.Contains(customer))
-                .ToList();
+                .Where(customer => !breedMeetingsResult.Contains(customer));
 
             var indexInResult = 0;
             foreach (var meeting in otherMeetings)

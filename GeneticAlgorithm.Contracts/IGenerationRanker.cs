@@ -5,6 +5,6 @@ namespace GeneticAlgorithm.Contracts
 {
     public interface IGenerationRanker
     {
-        List<Genotype> Rank(List<Genotype> generation);
+        List<Genotype> Rank(IEnumerable<Genotype> generation);
     }
 }

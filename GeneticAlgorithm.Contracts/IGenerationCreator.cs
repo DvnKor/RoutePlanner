@@ -5,7 +5,7 @@ namespace GeneticAlgorithm.Contracts
 {
     public interface IGenerationCreator
     {
-        List<Genotype> CreateNextGeneration(
+        IEnumerable<Genotype> CreateNextGeneration(
             List<Genotype> rankedGeneration,
             int eliteSize,
             double mutationRate);

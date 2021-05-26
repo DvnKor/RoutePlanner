@@ -9,15 +9,14 @@ namespace GeneticAlgorithm.Domain
 {
     public class PopulationGenerator : IPopulationGenerator
     {
-        public List<Genotype> CreatePopulation(
+        public IEnumerable<Genotype> CreatePopulation(
             IList<ManagerSchedule> managerSchedules,
             IList<Meeting> meetings, 
             int populationSize)
         {
             return Enumerable.Range(0, populationSize)
                 .Select(_ => CreateGenotype(managerSchedules, meetings))
-                .OrderByDescending(genotype => genotype.Fitness)
-                .ToList();
+                .OrderByDescending(genotype => genotype.Fitness);
         }
 
         private Genotype CreateGenotype(IEnumerable<ManagerSchedule> managerSchedules, IList<Meeting> meetings)
