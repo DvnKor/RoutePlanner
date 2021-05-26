@@ -35,22 +35,19 @@ namespace GeneticAlgorithm.Tests
                 generationCount,
                 populationSize,
                 eliteSize,
-                mutationRate);
+                mutationRate)
+                .ToList();
 
-            var bestRoutes = new Genotype(Array.Empty<Route>()) {Fitness = double.MinValue};
             var i = 0;
             Console.WriteLine("Прогресс");
             foreach (var genotype in progress)
             {
                 Console.WriteLine($"{i}. Фитнес: {genotype.Fitness}. Кол-во встреч: {genotype.SuitableMeetingsCount}. Расстояние: {genotype.Distance} м. Время ожидания: {genotype.WaitingTime} минут");
-                if (genotype.Fitness > bestRoutes.Fitness)
-                {
-                    bestRoutes = genotype;
-                }
                 i++;
             }
             Console.WriteLine();
-            
+
+            var bestRoutes = progress.OrderByDescending(x => x.SuitableMeetingsCount).First();
             Console.WriteLine(bestRoutes.PrintRoutesWithParameters());
         }
 
@@ -69,7 +66,7 @@ namespace GeneticAlgorithm.Tests
 
         private ManagerSchedule GetRandomManagerSchedule(int userId)
         {
-            return new ManagerSchedule
+            return new()
             {
                 UserId = userId,
                 StartCoordinate = GetRandomCoordinate(),
@@ -81,7 +78,7 @@ namespace GeneticAlgorithm.Tests
         
         private Coordinate GetRandomCoordinate()
         {
-            return new Coordinate
+            return new()
             {
                 Latitude = _random.NextDouble() / 50 + 56.8519,
                 Longitude = _random.NextDouble() / 50 + 60.6122

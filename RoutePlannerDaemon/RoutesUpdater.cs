@@ -85,7 +85,7 @@ namespace RoutePlannerDaemon
                 PopulationSize,
                 EliteSize,
                 MutationRate)
-                .OrderByDescending(x => x.Fitness)
+                .OrderByDescending(x => x.SuitableMeetingsCount)
                 .First();
 
             Console.WriteLine(bestRoutes.PrintRoutesWithParameters());

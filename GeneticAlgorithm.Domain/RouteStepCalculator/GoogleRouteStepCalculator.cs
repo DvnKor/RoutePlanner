@@ -30,7 +30,7 @@ namespace GeneticAlgorithm.Domain.RouteStepCalculator
             {
                 Language = RussianLanguage,
                 Mode = TravelMode.driving,
-                DepartureTime = departureTime.AddHours(-TimezoneProvider.OffsetInHours)
+                DepartureTime = departureTime
             };
             matrixRequest.AddOrigin(new LatLng(from.Latitude, from.Longitude));
             matrixRequest.AddDestination(new LatLng(to.Latitude, to.Longitude));
