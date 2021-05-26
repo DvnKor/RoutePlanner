@@ -19,7 +19,7 @@ namespace GeneticAlgorithm.Domain
             // Расчет расстояния и времени в пути между двумя координатами кэшируется на 10 минут
             _routeStepCache = CacheFactory
                 .CreateExpiringCache<(Coordinate, Coordinate, DateTime), (double, double)>(
-                    RouteStepCacheValueFactory, 10);
+                    RouteStepCacheValueFactory, TimeSpan.FromMinutes(10));
         }
 
         public void CalculateParameters(Route route, List<Meeting> takenMeetings)

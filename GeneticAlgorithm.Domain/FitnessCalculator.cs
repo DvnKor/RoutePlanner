@@ -4,10 +4,10 @@ namespace GeneticAlgorithm.Domain
 {
     public class FitnessCalculator : IFitnessCalculator
     {
-        private const int SuitableMeetingReward = 10;
-        private const int RouteFinishSameAsPreferredReward = 20;
-        private const double DistanceMeterPenalty = 0.5 / 1000;
-        private const int WaitingTimeMinutePenalty = 2 / 10;
+        private const int SuitableMeetingReward = 25;
+        private const int RouteFinishSameAsPreferredReward = 10;
+        private const double DistanceMeterPenalty = 0.0005;
+        private const double WaitingTimeMinutePenalty = 0.01;
         
         public double Calculate(
             int suitableMeetingsCount,

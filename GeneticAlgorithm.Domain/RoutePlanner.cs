@@ -22,7 +22,7 @@ namespace GeneticAlgorithm.Domain
             _generationRanker = generationRanker;
         }
 
-        public Genotype GetBestRoutes(
+        public IEnumerable<Genotype> GetBestRoutesProgress(
             IList<ManagerSchedule> managerSchedules,
             IList<Meeting> meetings, 
             int generationCount, 
@@ -32,17 +32,14 @@ namespace GeneticAlgorithm.Domain
         {
             var generation = _populationGenerator.CreatePopulation(
                 managerSchedules, meetings, populationSize);
+            var rankedGeneration = _generationRanker.Rank(generation);
 
-            var progress = new List<Genotype>();
             for (var generationIndex = 0; generationIndex < generationCount; generationIndex++)
             {
-                generation = _generationCreator.CreateNextGeneration(generation, eliteSize, mutationRate);
-                var rankedGeneration = _generationRanker.Rank(generation);
-                progress.Add(rankedGeneration.First());
+                generation = _generationCreator.CreateNextGeneration(rankedGeneration, eliteSize, mutationRate);
+                rankedGeneration = _generationRanker.Rank(generation);
+                yield return rankedGeneration.First();
             }
-
-            var bestRoutes = progress.Last();
-            return bestRoutes;
         }
     }
 }

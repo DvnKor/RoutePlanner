@@ -5,9 +5,9 @@ namespace Infrastructure.Cache
     public static class CacheFactory
     {
         public static ExpiringCache<TKey, TValue> CreateExpiringCache<TKey, TValue>(
-            Func<TKey, TValue> valueProvider, int cacheExpirationMinutes)
+            Func<TKey, TValue> valueProvider, TimeSpan absoluteExpirationRelativeToNow)
         {
-            return new ExpiringCache<TKey, TValue>(valueProvider, cacheExpirationMinutes);
+            return new (valueProvider, absoluteExpirationRelativeToNow);
         }
     }
 }

@@ -6,7 +6,7 @@ namespace GeneticAlgorithm.Contracts
 {
     public interface IRoutePlanner
     {
-        Genotype GetBestRoutes(
+        IEnumerable<Genotype> GetBestRoutesProgress(
             IList<ManagerSchedule> managerSchedules,
             IList<Meeting> meetings,
             int generationCount,

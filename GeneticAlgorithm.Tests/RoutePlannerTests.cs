@@ -2,6 +2,7 @@
 using System.Linq;
 using Entities.Models;
 using GeneticAlgorithm.Contracts;
+using GeneticAlgorithm.Contracts.Models;
 using Infrastructure.Common;
 using NUnit.Framework;
 
@@ -17,18 +18,18 @@ namespace GeneticAlgorithm.Tests
         [Test]
         public void GetBestRoute()
         {
-            var managerSchedules = Enumerable.Range(0, 3)
+            var managerSchedules = Enumerable.Range(0, 5)
                 .Select(GetRandomManagerSchedule)
                 .ToList();
-            var meetings = Enumerable.Range(0, 100)
+            var meetings = Enumerable.Range(0, 25)
                 .Select(GetRandomMeeting)
                 .ToList();
-            var generationCount = 500;
+            var generationCount = 1200;
             var populationSize = 100;
-            var eliteSize = 15;
+            var eliteSize = 20;
             var mutationRate = 0.1;
 
-            var bestRoutes = _routePlanner.GetBestRoutes(
+            var progress = _routePlanner.GetBestRoutesProgress(
                 managerSchedules,
                 meetings,
                 generationCount,
@@ -36,7 +37,21 @@ namespace GeneticAlgorithm.Tests
                 eliteSize,
                 mutationRate);
 
-            Console.WriteLine(bestRoutes.PrintRoutesWithParameters());
+            Genotype bestRoutes = null;
+            var i = 0;
+            Console.WriteLine("Прогресс");
+            foreach (var genotype in progress)
+            {
+                Console.WriteLine($"{i}. Фитнес: {genotype.Fitness}. Кол-во встреч: {genotype.SuitableMeetingsCount}. Расстояние: {genotype.Distance} м. Время ожидания: {genotype.WaitingTime} минут");
+                if (i == generationCount)
+                {
+                    bestRoutes = genotype;
+                }
+                i++;
+            }
+            Console.WriteLine();
+            
+            Console.WriteLine(bestRoutes?.PrintRoutesWithParameters());
         }
 
         private Meeting GetRandomMeeting(int clientId)

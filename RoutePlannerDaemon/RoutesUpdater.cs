@@ -78,13 +78,14 @@ namespace RoutePlannerDaemon
                 }
             }
 
-            var bestRoutes = _routePlanner.GetBestRoutes(
+            var progress = _routePlanner.GetBestRoutesProgress(
                 managerSchedules,
                 meetings,
                 GenerationCount,
                 PopulationSize,
                 EliteSize,
                 MutationRate);
+            var bestRoutes = progress.Last();
 
             Console.WriteLine(bestRoutes.PrintRoutesWithParameters());
 

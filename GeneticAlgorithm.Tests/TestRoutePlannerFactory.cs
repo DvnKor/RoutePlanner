@@ -11,7 +11,6 @@ namespace GeneticAlgorithm.Tests
             var routeParametersCalculator = new RouteParametersCalculator(new FakeRouteStepCalculator());
             var generationRanker = new GenerationRanker(routeParametersCalculator, new FitnessCalculator());
             var generationCreator = new GenerationCreator(
-                generationRanker,
                 new GenerationSelector(),
                 new GenerationBreeder(),
                 new GenerationMutator());

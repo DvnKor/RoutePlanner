@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using FluentAssertions;
 using Infrastructure.Common;
 using NUnit.Framework;
@@ -21,7 +22,7 @@ namespace Infrastructure.Cache.Tests
             
             var routeStepCache = CacheFactory
                 .CreateExpiringCache<(Coordinate, Coordinate, DateTime), int>(
-                    CacheValueFactory, 1);
+                    CacheValueFactory, TimeSpan.FromSeconds(2));
             
             var from = new Coordinate
             {
@@ -42,6 +43,11 @@ namespace Infrastructure.Cache.Tests
                 (from, to, time));
             firstCallResult.Should().Be(1);
             secondCallResult.Should().Be(1);
+            Thread.Sleep(2000);
+            
+            var expiredCallResult = routeStepCache.Get(
+                (from, to, time));
+            expiredCallResult.Should().Be(2);
         }
     }
 }

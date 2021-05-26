@@ -11,14 +11,14 @@ namespace Infrastructure.Cache
         private readonly MemoryCache _cache;
 
         private readonly Func<TKey, TValue> _valueProvider;
-        private readonly int _cacheExpirationMinutes;
+        private readonly TimeSpan _absoluteExpirationRelativeToNow;
 
         public ExpiringCache(
             Func<TKey, TValue> valueProvider,
-            int cacheExpirationMinutes)
+            TimeSpan absoluteExpirationRelativeToNow)
         {
             _valueProvider = valueProvider;
-            _cacheExpirationMinutes = cacheExpirationMinutes;
+            _absoluteExpirationRelativeToNow = absoluteExpirationRelativeToNow;
             _cache = new MemoryCache(new MemoryCacheOptions());
         }
 
@@ -44,7 +44,7 @@ namespace Infrastructure.Cache
 
                 _cache.Set(key.ToString(), value, new MemoryCacheEntryOptions
 		        {
-			        AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(_cacheExpirationMinutes),
+			        AbsoluteExpirationRelativeToNow = _absoluteExpirationRelativeToNow,
 		        });
 		    }
 
