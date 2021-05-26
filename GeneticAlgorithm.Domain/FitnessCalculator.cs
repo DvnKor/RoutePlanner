@@ -4,8 +4,10 @@ namespace GeneticAlgorithm.Domain
 {
     public class FitnessCalculator : IFitnessCalculator
     {
-        private const int SuitableMeetingReward = 50;
-        private const int RouteFinishSameAsPreferredReward = 200;
+        private const int SuitableMeetingReward = 10;
+        private const int RouteFinishSameAsPreferredReward = 20;
+        private const double DistanceMeterPenalty = 0.5 / 1000;
+        private const int WaitingTimeMinutePenalty = 2 / 10;
         
         public double Calculate(
             int suitableMeetingsCount,
@@ -13,12 +15,12 @@ namespace GeneticAlgorithm.Domain
             double waitingTime,
             int countRouteFinishesAsPreferred)
         {
-            var numerator = SuitableMeetingReward * suitableMeetingsCount +
-                countRouteFinishesAsPreferred * RouteFinishSameAsPreferredReward;
-
-            var denominator = distance / 1000 + waitingTime / 5;
-            
-            return denominator != 0 ? numerator / denominator : numerator;
+            var fitness = 
+                SuitableMeetingReward * suitableMeetingsCount +
+                countRouteFinishesAsPreferred * RouteFinishSameAsPreferredReward -
+                DistanceMeterPenalty * distance -
+                WaitingTimeMinutePenalty * waitingTime;
+            return fitness;
         }
     }
 }
