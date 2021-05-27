@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace RoutePlannerApi.Auth
 {
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
     public class RightsAuthorizeAttribute : Attribute, IAsyncAuthorizationFilter
     {
         private readonly Right[] _rights;

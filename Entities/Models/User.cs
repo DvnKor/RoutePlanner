@@ -36,8 +36,8 @@ namespace Entities.Models
         public bool HasRights(Right[] rights)
         {
             if (UserRights == null) return false;
-            var userRightsValues = UserRights.Select(userRight => userRight.Right);
-            return !rights.Except(userRightsValues).Any();
+            var userRightsValues = UserRights.Select(userRight => userRight.Right).ToArray();
+            return userRightsValues.Contains(Right.Superuser) || !rights.Except(userRightsValues).Any();
         }
 
         public UserDto ToDto()

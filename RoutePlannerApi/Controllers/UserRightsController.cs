@@ -8,7 +8,6 @@ using Storages;
 namespace RoutePlannerApi.Controllers
 {
     [Route("api/users")]
-    [RightsAuthorize(Right.Admin)]
     [ApiController]
     public class UserRightsController : Controller
     {
@@ -23,6 +22,7 @@ namespace RoutePlannerApi.Controllers
         /// Выдача права пользователю
         /// </summary>
         [HttpPost("{id:int}/rights/{right:int}")]
+        [RightsAuthorize(Right.Admin)]
         public async Task<ActionResult> AddRightToUser(int id, int right)
         {
             if (!Enum.IsDefined(typeof(Right), right))
@@ -32,6 +32,22 @@ namespace RoutePlannerApi.Controllers
 
             var createdRight = await _userRightStorage.AddRightToUser(id, (Right) right);
             return Ok(createdRight);
+        }
+        
+        /// <summary>
+        /// Удаление права у пользователя
+        /// </summary>
+        [HttpDelete("{id:int}/rights/{right:int}")]
+        [RightsAuthorize(Right.Superuser)]
+        public async Task<ActionResult> DeleteUserRight(int id, int right)
+        {
+            if (!Enum.IsDefined(typeof(Right), right))
+            {
+                return BadRequest($"Right {right} is invalid");
+            }
+
+            await _userRightStorage.RemoveUserRight(id, (Right) right);
+            return Ok();
         }
     }
 }

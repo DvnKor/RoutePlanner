@@ -10,7 +10,7 @@ using Storages;
 namespace RoutePlannerApi.Controllers
 {
     [Route("api/[controller]")]
-    [RightsAuthorize(Right.Manager)]
+    [RightsAuthorize(Right.Admin)]
     [ApiController]
     public class MeetingsController : Controller
     {

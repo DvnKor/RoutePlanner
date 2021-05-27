@@ -8,7 +8,9 @@ namespace Storages
 {
     public interface IUserRightStorage
     {
-        Task<UserRight> AddRightToUser(int id, Right right);
+        Task<UserRight> AddRightToUser(int userId, Right right);
+
+        Task RemoveUserRight(int userId, Right right);
     }
     
     public class UserRightStorage : IUserRightStorage
@@ -20,19 +22,32 @@ namespace Storages
             _contextFactory = contextFactory;
         }
 
-        public async Task<UserRight> AddRightToUser(int id, Right right)
+        public async Task<UserRight> AddRightToUser(int userId, Right right)
         {
             await using var ctx = _contextFactory.Create();
             var userRight = await ctx.UserRights
-                .FirstOrDefaultAsync(x => x.UserId == id && x.Right == right);
+                .FirstOrDefaultAsync(x => x.UserId == userId && x.Right == right);
             if (userRight != null)
             {
                 return userRight;
             }
-            userRight = new UserRight {UserId = id, Right = right};
+            userRight = new UserRight {UserId = userId, Right = right};
             ctx.Add(userRight);
             await ctx.SaveChangesAsync();
             return userRight;
+        }
+
+        public async Task RemoveUserRight(int userId, Right right)
+        {
+            await using var ctx = _contextFactory.Create();
+            var userRight = await ctx.UserRights
+                .FirstOrDefaultAsync(x => x.UserId == userId && x.Right == right);
+            if (userRight == null)
+            {
+                return;
+            }
+            ctx.UserRights.Remove(userRight);
+            await ctx.SaveChangesAsync();
         }
     }
 }

@@ -9,7 +9,6 @@ using Storages;
 namespace RoutePlannerApi.Controllers
 {
     [Route("api/[controller]")]
-    [RightsAuthorize(Right.Admin)]
     [ApiController]
     public class ClientsController : Controller
     {
@@ -24,6 +23,7 @@ namespace RoutePlannerApi.Controllers
         /// Создание клиента
         /// </summary>
         [HttpPost("")]
+        [RightsAuthorize(Right.Admin)]
         public async Task<ActionResult> CreateClient([FromBody] Client client)
         {
             var clientId = await _clientStorage.CreateClient(client);
@@ -34,6 +34,7 @@ namespace RoutePlannerApi.Controllers
         /// Обновление клиента
         /// </summary>
         [HttpPut("{id:int}")]
+        [RightsAuthorize(Right.Admin)]
         public async Task<ActionResult> UpdateClient(int id, [FromBody] UpdateClientDto updateClientDto)
         {
             var updatedClient = await _clientStorage.UpdateClient(id, updateClientDto);
@@ -46,9 +47,10 @@ namespace RoutePlannerApi.Controllers
         }
         
         /// <summary>
-        /// Получение встреч
+        /// Получение клиентов
         /// </summary>
         [HttpGet("")]
+        [RightsAuthorize(Right.Manager)]
         public async Task<ActionResult> GetClients(
             [FromQuery] int offset, 
             [FromQuery] int limit,
@@ -59,9 +61,10 @@ namespace RoutePlannerApi.Controllers
         }
         
         /// <summary>
-        /// Удаление встречи
+        /// Удаление клиента
         /// </summary>
         [HttpDelete("{id:int}")]
+        [RightsAuthorize(Right.Admin)]
         public async Task<ActionResult> DeleteClient(int id)
         {
             var deleted = await _clientStorage.DeleteClient(id);

@@ -3,6 +3,7 @@ namespace Infrastructure.Rights
     public enum Right
     {
         Manager,
-        Admin
+        Admin,
+        Superuser
     }
 }
