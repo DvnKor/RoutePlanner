@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Infrastructure.Rights;
-using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -29,7 +29,8 @@ namespace RoutePlannerApi.Auth
 
             if (!hasRight)
             {
-                await context.HttpContext.ForbidAsync();
+                context.HttpContext.Response.StatusCode = 403;
+                await context.HttpContext.Response.WriteAsync("Forbidden");
             }
         }
     }
