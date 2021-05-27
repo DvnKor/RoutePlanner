@@ -55,10 +55,21 @@ namespace RoutePlannerDaemon
             var algorithmStartTime = now + _reserveMeetingTime;
             var meetings = await _meetingStorage.GetMeetings(algorithmStartTime);
 
+            if (meetings.Length == 0)
+            {
+                return;
+            }
+            
             var managerSchedules = await _managerScheduleStorage.GetManagerSchedules(now);
+            if (managerSchedules.Length == 0)
+            {
+                return;
+            }
+            
             var managerSchedulesIds = managerSchedules
                 .Select(managerSchedule => managerSchedule.Id)
                 .ToArray();
+
             var currentRoutes = await _routeStorage.GetRoutesByScheduleIds(managerSchedulesIds);
 
             foreach (var managerSchedule in managerSchedules)
