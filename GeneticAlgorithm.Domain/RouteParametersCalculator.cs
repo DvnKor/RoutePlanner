@@ -39,7 +39,7 @@ namespace GeneticAlgorithm.Domain
             var currentCoordinate = managerSchedule.StartCoordinate;
             var currentTime = managerSchedule.StartTime;
             var pathDistance = 0d;
-            var waitingTime = new TimeSpan();
+            var waitingTime = TimeSpan.Zero;
             var routeFinishesAsPreferred = false;
             
             foreach (var nextMeeting in allMeetings)
@@ -60,9 +60,11 @@ namespace GeneticAlgorithm.Domain
                 if (arrivalTime > nextMeeting.StartTime) continue;
                 
                 // Перед встречей остаётся свободное время
+                var currentWaitingTime = TimeSpan.Zero;
                 if (arrivalTime < nextMeeting.StartTime)
                 {
-                    waitingTime += nextMeeting.StartTime - arrivalTime;
+                    currentWaitingTime = nextMeeting.StartTime - arrivalTime;
+                    waitingTime += currentWaitingTime;
                 }
 
                 if (nextMeeting == managerEndFakeMeeting)
@@ -71,6 +73,8 @@ namespace GeneticAlgorithm.Domain
                     break;
                 }
 
+                nextMeeting.DistanceFromPrevious = distanceToNext;
+                nextMeeting.WaitingTime = currentWaitingTime.TotalMinutes;
                 suitableMeetings.Add(nextMeeting);
                 pathDistance += distanceToNext;
                 currentTime = nextMeeting.EndTime;

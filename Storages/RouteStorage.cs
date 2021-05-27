@@ -79,15 +79,16 @@ namespace Storages
                     pastMeetings = pastMeetings
                         .Where(meeting => meeting.EndTime < firstMeeting?.StartTime)
                         .ToList();
-
                 }
                 currentRoute.SuitableMeetings = pastMeetings
                     .Concat(route.SuitableMeetings)
                     .ToList();
                 
-                //toDo рассчитать новое расстояние и время ожидания
-                //existedRoute.Distance = route.Distance;
-                //existedRoute.WaitingTime = route.WaitingTime;
+                var pastMeetingsDistance = pastMeetings.Sum(x => x.DistanceFromPrevious);
+                currentRoute.Distance = pastMeetingsDistance + route.Distance;
+
+                var pastMeetingsWaitingTime = pastMeetings.Sum(x => x.WaitingTime);
+                currentRoute.WaitingTime = pastMeetingsWaitingTime + route.WaitingTime;
                 
                 currentRoute.FinishesAsPreferred = route.FinishesAsPreferred;
             }

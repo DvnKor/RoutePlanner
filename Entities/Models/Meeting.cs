@@ -20,5 +20,11 @@ namespace Entities.Models
         public Coordinate Coordinate { get; set; }
         
         public Client Client { get; set; }
+        
+        [NotMapped]
+        public double DistanceFromPrevious { get; set; }
+        
+        [NotMapped]
+        public double WaitingTime { get; set; }
     }
 }
