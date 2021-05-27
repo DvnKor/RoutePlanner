@@ -90,11 +90,13 @@ namespace Storages
         public async Task<bool> DeleteManagerSchedule(int id)
         {
             await using var ctx = _contextFactory.Create();
-            var entry = new ManagerSchedule {Id = id};
-            ctx.ManagerSchedules.Attach(entry);
-            ctx.ManagerSchedules.Remove(entry);
-            var deleted = await ctx.SaveChangesAsync() > 0;
-            return deleted;
+            var managerSchedule = await ctx.ManagerSchedules.FindAsync(id);
+            if (managerSchedule == null)
+            {
+                return false;
+            }
+            ctx.ManagerSchedules.Remove(managerSchedule);
+            return await ctx.SaveChangesAsync() > 0;
         }
     }
 }

@@ -92,9 +92,12 @@ namespace Storages
         public async Task DeleteUser(int id)
         {
             await using var ctx = _contextFactory.Create();
-            var entry = new User {Id = id};
-            ctx.Users.Attach(entry);
-            ctx.Users.Remove(entry);
+            var user = await ctx.Users.FindAsync(id);
+            if (user == null)
+            {
+                return;
+            }
+            ctx.Users.Remove(user);
             await ctx.SaveChangesAsync();
         }
     }

@@ -72,11 +72,13 @@ namespace Storages
         public async Task<bool> DeleteClient(int id)
         {
             await using var ctx = _contextFactory.Create();
-            var entry = new Client {Id = id};
-            ctx.Clients.Attach(entry);
-            ctx.Clients.Remove(entry);
-            var deleted = await ctx.SaveChangesAsync() > 0;
-            return deleted;
+            var client = await ctx.Clients.FindAsync(id);
+            if (client == null)
+            {
+                return false;
+            }
+            ctx.Clients.Remove(client);
+            return await ctx.SaveChangesAsync() > 0;
         }
     }
 }

@@ -99,11 +99,13 @@ namespace Storages
         public async Task<bool> DeleteRoute(int id)
         {
             await using var ctx = _contextFactory.Create();
-            var entry = new Route {Id = id};
-            ctx.Routes.Attach(entry);
-            ctx.Routes.Remove(entry);
-            var deleted = await ctx.SaveChangesAsync() > 0;
-            return deleted;
+            var route = await ctx.Routes.FindAsync(id);
+            if (route == null)
+            {
+                return false;
+            }
+            ctx.Routes.Remove(route);
+            return await ctx.SaveChangesAsync() > 0;
         }
     }
 }

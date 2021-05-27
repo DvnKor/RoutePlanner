@@ -88,11 +88,13 @@ namespace Storages
         public async Task<bool> DeleteMeeting(int id)
         {
             await using var ctx = _contextFactory.Create();
-            var entry = new Meeting {Id = id};
-            ctx.Meetings.Attach(entry);
-            ctx.Meetings.Remove(entry);
-            var deleted = await ctx.SaveChangesAsync() > 0;
-            return deleted;
+            var meeting = await ctx.Meetings.FindAsync(id);
+            if (meeting == null)
+            {
+                return false;
+            }
+            ctx.Meetings.Remove(meeting);
+            return await ctx.SaveChangesAsync() > 0;
         }
     }
 }
