@@ -15,7 +15,7 @@ namespace RoutePlannerDaemon
             var container = new Container();
             
             container.RegisterSingleton<IPopulationGenerator, PopulationGenerator>();
-            // реализовать routeStepCalculator 
+            // в продакшене использовать GoogleRouteStepCalculator 
             container.RegisterSingleton<IRouteStepCalculator, FakeRouteStepCalculator>();
             container.RegisterSingleton<IRouteParametersCalculator, RouteParametersCalculator>();
             

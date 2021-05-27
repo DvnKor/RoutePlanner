@@ -45,6 +45,25 @@ namespace GeneticAlgorithm.Domain
             }
         }
 
+        public Genotype GetBestRoutes(
+            IList<ManagerSchedule> managerSchedules,
+            IList<Meeting> meetings, 
+            int generationCount, 
+            int populationSize,
+            int eliteSize, 
+            double mutationRate)
+        {
+            return GetBestRoutesProgress(
+                    managerSchedules,
+                    meetings,
+                    generationCount,
+                    populationSize,
+                    eliteSize,
+                    mutationRate)
+                .OrderByDescending(x => x.SuitableMeetingsCount)
+                .First();
+        }
+
         private static void CheckParameters(
             int generationCount, 
             int populationSize,

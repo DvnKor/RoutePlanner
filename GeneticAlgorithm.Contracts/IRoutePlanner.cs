@@ -13,5 +13,13 @@ namespace GeneticAlgorithm.Contracts
             int populationSize,
             int eliteSize,
             double mutationRate);
+
+        Genotype GetBestRoutes(
+            IList<ManagerSchedule> managerSchedules,
+            IList<Meeting> meetings,
+            int generationCount,
+            int populationSize,
+            int eliteSize,
+            double mutationRate);
     }
 }

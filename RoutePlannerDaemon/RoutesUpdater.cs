@@ -59,7 +59,7 @@ namespace RoutePlannerDaemon
             var managerSchedulesIds = managerSchedules
                 .Select(managerSchedule => managerSchedule.Id)
                 .ToArray();
-            var currentRoutes = await _routeStorage.GetRoutes(managerSchedulesIds);
+            var currentRoutes = await _routeStorage.GetRoutesByScheduleIds(managerSchedulesIds);
 
             foreach (var managerSchedule in managerSchedules)
             {
@@ -78,15 +78,13 @@ namespace RoutePlannerDaemon
                 }
             }
 
-            var bestRoutes = _routePlanner.GetBestRoutesProgress(
+            var bestRoutes = _routePlanner.GetBestRoutes(
                 managerSchedules,
                 meetings,
                 GenerationCount,
                 PopulationSize,
                 EliteSize,
-                MutationRate)
-                .OrderByDescending(x => x.SuitableMeetingsCount)
-                .First();
+                MutationRate);
 
             Console.WriteLine(bestRoutes.PrintRoutesWithParameters());
 

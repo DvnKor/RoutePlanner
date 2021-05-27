@@ -2,7 +2,6 @@
 using System.Linq;
 using Entities.Models;
 using GeneticAlgorithm.Contracts;
-using GeneticAlgorithm.Contracts.Models;
 using Infrastructure.Common;
 using NUnit.Framework;
 

@@ -13,7 +13,7 @@ namespace Storages
     {
         Task<Route> GetCurrentRoute(int managerId);
 
-        Task<Dictionary<int, Route>> GetRoutes(int[] managerScheduleIds);
+        Task<Dictionary<int, Route>> GetRoutesByScheduleIds(int[] managerScheduleIds);
 
         Task<int> AddRoute(Route route);
 
@@ -42,7 +42,7 @@ namespace Storages
             return suitableRoute;
         }
         
-        public async Task<Dictionary<int, Route>> GetRoutes(int[] managerScheduleIds)
+        public async Task<Dictionary<int, Route>> GetRoutesByScheduleIds(int[] managerScheduleIds)
         {
             await using var ctx = _contextFactory.Create();
             var routesDictionary = await ctx.Routes
