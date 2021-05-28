@@ -11,6 +11,7 @@ namespace RoutePlannerApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [RightsAuthorize(Right.Manager)]
     public class ScheduleController : Controller
     {
         private readonly IManagerScheduleStorage _managerScheduleStorage;
@@ -26,7 +27,6 @@ namespace RoutePlannerApi.Controllers
         /// Получение графика менеджера на неделю
         /// </summary>
         [HttpGet("")]
-        [RightsAuthorize(Right.Manager)]
         public async Task<ActionResult> GetManagerScheduleForWeek([FromQuery] int managerId, [FromQuery] DateTime weekDate)
         {
             var currentUser = _userContext.User;
@@ -44,7 +44,6 @@ namespace RoutePlannerApi.Controllers
         /// Создание смены
         /// </summary>
         [HttpPost("")]
-        [RightsAuthorize(Right.Admin)]
         public async Task<ActionResult> CreateManagerSchedule([FromBody] ManagerSchedule managerSchedule)
         {
             var managerScheduleId = await _managerScheduleStorage.CreateManagerSchedule(managerSchedule);
@@ -55,7 +54,6 @@ namespace RoutePlannerApi.Controllers
         /// Обновление смены
         /// </summary>
         [HttpPut("{id:int}")]
-        [RightsAuthorize(Right.Admin)]
         public async Task<ActionResult> UpdateManagerSchedule(
             int id, [FromBody] UpdateManagerScheduleDto updateManagerScheduleDto)
         {
@@ -72,7 +70,6 @@ namespace RoutePlannerApi.Controllers
         /// Удаление смены
         /// </summary>
         [HttpDelete("{id:int}")]
-        [RightsAuthorize(Right.Admin)]
         public async Task<ActionResult> DeleteManagerSchedule(int id)
         {
             var deleted = await _managerScheduleStorage.DeleteManagerSchedule(id);
