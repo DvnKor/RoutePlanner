@@ -23,18 +23,10 @@ namespace GeneticAlgorithm.Tests
             var meetings = Enumerable.Range(0, 25)
                 .Select(GetRandomMeeting)
                 .ToList();
-            var generationCount = 800;
-            var populationSize = 100;
-            var eliteSize = 20;
-            var mutationRate = 0.1;
 
             var progress = _routePlanner.GetBestRoutesProgress(
                 managerSchedules,
-                meetings,
-                generationCount,
-                populationSize,
-                eliteSize,
-                mutationRate)
+                meetings)
                 .ToList();
 
             var i = 0;

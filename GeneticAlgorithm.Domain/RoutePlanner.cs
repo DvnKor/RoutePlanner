@@ -9,6 +9,8 @@ namespace GeneticAlgorithm.Domain
 {
     public class RoutePlanner : IRoutePlanner
     {
+        private const double DefaultMutationRate = 0.05;
+        
         private readonly IPopulationGenerator _populationGenerator;
         private readonly IGenerationCreator _generationCreator;
         private readonly IGenerationRanker _generationRanker;
@@ -45,6 +47,19 @@ namespace GeneticAlgorithm.Domain
             }
         }
 
+        public IEnumerable<Genotype> GetBestRoutesProgress(IList<ManagerSchedule> managerSchedules, IList<Meeting> meetings)
+        {
+            var (generationsCount, populationSize, eliteSize) = GetParameters(meetings);
+
+            return GetBestRoutesProgress(
+                managerSchedules,
+                meetings,
+                generationsCount,
+                populationSize,
+                eliteSize,
+                DefaultMutationRate);
+        }
+
         public Genotype GetBestRoutes(
             IList<ManagerSchedule> managerSchedules,
             IList<Meeting> meetings, 
@@ -65,6 +80,28 @@ namespace GeneticAlgorithm.Domain
                 .ThenBy(x => x.Distance)
                 .ThenByDescending(x => x.CountRouteFinishesAsPreferred)
                 .First();
+        }
+
+        public Genotype GetBestRoutes(IList<ManagerSchedule> managerSchedules, IList<Meeting> meetings)
+        {
+            var (generationsCount, populationSize, eliteSize) = GetParameters(meetings);
+
+            return GetBestRoutes(
+                managerSchedules,
+                meetings,
+                generationsCount,
+                populationSize,
+                eliteSize,
+                DefaultMutationRate);
+        }
+
+        private static (int generationsCount, int populationSize, int eliteSize) GetParameters(
+            IList<Meeting> meetings)
+        {
+            var generationsCount = Math.Max(500, meetings.Count * 20);
+            var populationSize = Math.Max(100, meetings.Count * 4);
+            var eliteSize = populationSize / 5;
+            return (generationsCount, populationSize, eliteSize);
         }
 
         private static void CheckParameters(

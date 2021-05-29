@@ -9,11 +9,7 @@ namespace RoutePlannerDaemon
 {
     public class RoutesUpdater
     {
-        private const int GenerationCount = 500;
-        private const int PopulationSize = 100;
-        private const int  EliteSize = 20;
-        private const double MutationRate = 0.05;
-        private readonly TimeSpan _reserveMeetingTime = TimeSpan.FromMinutes(30);
+        private readonly TimeSpan _reserveMeetingTime = TimeSpan.FromMinutes(40);
 
         private readonly IMeetingStorage _meetingStorage;
         private readonly IManagerScheduleStorage _managerScheduleStorage;
@@ -88,14 +84,8 @@ namespace RoutePlannerDaemon
                     }
                 }
             }
-
-            var bestRoutes = _routePlanner.GetBestRoutes(
-                managerSchedules,
-                meetings,
-                GenerationCount,
-                PopulationSize,
-                EliteSize,
-                MutationRate);
+            
+            var bestRoutes = _routePlanner.GetBestRoutes(managerSchedules, meetings);
 
             Console.WriteLine(bestRoutes.PrintRoutesWithParameters());
 
