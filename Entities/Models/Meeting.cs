@@ -16,14 +16,17 @@ namespace Entities.Models
         public DateTime AvailableTimeStart { get; set; }
         
         public DateTime AvailableTimeEnd { get; set; }
+        
+        /// <summary>
+        /// Продолжительность встречи в минутах
+        /// </summary>
+        public TimeSpan Duration { get; set; }
+
+        public Coordinate Coordinate { get; set; }
 
         public DateTime StartTime { get; set; }
         
         public DateTime EndTime { get; set; }
-        
-        public TimeSpan Duration { get; set; }
-
-        public Coordinate Coordinate { get; set; }
         
         [NotMapped]
         public double DistanceFromPrevious { get; set; }

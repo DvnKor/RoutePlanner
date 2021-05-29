@@ -5,9 +5,11 @@ namespace Contracts
 {
     public class UpdateMeetingDto
     {
-        public DateTime StartTime { get; set; }
+        public DateTime AvailableTimeStart { get; set; }
         
-        public DateTime EndTime { get; set; }
+        public DateTime AvailableTimeEnd { get; set; }
+        
+        public int Duration { get; set; }
         
         public Coordinate Coordinate { get; set; }
     }

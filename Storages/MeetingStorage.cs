@@ -80,8 +80,9 @@ namespace Storages
                 return null;
             }
 
-            meetingToUpdate.StartTime = updateMeetingDto.StartTime;
-            meetingToUpdate.EndTime = updateMeetingDto.EndTime;
+            meetingToUpdate.AvailableTimeStart = updateMeetingDto.AvailableTimeStart;
+            meetingToUpdate.AvailableTimeEnd = updateMeetingDto.AvailableTimeEnd;
+            meetingToUpdate.Duration = TimeSpan.FromMinutes(updateMeetingDto.Duration);
             meetingToUpdate.Coordinate = updateMeetingDto.Coordinate;
             
             ctx.Meetings.Update(meetingToUpdate);
