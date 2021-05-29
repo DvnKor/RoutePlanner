@@ -58,7 +58,7 @@ namespace GeneticAlgorithm.Contracts.Models
                 {
                     builder.Append($"{meeting.StartTime:HH:mm} - {meeting.EndTime:HH:mm}. ");
                     builder.Append($"Клиент: {meeting.ClientId}. ");
-                    builder.Append($"Свободное время: {meeting.AvailableTimeStart:HH:mm} - {meeting.AvailableTimeEnd:HH:mm}.");
+                    builder.Append($"Свободное время: {meeting.AvailableTimeStart:HH:mm} - {meeting.AvailableTimeEnd:HH:mm}. ");
                     builder.Append($"{meeting.Coordinate}\n");
                 }
 
