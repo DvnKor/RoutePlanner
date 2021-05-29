@@ -47,6 +47,21 @@ namespace RoutePlannerApi.Controllers
         }
         
         /// <summary>
+        /// Обновление времени окончания встречи
+        /// </summary>
+        [HttpPut("{id:int}/end-time")]
+        public async Task<ActionResult> UpdateMeetingEndTime(int id, [FromBody] DateTime endTime)
+        {
+            var updatedMeeting = await _meetingsStorage.UpdateEndTime(id, endTime);
+            if (updatedMeeting == null)
+            {
+                return NotFound(id);
+            }
+
+            return Ok(updatedMeeting);
+        }
+        
+        /// <summary>
         /// Получение встреч
         /// </summary>
         [HttpGet("")]

@@ -19,6 +19,8 @@ namespace Storages
 
         Task<Meeting> UpdateMeeting(int id, UpdateMeetingDto updateMeetingDto);
 
+        Task<Meeting> UpdateEndTime(int id, DateTime endTime);
+
         Task<bool> DeleteMeeting(int id);
     }
     
@@ -88,6 +90,19 @@ namespace Storages
             
             ctx.Meetings.Update(meetingToUpdate);
             await ctx.SaveChangesAsync();
+            
+            return meetingToUpdate;
+        }
+
+        public async Task<Meeting> UpdateEndTime(int id, DateTime endTime)
+        {
+            await using var ctx = _contextFactory.Create();
+            var meetingToUpdate = await ctx.Meetings.FindAsync(id);
+            if (meetingToUpdate != null)
+            {
+                meetingToUpdate.EndTime = endTime;
+                await ctx.SaveChangesAsync();
+            }
             
             return meetingToUpdate;
         }
