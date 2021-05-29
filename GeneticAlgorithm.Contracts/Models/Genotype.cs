@@ -57,7 +57,9 @@ namespace GeneticAlgorithm.Contracts.Models
                 foreach (var meeting in route.SuitableMeetings)
                 {
                     builder.Append($"{meeting.StartTime:HH:mm} - {meeting.EndTime:HH:mm}. ");
-                    builder.Append($"Клиент: {meeting.ClientId}. {meeting.Coordinate}\n");
+                    builder.Append($"Клиент: {meeting.ClientId}. ");
+                    builder.Append($"Свободное время: {meeting.AvailableTimeStart:HH:mm} - {meeting.AvailableTimeEnd:HH:mm}.");
+                    builder.Append($"{meeting.Coordinate}\n");
                 }
 
                 if (route.FinishesAsPreferred)
