@@ -4,6 +4,7 @@ using GeneticAlgorithm.Contracts;
 using GeneticAlgorithm.Domain.RouteStepCalculator;
 using Infrastructure.Common;
 using NUnit.Framework;
+using Storages.Extensions;
 
 namespace GeneticAlgorithm.Tests
 {
@@ -25,7 +26,7 @@ namespace GeneticAlgorithm.Tests
                 Latitude = 56.823818,
                 Longitude = 60.663204
             };
-            var departureTime = DateTime.Now.Date.AddDays(1).AddHours(7);
+            var departureTime = DateTime.Now.StartOfNextWeek().Date.AddDays(1).AddHours(7);
 
             var routeStep = _routeStepCalculator.CalculateRouteStep(
                 from, to, departureTime);

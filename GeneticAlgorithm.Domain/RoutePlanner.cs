@@ -61,6 +61,9 @@ namespace GeneticAlgorithm.Domain
                     eliteSize,
                     mutationRate)
                 .OrderByDescending(x => x.SuitableMeetingsCount)
+                .ThenBy(x => x.WaitingTime)
+                .ThenBy(x => x.Distance)
+                .ThenByDescending(x => x.CountRouteFinishesAsPreferred)
                 .First();
         }
 
