@@ -74,7 +74,6 @@ namespace Storages
                 return null;
             }
 
-            meetingToUpdate.Name = updateMeetingDto.Name;
             meetingToUpdate.StartTime = updateMeetingDto.StartTime;
             meetingToUpdate.EndTime = updateMeetingDto.EndTime;
             meetingToUpdate.Coordinate = updateMeetingDto.Coordinate;

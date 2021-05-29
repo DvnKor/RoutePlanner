@@ -11,15 +11,17 @@ namespace Entities.Models
         
         public int ClientId { get; set; }
         
-        public string Name { get; set; }
+        public Client Client { get; set; }
+
+        public DateTime AvailableTimeStart { get; set; }
+        
+        public DateTime AvailableTimeEnd { get; set; }
 
         public DateTime StartTime { get; set; }
         
         public DateTime EndTime { get; set; }
 
         public Coordinate Coordinate { get; set; }
-        
-        public Client Client { get; set; }
         
         [NotMapped]
         public double DistanceFromPrevious { get; set; }
