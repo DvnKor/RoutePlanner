@@ -53,6 +53,7 @@ namespace Storages
                 return null;
             }
 
+            userToUpdate.Name = updateUserDto.Name;
             userToUpdate.MobilePhone = updateUserDto.MobilePhone;
             userToUpdate.Telegram = updateUserDto.Telegram;
             userToUpdate.Coordinate = updateUserDto.Coordinate;
