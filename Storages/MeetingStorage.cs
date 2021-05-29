@@ -50,6 +50,7 @@ namespace Storages
                 .Where(
                     meeting => 
                         meeting.AvailableTimeStart.Date == date.Date &&
+                        (meeting.StartTime == default || meeting.StartTime > date) &&
                         meeting.AvailableTimeEnd - TimeSpan.FromMinutes(meeting.DurationInMinutes) >= date)
                 .OrderBy(meeting => meeting.Id)
                 .ToArrayAsync();
