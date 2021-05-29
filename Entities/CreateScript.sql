@@ -33,6 +33,7 @@ CREATE TABLE "Meeting" (
                            "ClientId" integer NOT NULL,
                            "AvailableTimeStart" timestamp without time zone NOT NULL,
                            "AvailableTimeEnd" timestamp without time zone NOT NULL,
+						   "Duration" double precision NOT NULL,
                            "StartTime" timestamp without time zone NOT NULL,
                            "EndTime" timestamp without time zone NOT NULL,
                            "Coordinate" text NULL,
