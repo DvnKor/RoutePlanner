@@ -13,6 +13,7 @@ namespace Storages.Extensions
             }
             var lowerQuery = query.ToLower();
             return meetings.Where(meeting =>
+                (meeting.Client.Name != null && meeting.Client.Name.ToLower().Contains(lowerQuery)) ||
                 (meeting.Client.Email != null && meeting.Client.Email.ToLower().Contains(lowerQuery)) ||
                 (meeting.Client.MobilePhone != null && meeting.Client.MobilePhone.ToLower().Contains(lowerQuery)) ||
                 (meeting.Client.Telegram != null && meeting.Client.Telegram.ToLower().Contains(lowerQuery)));
