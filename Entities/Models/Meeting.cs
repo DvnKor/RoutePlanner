@@ -17,10 +17,7 @@ namespace Entities.Models
         
         public DateTime AvailableTimeEnd { get; set; }
         
-        /// <summary>
-        /// Продолжительность встречи в минутах
-        /// </summary>
-        public TimeSpan Duration { get; set; }
+        public int DurationInMinutes { get; set; }
 
         public Coordinate Coordinate { get; set; }
 

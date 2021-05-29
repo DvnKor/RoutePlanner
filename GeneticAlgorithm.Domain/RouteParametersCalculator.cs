@@ -30,7 +30,7 @@ namespace GeneticAlgorithm.Domain
             {
                 AvailableTimeStart = managerSchedule.EndTime,
                 AvailableTimeEnd = managerSchedule.EndTime,
-                Duration = TimeSpan.Zero,
+                DurationInMinutes = 0,
                 Coordinate = managerSchedule.EndCoordinate
             };
 
@@ -47,9 +47,11 @@ namespace GeneticAlgorithm.Domain
             {
                 // Встреча уже взята другим менеджером
                 if (takenMeetings.Contains(nextMeeting)) continue;
+
+                var nextMeetingDurationInMinutes = TimeSpan.FromMinutes(nextMeeting.DurationInMinutes);
                 
                 // Менеджер не успвает провести встречу до конца рабочего дня
-                if (nextMeeting.AvailableTimeStart + nextMeeting.Duration > managerSchedule.EndTime) continue;
+                if (nextMeeting.AvailableTimeStart + nextMeetingDurationInMinutes > managerSchedule.EndTime) continue;
 
                 var nextCoordinate = nextMeeting.Coordinate;
                 var (distanceToNext, timeToNext) = _routeStepCache.Get(
@@ -67,7 +69,7 @@ namespace GeneticAlgorithm.Domain
                 }
 
                 // Менеджер не успевает провести встречу
-                if (startTime > nextMeeting.AvailableTimeEnd - nextMeeting.Duration) continue;
+                if (startTime > nextMeeting.AvailableTimeEnd - nextMeetingDurationInMinutes) continue;
 
                 if (nextMeeting == managerEndFakeMeeting)
                 {
@@ -75,7 +77,7 @@ namespace GeneticAlgorithm.Domain
                     break;
                 }
 
-                var endTime = startTime + nextMeeting.Duration;
+                var endTime = startTime + nextMeetingDurationInMinutes;
                 nextMeeting.StartTime = startTime;
                 nextMeeting.EndTime = endTime;
                 nextMeeting.DistanceFromPrevious = distanceToNext;

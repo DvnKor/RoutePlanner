@@ -54,13 +54,13 @@ namespace GeneticAlgorithm.Tests
         {
             var availableTimeStart = _dateTime.AddHours(_random.Next(7, 19)).AddMinutes(_random.Next(0, 60));
             var availableTimeEnd = availableTimeStart.AddMinutes(_random.Next(60, 300));
-            var duration = TimeSpan.FromMinutes(_random.Next(15, 120));
+            var durationInMinutes = _random.Next(15, 120);
             return new Meeting
             {
                 ClientId = clientId,
                 AvailableTimeStart = availableTimeStart,
                 AvailableTimeEnd = availableTimeEnd,
-                Duration = duration,
+                DurationInMinutes = durationInMinutes,
                 Coordinate = GetRandomCoordinate()
             };
         }

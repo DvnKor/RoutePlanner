@@ -9,7 +9,7 @@ namespace Contracts
         
         public DateTime AvailableTimeEnd { get; set; }
         
-        public int Duration { get; set; }
+        public int DurationInMinutes { get; set; }
         
         public Coordinate Coordinate { get; set; }
     }

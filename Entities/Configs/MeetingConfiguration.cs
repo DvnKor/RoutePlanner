@@ -1,4 +1,3 @@
-using System;
 using Entities.Common;
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
@@ -14,11 +13,8 @@ namespace Entities.Configs
                 .HasSimpleJsonConversion();
 
             builder
-                .Property(meeting => meeting.Duration)
-                .HasConversion(
-                    obj => (int) obj.TotalMinutes,
-                    minutes => TimeSpan.FromMinutes(minutes))
-                .HasDefaultValue(TimeSpan.FromMinutes(30));
+                .Property(meeting => meeting.DurationInMinutes)
+                .HasDefaultValue(30);
         }
     }
 }

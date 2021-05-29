@@ -50,7 +50,7 @@ namespace Storages
                 .Where(
                     meeting => 
                         meeting.AvailableTimeStart.Date == date.Date &&
-                        meeting.AvailableTimeEnd - meeting.Duration >= date)
+                        meeting.AvailableTimeEnd - TimeSpan.FromMinutes(meeting.DurationInMinutes) >= date)
                 .OrderBy(meeting => meeting.Id)
                 .ToArrayAsync();
             return meetings;
@@ -82,7 +82,7 @@ namespace Storages
 
             meetingToUpdate.AvailableTimeStart = updateMeetingDto.AvailableTimeStart;
             meetingToUpdate.AvailableTimeEnd = updateMeetingDto.AvailableTimeEnd;
-            meetingToUpdate.Duration = TimeSpan.FromMinutes(updateMeetingDto.Duration);
+            meetingToUpdate.DurationInMinutes = updateMeetingDto.DurationInMinutes;
             meetingToUpdate.Coordinate = updateMeetingDto.Coordinate;
             
             ctx.Meetings.Update(meetingToUpdate);
