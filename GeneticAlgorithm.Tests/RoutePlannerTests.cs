@@ -52,13 +52,15 @@ namespace GeneticAlgorithm.Tests
 
         private Meeting GetRandomMeeting(int clientId)
         {
-            var startTime = _dateTime.AddHours(_random.Next(7, 20)).AddMinutes(_random.Next(0, 60));
-            var endTime = startTime.AddMinutes(_random.Next(15, 120));
+            var availableTimeStart = _dateTime.AddHours(_random.Next(7, 19)).AddMinutes(_random.Next(0, 60));
+            var availableTimeEnd = availableTimeStart.AddMinutes(_random.Next(60, 300));
+            var duration = TimeSpan.FromMinutes(_random.Next(15, 120));
             return new Meeting
             {
                 ClientId = clientId,
-                StartTime = startTime,
-                EndTime = endTime,
+                AvailableTimeStart = availableTimeStart,
+                AvailableTimeEnd = availableTimeEnd,
+                Duration = duration,
                 Coordinate = GetRandomCoordinate()
             };
         }

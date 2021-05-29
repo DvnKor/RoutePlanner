@@ -77,7 +77,7 @@ namespace Storages
                 if (firstMeeting != null)
                 {
                     pastMeetings = pastMeetings
-                        .Where(meeting => meeting.EndTime < firstMeeting?.StartTime)
+                        .Where(meeting => meeting.EndTime < firstMeeting.StartTime)
                         .ToList();
                 }
                 currentRoute.SuitableMeetings = pastMeetings

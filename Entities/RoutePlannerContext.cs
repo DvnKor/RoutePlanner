@@ -8,8 +8,6 @@ namespace Entities
         public RoutePlannerContext(DbContextOptions<RoutePlannerContext> options)
             : base(options)
         {
-           // Database.EnsureDeleted();
-           // Database.EnsureCreated();
         }
 
         public DbSet<Client> Clients { get; set; }

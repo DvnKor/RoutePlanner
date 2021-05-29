@@ -24,7 +24,7 @@ namespace Entities
 
         public RoutePlannerContext Create()
         {
-            return new RoutePlannerContext(Options);
+            return new (Options);
         }
     }
 }

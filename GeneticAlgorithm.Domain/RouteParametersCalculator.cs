@@ -28,8 +28,9 @@ namespace GeneticAlgorithm.Domain
             var possibleMeetings = route.PossibleMeetings;
             var managerEndFakeMeeting = new Meeting
             {
-                StartTime = managerSchedule.EndTime,
-                EndTime = managerSchedule.EndTime,
+                AvailableTimeStart = managerSchedule.EndTime,
+                AvailableTimeEnd = managerSchedule.EndTime,
+                Duration = TimeSpan.Zero,
                 Coordinate = managerSchedule.EndCoordinate
             };
 
@@ -48,24 +49,25 @@ namespace GeneticAlgorithm.Domain
                 if (takenMeetings.Contains(nextMeeting)) continue;
                 
                 // Менеджер не успвает провести встречу до конца рабочего дня
-                if (nextMeeting.EndTime > managerSchedule.EndTime) continue;
+                if (nextMeeting.AvailableTimeStart + nextMeeting.Duration > managerSchedule.EndTime) continue;
 
                 var nextCoordinate = nextMeeting.Coordinate;
                 var (distanceToNext, timeToNext) = _routeStepCache.Get(
                     (currentCoordinate, nextCoordinate, currentTime));
 
                 var arrivalTime = currentTime.AddMinutes(timeToNext);
-
-                // Менеджер не успевает на встречу
-                if (arrivalTime > nextMeeting.StartTime) continue;
-                
+                var startTime = arrivalTime;
                 // Перед встречей остаётся свободное время
                 var currentWaitingTime = TimeSpan.Zero;
-                if (arrivalTime < nextMeeting.StartTime)
+                if (arrivalTime < nextMeeting.AvailableTimeStart)
                 {
-                    currentWaitingTime = nextMeeting.StartTime - arrivalTime;
+                    currentWaitingTime = nextMeeting.AvailableTimeStart - arrivalTime;
                     waitingTime += currentWaitingTime;
+                    startTime = nextMeeting.AvailableTimeStart;
                 }
+
+                // Менеджер не успевает провести встречу
+                if (startTime > nextMeeting.AvailableTimeEnd - nextMeeting.Duration) continue;
 
                 if (nextMeeting == managerEndFakeMeeting)
                 {
@@ -73,11 +75,14 @@ namespace GeneticAlgorithm.Domain
                     break;
                 }
 
+                var endTime = startTime + nextMeeting.Duration;
+                nextMeeting.StartTime = startTime;
+                nextMeeting.EndTime = endTime;
                 nextMeeting.DistanceFromPrevious = distanceToNext;
                 nextMeeting.WaitingTime = currentWaitingTime.TotalMinutes;
                 suitableMeetings.Add(nextMeeting);
                 pathDistance += distanceToNext;
-                currentTime = nextMeeting.EndTime;
+                currentTime = endTime;
                 currentCoordinate = nextCoordinate;
             }
 

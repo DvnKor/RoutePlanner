@@ -13,7 +13,7 @@ namespace RoutePlannerDaemon
         private const int PopulationSize = 100;
         private const int  EliteSize = 20;
         private const double MutationRate = 0.05;
-        private readonly TimeSpan _reserveMeetingTime = TimeSpan.FromMinutes(60);
+        private readonly TimeSpan _reserveMeetingTime = TimeSpan.FromMinutes(30);
 
         private readonly IMeetingStorage _meetingStorage;
         private readonly IManagerScheduleStorage _managerScheduleStorage;
@@ -53,7 +53,7 @@ namespace RoutePlannerDaemon
             Console.WriteLine($"Началось обновление маршрутов {now:g}");
 
             var algorithmStartTime = now + _reserveMeetingTime;
-            var meetings = await _meetingStorage.GetMeetings(algorithmStartTime);
+            var meetings = await _meetingStorage.GetPossibleMeetings(algorithmStartTime);
 
             if (meetings.Length == 0)
             {
