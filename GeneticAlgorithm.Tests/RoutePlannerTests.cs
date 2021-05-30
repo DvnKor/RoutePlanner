@@ -29,12 +29,14 @@ namespace GeneticAlgorithm.Tests
                 meetings)
                 .ToList();
 
-            var i = 0;
+            var index = 0;
             Console.WriteLine("Прогресс");
             foreach (var genotype in progress)
             {
-                Console.WriteLine($"{i}. Фитнес: {genotype.Fitness}. Кол-во встреч: {genotype.SuitableMeetingsCount}. Расстояние: {genotype.Distance} м. Время ожидания: {genotype.WaitingTime} минут");
-                i++;
+                Console.WriteLine($"{index++}. Фитнес: {genotype.Fitness}. " +
+                                  $"Кол-во встреч: {genotype.SuitableMeetingsCount}. " +
+                                  $"Расстояние: {genotype.Distance} м. " +
+                                  $"Время ожидания: {genotype.WaitingTime} минут");
             }
             Console.WriteLine();
 

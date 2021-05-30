@@ -9,7 +9,7 @@ namespace GeneticAlgorithm.Domain
 {
     public class RoutePlanner : IRoutePlanner
     {
-        private const double DefaultMutationRate = 0.05;
+        private const double DefaultMutationRate = 0.1;
         
         private readonly IPopulationGenerator _populationGenerator;
         private readonly IGenerationCreator _generationCreator;
@@ -98,7 +98,7 @@ namespace GeneticAlgorithm.Domain
         private static (int generationsCount, int populationSize, int eliteSize) GetParameters(
             IList<Meeting> meetings)
         {
-            var generationsCount = Math.Max(500, meetings.Count * 20);
+            var generationsCount = Math.Max(800, meetings.Count * 20);
             var populationSize = Math.Max(100, meetings.Count * 4);
             var eliteSize = populationSize / 5;
             return (generationsCount, populationSize, eliteSize);
