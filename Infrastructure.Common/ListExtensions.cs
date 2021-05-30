@@ -41,7 +41,7 @@ namespace Infrastructure.Common
             var sum = cumulativeSum[^1];
             foreach (var cumSum in cumulativeSum)
             {
-                yield return (100 * cumSum) / sum;
+                yield return cumSum / sum;
             }
         }
     }

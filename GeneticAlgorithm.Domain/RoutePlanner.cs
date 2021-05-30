@@ -43,7 +43,14 @@ namespace GeneticAlgorithm.Domain
             {
                 generation = _generationCreator.CreateNextGeneration(rankedGeneration, eliteSize, mutationRate);
                 rankedGeneration = _generationRanker.Rank(generation);
-                yield return rankedGeneration.First();
+                var currentBestGenotype = rankedGeneration.First();
+                yield return currentBestGenotype;
+                if (currentBestGenotype.SuitableMeetingsCount == meetings.Count &&
+                    currentBestGenotype.CountRouteFinishesAsPreferred == managerSchedules.Count)
+                {
+                    // Генотип уже не улучшить
+                    break;
+                }
             }
         }
 
@@ -76,9 +83,9 @@ namespace GeneticAlgorithm.Domain
                     eliteSize,
                     mutationRate)
                 .OrderByDescending(x => x.SuitableMeetingsCount)
+                .ThenByDescending(x => x.CountRouteFinishesAsPreferred)
                 .ThenBy(x => x.WaitingTime)
                 .ThenBy(x => x.Distance)
-                .ThenByDescending(x => x.CountRouteFinishesAsPreferred)
                 .First();
         }
 

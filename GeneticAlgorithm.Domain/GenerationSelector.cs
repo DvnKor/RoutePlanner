@@ -26,7 +26,7 @@ namespace GeneticAlgorithm.Domain
                 .ToArray();
             for (var index = eliteSize; index < rankedGenotypesCount; index++)
             {
-                var pick = _random.NextDouble() * 100;
+                var pick = _random.NextDouble();
                 for (var j = 0; j < rankedGenotypesCount; j++)
                 {
                     if (pick <= routeSelectionPercentage[j])
