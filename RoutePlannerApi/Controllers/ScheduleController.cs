@@ -30,13 +30,15 @@ namespace RoutePlannerApi.Controllers
         public async Task<ActionResult> GetManagerScheduleForWeek([FromQuery] int managerId, [FromQuery] DateTime weekDate)
         {
             var currentUser = _userContext.User;
+            var convertedTime = TimeZoneInfo.ConvertTime(weekDate,
+                TimeZoneInfo.FindSystemTimeZoneById("Ekaterinburg Standard Time"));
             if (!currentUser.HasRight(Right.Admin) && currentUser.Id != managerId)
             {
                 return Forbid();
             }
             
             var managerScheduleForWeek = await _managerScheduleStorage
-                .GetManagerScheduleForWeek(managerId, weekDate);
+                .GetManagerScheduleForWeek(managerId, convertedTime);
             return Ok(managerScheduleForWeek);
         }
         
