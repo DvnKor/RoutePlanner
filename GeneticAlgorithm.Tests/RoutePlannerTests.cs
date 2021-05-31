@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Entities.Models;
+using FluentAssertions;
 using GeneticAlgorithm.Contracts;
 using Infrastructure.Common;
 using NUnit.Framework;
@@ -42,6 +43,8 @@ namespace GeneticAlgorithm.Tests
 
             var bestRoutes = progress.OrderByDescending(x => x.SuitableMeetingsCount).First();
             Console.WriteLine(bestRoutes.PrintRoutesWithParameters());
+
+            bestRoutes.SuitableMeetingsCount.Should().BeGreaterOrEqualTo(11);
         }
 
         private Meeting GetRandomMeeting(int clientId)

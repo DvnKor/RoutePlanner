@@ -9,7 +9,7 @@ namespace GeneticAlgorithm.Domain
 {
     public class RoutePlanner : IRoutePlanner
     {
-        private const double DefaultMutationRate = 0.1;
+        private const double DefaultMutationRate = 0.05;
         
         private readonly IPopulationGenerator _populationGenerator;
         private readonly IGenerationCreator _generationCreator;

@@ -9,7 +9,7 @@ namespace RoutePlannerDaemon
 {
     public class RoutesUpdater
     {
-        private readonly TimeSpan _reserveMeetingTime = TimeSpan.FromMinutes(40);
+        private readonly TimeSpan _reserveMeetingTime = TimeSpan.FromMinutes(45);
 
         private readonly IMeetingStorage _meetingStorage;
         private readonly IManagerScheduleStorage _managerScheduleStorage;
@@ -93,8 +93,6 @@ namespace RoutePlannerDaemon
             {
                 await _routeStorage.AddOrUpdateRoute(route);
             }
-
-            //toDo удалять старые маршруты 
         }
     }
 }

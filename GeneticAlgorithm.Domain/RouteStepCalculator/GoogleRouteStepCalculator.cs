@@ -15,7 +15,7 @@ namespace GeneticAlgorithm.Domain.RouteStepCalculator
 
         public GoogleRouteStepCalculator()
         {
-            var mapsApiKey = 
+            var mapsApiKey =
                 Environment.GetEnvironmentVariable("GOOGLE_MAPS_API_KEY") ??
                 ConfigurationManager.AppSettings.Get("GoogleMapsApiKey");
 
@@ -37,12 +37,16 @@ namespace GeneticAlgorithm.Domain.RouteStepCalculator
             var response = _distanceMatrixAdvancedService.GetResponse(matrixRequest);
             if (response.Status == ServiceResponseStatus.Ok)
             {
-                var element = response.Rows.FirstOrDefault()?.Elements?.FirstOrDefault();
+                var element = response
+                    .Rows
+                    .FirstOrDefault()
+                    ?.Elements
+                    ?.FirstOrDefault();
                 if (element != null && element.Status == ServiceResponseStatus.Ok)
                 {
                     var distanceInMeters = element.Distance.Value;
                     var timeInSeconds = element.DurationInTraffic.Value;
-                    var timeInMinutes = Math.Ceiling(timeInSeconds / 60d + 1);
+                    var timeInMinutes = Math.Ceiling(timeInSeconds / 60d) + 1;
                     return (distanceInMeters, timeInMinutes);
                 }
 
