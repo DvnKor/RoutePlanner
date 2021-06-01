@@ -64,6 +64,7 @@ namespace Storages
         public async Task AddOrUpdateRoute(Route route)
         {
             await using var ctx = _contextFactory.Create();
+            ctx.Meetings.UpdateRange(route.SuitableMeetings);
             var currentRoute = await ctx.Routes
                 .FirstOrDefaultAsync(r => r.ManagerScheduleId == route.ManagerScheduleId);
             if (currentRoute == null)
@@ -81,6 +82,7 @@ namespace Storages
                         .Where(meeting => meeting.EndTime < firstMeeting.StartTime)
                         .ToList();
                 }
+
                 currentRoute.SuitableMeetings = pastMeetings
                     .Concat(route.SuitableMeetings)
                     .ToList();
