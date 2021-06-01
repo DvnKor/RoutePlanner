@@ -36,7 +36,8 @@ namespace Storages
         public async Task<int> CreateMeeting(Meeting meeting)
         {
             await using var ctx = _contextFactory.Create();
-            ctx.Meetings.Add(meeting);
+            var entry = ctx.Meetings.Add(meeting);
+            entry.Reference(x => x.Client).TargetEntry.State = EntityState.Unchanged;
             await ctx.SaveChangesAsync();
             return meeting.Id;
         }
