@@ -45,7 +45,7 @@ namespace RoutePlannerDaemon
 
         private async Task UpdateRoutes()
         {
-            var now = DateTime.UtcNow.AddHours(TimezoneProvider.OffsetInHours);
+            var now = DateTime.UtcNow;
             Console.WriteLine($"Началось обновление маршрутов {now:g}");
 
             var algorithmStartTime = now + _reserveMeetingTime;

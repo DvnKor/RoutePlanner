@@ -53,7 +53,7 @@ namespace Storages
                 .Where(
                     meeting => 
                         meeting.AvailableTimeStart.Date == date.Date &&
-                        (meeting.StartTime == default || meeting.StartTime > date) &&
+                        (meeting.StartTime.Date != date.Date || meeting.StartTime > date) &&
                         meeting.AvailableTimeEnd.AddMinutes(-meeting.DurationInMinutes) >= date)
                 .OrderBy(meeting => meeting.Id)
                 .ToArrayAsync();

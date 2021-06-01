@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Contracts;
 using Entities.Models;
+using Infrastructure.Common;
 using Infrastructure.Rights;
 using Microsoft.AspNetCore.Mvc;
 using RoutePlannerApi.Auth;
@@ -30,8 +31,7 @@ namespace RoutePlannerApi.Controllers
         public async Task<ActionResult> GetManagerScheduleForWeek([FromQuery] int managerId, [FromQuery] DateTime weekDate)
         {
             var currentUser = _userContext.User;
-            var convertedTime = TimeZoneInfo.ConvertTime(weekDate,
-                TimeZoneInfo.FindSystemTimeZoneById("Ekaterinburg Standard Time"));
+            var convertedTime = weekDate.AddHours(TimezoneProvider.OffsetInHours);
             if (!currentUser.HasRight(Right.Admin) && currentUser.Id != managerId)
             {
                 return Forbid();
