@@ -53,12 +53,14 @@ namespace RoutePlannerDaemon
 
             if (meetings.Length == 0)
             {
+                Console.WriteLine("Не найдены подходящие встречи\n");
                 return;
             }
             
             var managerSchedules = await _managerScheduleStorage.GetManagerSchedules(now);
             if (managerSchedules.Length == 0)
             {
+                Console.WriteLine("Не найдены подходящие смены менеджеров\n");
                 return;
             }
             
@@ -93,6 +95,8 @@ namespace RoutePlannerDaemon
             {
                 await _routeStorage.AddOrUpdateRoute(route);
             }
+
+            Console.WriteLine($"Обновление маршрутов закончено {DateTime.UtcNow.AddHours(TimezoneProvider.OffsetInHours):g}\n");
         }
     }
 }

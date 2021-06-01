@@ -1,4 +1,3 @@
-# https://hub.docker.com/_/microsoft-dotnet
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /source
 
@@ -18,7 +17,7 @@ RUN dotnet publish -c release -o /app
 FROM mcr.microsoft.com/dotnet/runtime:5.0
 WORKDIR /app
 COPY --from=build /app ./
-# ENTRYPOINT ["dotnet", "RoutePlannerDaemon.dll"]
+
 ENV PORT=7654
 EXPOSE 7654
 CMD ASPNETCORE_URLS=http://*:$PORT dotnet RoutePlannerDaemon.dll

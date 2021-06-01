@@ -67,8 +67,9 @@ namespace Storages
             var currentRoute = await ctx.Routes
                 .FirstOrDefaultAsync(r => r.ManagerScheduleId == route.ManagerScheduleId);
             if (currentRoute == null)
-            {
-                ctx.Routes.Add(route);
+            {   
+                var entry = ctx.Routes.Add(route);
+                entry.Reference(x => x.ManagerSchedule).TargetEntry.State = EntityState.Unchanged;
             }
             else
             {
