@@ -98,7 +98,9 @@ namespace Storages
         public async Task<Meeting> UpdateEndTime(int id, DateTime endTime)
         {
             await using var ctx = _contextFactory.Create();
-            var meetingToUpdate = await ctx.Meetings.FindAsync(id);
+            var meetingToUpdate = await ctx.Meetings
+                .Include(meeting => meeting.Client)
+                .FirstOrDefaultAsync(meeting => meeting.Id == id);
             if (meetingToUpdate != null)
             {
                 meetingToUpdate.EndTime = endTime;
