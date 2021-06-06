@@ -46,7 +46,7 @@ namespace RoutePlannerDaemon
         private async Task UpdateRoutes()
         {
             var now = DateTime.UtcNow;
-            Console.WriteLine($"Началось обновление маршрутов {now:g}");
+            Console.WriteLine($"Началось обновление маршрутов {now.AddHours(TimezoneProvider.OffsetInHours):g}");
 
             var algorithmStartTime = now + _reserveMeetingTime;
             var meetings = await _meetingStorage.GetPossibleMeetings(algorithmStartTime);
@@ -83,6 +83,10 @@ namespace RoutePlannerDaemon
                     {
                         managerSchedule.StartTime = currentMeeting.EndTime;
                         managerSchedule.StartCoordinate = currentMeeting.Coordinate;
+                    }
+                    else
+                    {
+                        managerSchedule.StartTime = now;
                     }
                 }
             }

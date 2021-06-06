@@ -105,7 +105,7 @@ namespace GeneticAlgorithm.Domain
         private static (int generationsCount, int populationSize, int eliteSize) GetParameters(
             IList<Meeting> meetings)
         {
-            var generationsCount = Math.Max(800, meetings.Count * 20);
+            var generationsCount = Math.Max(500, meetings.Count * 20);
             var populationSize = Math.Max(100, meetings.Count * 4);
             var eliteSize = populationSize / 5;
             return (generationsCount, populationSize, eliteSize);
