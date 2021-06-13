@@ -75,7 +75,7 @@ namespace RoutePlannerDaemon
                 var routeExist = currentRoutes.TryGetValue(managerSchedule.Id, out var route);
                 if (routeExist)
                 {
-                    var currentMeeting = route.SuitableMeetings
+                    var currentMeeting = route.Meetings
                         .Where(meeting => meeting.StartTime <= algorithmStartTime)
                         .OrderByDescending(meeting => meeting.StartTime)
                         .FirstOrDefault();

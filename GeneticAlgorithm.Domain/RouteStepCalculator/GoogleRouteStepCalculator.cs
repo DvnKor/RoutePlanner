@@ -11,6 +11,7 @@ namespace GeneticAlgorithm.Domain.RouteStepCalculator
     public class GoogleRouteStepCalculator : IRouteStepCalculator
     {
         private const string RussianLanguage = "ru";
+        private const int ReservedMinutes = 5;
         private readonly DistanceMatrixAdvancedService _distanceMatrixAdvancedService;
 
         public GoogleRouteStepCalculator()
@@ -46,7 +47,7 @@ namespace GeneticAlgorithm.Domain.RouteStepCalculator
                 {
                     var distanceInMeters = element.Distance.Value;
                     var timeInSeconds = element.DurationInTraffic.Value;
-                    var timeInMinutes = Math.Ceiling(timeInSeconds / 60d) + 1;
+                    var timeInMinutes = Math.Ceiling(timeInSeconds / 60d) + ReservedMinutes;
                     return (distanceInMeters, timeInMinutes);
                 }
 

@@ -24,7 +24,10 @@ namespace Entities.Models
         /// <summary>
         /// Встречи, которые менеджер посетит
         /// </summary>
+        [NotMapped]
         public List<Meeting> SuitableMeetings { get; set; }
+        
+        public List<Meeting> Meetings { get; set; }
 
         /// <summary>
         /// Длина маршрута в метрах

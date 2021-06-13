@@ -1,4 +1,3 @@
-using Entities.Common;
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -14,8 +13,10 @@ namespace Entities.Configs
                 .WithMany()
                 .HasForeignKey(route => route.ManagerScheduleId);
 
-            builder.Property(route => route.SuitableMeetings)
-                .HasSimpleJsonConversion();
+            builder
+                .HasMany(route => route.Meetings)
+                .WithOne(meeting => meeting.Route)
+                .HasForeignKey(meeting => meeting.RouteId);
         }
     }
 }

@@ -36,6 +36,8 @@ namespace Storages
             await using var ctx = _contextFactory.Create();
             var suitableRoute = await ctx.Routes
                 .Include(route => route.ManagerSchedule)
+                .Include(route => route.Meetings)
+                .ThenInclude(meeting => meeting.Client)
                 .FirstOrDefaultAsync(route =>
                     route.ManagerSchedule.UserId == managerId &&
                     route.ManagerSchedule.StartTime.Date == DateTime.UtcNow.AddHours(TimezoneProvider.OffsetInHours).Date);
@@ -46,6 +48,7 @@ namespace Storages
         {
             await using var ctx = _contextFactory.Create();
             var routesDictionary = await ctx.Routes
+                .Include(route => route.Meetings)
                 .Where(route => managerScheduleIds.Contains(route.ManagerScheduleId))
                 .ToDictionaryAsync(
                     route => route.ManagerScheduleId,
@@ -64,37 +67,44 @@ namespace Storages
         public async Task AddOrUpdateRoute(Route route)
         {
             await using var ctx = _contextFactory.Create();
-            ctx.Meetings.UpdateRange(route.SuitableMeetings);
             var currentRoute = await ctx.Routes
                 .FirstOrDefaultAsync(r => r.ManagerScheduleId == route.ManagerScheduleId);
             if (currentRoute == null)
             {   
                 var entry = ctx.Routes.Add(route);
                 entry.Reference(x => x.ManagerSchedule).TargetEntry.State = EntityState.Unchanged;
+                currentRoute = entry.Entity;
             }
             else
             {
-                var firstMeeting = route.SuitableMeetings.FirstOrDefault();
-                var pastMeetings = currentRoute.SuitableMeetings;
+                var currentRouteMeetings = await ctx.Meetings
+                    .Where(meeting => meeting.RouteId == currentRoute.Id)
+                    .AsNoTracking()
+                    .ToListAsync();
+                var firstMeeting = route.SuitableMeetings.OrderBy(x => x.StartTime).FirstOrDefault();
+                var pastMeetings = currentRouteMeetings;
                 if (firstMeeting != null)
                 {
                     pastMeetings = pastMeetings
                         .Where(meeting => meeting.EndTime < firstMeeting.StartTime)
                         .ToList();
                 }
-
-                currentRoute.SuitableMeetings = pastMeetings
-                    .Concat(route.SuitableMeetings)
-                    .ToList();
                 
-                var pastMeetingsDistance = pastMeetings.Sum(x => x.DistanceFromPrevious);
+                var pastMeetingsDistance = pastMeetings.Sum(meeting => meeting.DistanceFromPrevious);
                 currentRoute.Distance = pastMeetingsDistance + route.Distance;
 
-                var pastMeetingsWaitingTime = pastMeetings.Sum(x => x.WaitingTime);
+                var pastMeetingsWaitingTime = pastMeetings.Sum(meeting => meeting.WaitingTime);
                 currentRoute.WaitingTime = pastMeetingsWaitingTime + route.WaitingTime;
                 
                 currentRoute.FinishesAsPreferred = route.FinishesAsPreferred;
             }
+            
+            foreach (var meeting in route.SuitableMeetings)
+            {
+                meeting.RouteId = currentRoute.Id;
+            }
+            
+            ctx.Meetings.UpdateRange(route.SuitableMeetings);
 
             await ctx.SaveChangesAsync();
         }
