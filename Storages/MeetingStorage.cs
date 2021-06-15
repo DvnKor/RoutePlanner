@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Contracts;
 using Entities;
 using Entities.Models;
+using Infrastructure.Common;
 using Microsoft.EntityFrameworkCore;
 using Storages.Extensions;
 
@@ -23,7 +24,7 @@ namespace Storages
 
         Task<bool> DeleteMeeting(int id);
     }
-    
+
     public class MeetingStorage : IMeetingStorage
     {
         private readonly IRoutePlannerContextFactory _contextFactory;
@@ -51,8 +52,9 @@ namespace Storages
             var meetings = await ctx.Meetings
                 .Include(meeting => meeting.Client)
                 .Where(
-                    meeting => 
-                        meeting.AvailableTimeStart.Date == date.Date &&
+                    meeting =>
+                        meeting.AvailableTimeStart.AddHours(TimezoneProvider.OffsetInHours).Date
+                        == date.AddHours(TimezoneProvider.OffsetInHours).Date &&
                         (meeting.StartTime.Date != date.Date || meeting.StartTime > date) &&
                         meeting.AvailableTimeEnd.AddMinutes(-meeting.DurationInMinutes) >= date)
                 .OrderBy(meeting => meeting.Id)
@@ -65,7 +67,8 @@ namespace Storages
             await using var ctx = _contextFactory.Create();
             var meetings = await ctx.Meetings
                 .Include(meeting => meeting.Client)
-                .Where(meeting => meeting.AvailableTimeStart.Date == date.Date)
+                .Where(meeting => meeting.AvailableTimeStart.AddHours(TimezoneProvider.OffsetInHours).Date 
+                                  == date.AddHours(TimezoneProvider.OffsetInHours).Date)
                 .Search(query)
                 .OrderBy(meeting => meeting.Id)
                 .LimitByOffset(offset, limit)
@@ -88,10 +91,10 @@ namespace Storages
             meetingToUpdate.AvailableTimeEnd = updateMeetingDto.AvailableTimeEnd;
             meetingToUpdate.DurationInMinutes = updateMeetingDto.DurationInMinutes;
             meetingToUpdate.Coordinate = updateMeetingDto.Coordinate;
-            
+
             ctx.Meetings.Update(meetingToUpdate);
             await ctx.SaveChangesAsync();
-            
+
             return meetingToUpdate;
         }
 
@@ -106,7 +109,7 @@ namespace Storages
                 meetingToUpdate.EndTime = endTime;
                 await ctx.SaveChangesAsync();
             }
-            
+
             return meetingToUpdate;
         }
 
@@ -118,6 +121,7 @@ namespace Storages
             {
                 return false;
             }
+
             ctx.Meetings.Remove(meeting);
             return await ctx.SaveChangesAsync() > 0;
         }

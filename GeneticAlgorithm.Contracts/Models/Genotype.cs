@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Text;
 using Entities.Models;
+using Infrastructure.Common;
 
 namespace GeneticAlgorithm.Contracts.Models
 {
@@ -46,19 +47,19 @@ namespace GeneticAlgorithm.Contracts.Models
                 builder.AppendLine(
                     $"Начальная координата: {route.ManagerSchedule.StartCoordinate.Latitude}," +
                     $" {route.ManagerSchedule.StartCoordinate.Longitude}");
-                builder.AppendLine($"Начало смены {route.ManagerSchedule.StartTime:g}.");
-                builder.AppendLine($"Конец смены {route.ManagerSchedule.EndTime:g}.");
+                builder.AppendLine($"Начало смены {route.ManagerSchedule.StartTime.ToUniversalTime().AddHours(TimezoneProvider.OffsetInHours):g}.");
+                builder.AppendLine($"Конец смены {route.ManagerSchedule.EndTime.ToUniversalTime().AddHours(TimezoneProvider.OffsetInHours):g}.");
                 builder.AppendLine(
                     $"Конечная желаемая координата: {route.ManagerSchedule.StartCoordinate.Latitude}," +
                     $" {route.ManagerSchedule.StartCoordinate.Longitude}");
                 builder.AppendLine();
                 
-                builder.AppendLine($"Встречи:").AppendLine();
+                builder.AppendLine("Встречи:").AppendLine();
                 foreach (var meeting in route.SuitableMeetings)
                 {
-                    builder.Append($"{meeting.StartTime:HH:mm} - {meeting.EndTime:HH:mm}. ");
+                    builder.Append($"{meeting.StartTime.ToUniversalTime().AddHours(TimezoneProvider.OffsetInHours):HH:mm} - {meeting.EndTime.ToUniversalTime().AddHours(TimezoneProvider.OffsetInHours):HH:mm}. ");
                     builder.Append($"Клиент: {meeting.ClientId}. ");
-                    builder.Append($"Свободное время: {meeting.AvailableTimeStart:HH:mm} - {meeting.AvailableTimeEnd:HH:mm}. ");
+                    builder.Append($"Свободное время: {meeting.AvailableTimeStart.ToUniversalTime().AddHours(TimezoneProvider.OffsetInHours):HH:mm} - {meeting.AvailableTimeEnd.ToUniversalTime().AddHours(TimezoneProvider.OffsetInHours):HH:mm}. ");
                     builder.Append($"{meeting.Coordinate}\n");
                 }
 

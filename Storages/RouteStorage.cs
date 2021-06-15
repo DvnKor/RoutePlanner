@@ -40,7 +40,7 @@ namespace Storages
                 .ThenInclude(meeting => meeting.Client)
                 .FirstOrDefaultAsync(route =>
                     route.ManagerSchedule.UserId == managerId &&
-                    route.ManagerSchedule.StartTime.Date == DateTime.UtcNow.AddHours(TimezoneProvider.OffsetInHours).Date);
+                    route.ManagerSchedule.StartTime.AddHours(TimezoneProvider.OffsetInHours).Date == DateTime.UtcNow.AddHours(TimezoneProvider.OffsetInHours).Date);
             return suitableRoute;
         }
         

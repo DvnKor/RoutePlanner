@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Contracts;
 using Entities;
 using Entities.Models;
+using Infrastructure.Common;
 using Microsoft.EntityFrameworkCore;
 using Storages.Extensions;
 
@@ -36,7 +37,7 @@ namespace Storages
         {
             await using var ctx = _contextFactory.Create();
             var managerSchedules = await ctx.ManagerSchedules
-                .Where(managerSchedule => managerSchedule.StartTime.Date == date.Date)
+                .Where(managerSchedule => managerSchedule.StartTime.AddHours(TimezoneProvider.OffsetInHours).Date == date.AddHours(TimezoneProvider.OffsetInHours).Date)
                 .OrderBy(managerSchedule => managerSchedule.StartTime)
                 .ToArrayAsync();
             return managerSchedules;
