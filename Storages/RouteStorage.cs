@@ -101,7 +101,7 @@ namespace Storages
             
             foreach (var meeting in route.SuitableMeetings)
             {
-                meeting.RouteId = currentRoute.Id;
+                meeting.Route = currentRoute;
             }
             
             ctx.Meetings.UpdateRange(route.SuitableMeetings);
