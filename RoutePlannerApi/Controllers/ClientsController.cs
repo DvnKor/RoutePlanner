@@ -50,7 +50,7 @@ namespace RoutePlannerApi.Controllers
         /// Получение клиентов
         /// </summary>
         [HttpGet("")]
-        [RightsAuthorize(Right.Manager)]
+        [RightsAuthorize(Right.Admin)]
         public async Task<ActionResult> GetClients(
             [FromQuery] int offset, 
             [FromQuery] int limit,
